@@ -11,19 +11,19 @@ public class ApiClient {
     //private static final String PATH="http://192.168.0.107:45455/"; //Diego
     //private static final String PATH="http://192.168.0.108:45455/"; //Sebastian
 
-    private static  MyApiInterface myApiInteface;
+    private static MyRetrofit myRetrofit;
 
-    public static MyApiInterface getMyApiClient(){
+    public static MyRetrofit getRetrofit(){
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(PATH)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        myApiInteface=retrofit.create(MyApiInterface.class);
-        return myApiInteface;
+        myRetrofit = retrofit.create(MyRetrofit.class);
+        return myRetrofit;
     }
 
-    public interface MyApiInterface {
+    public interface MyRetrofit {
         //
     }
 
