@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +22,9 @@ namespace TiendaMovil.Models
             nuevo = 2
         }
 
+        [Key]
+        public int Id { get; set; }
+        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
         public string Titulo { get; set; }
         public string Descripcion { get; set; }

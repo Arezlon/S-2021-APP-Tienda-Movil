@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +9,11 @@ namespace TiendaMovil.Models
 {
     public class Reseña
     {
+        [Key]
+        public int Id { get; set; }
+        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
+        [ForeignKey("PublicacionId")]
         public int PublicacionId { get; set; }
         public int Puntaje { get; set; }
         public string Encabezado { get; set; }
