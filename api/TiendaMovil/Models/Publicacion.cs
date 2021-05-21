@@ -28,7 +28,7 @@ namespace TiendaMovil.Models
         public int UsuarioId { get; set; }
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
-        public float Precio { get; set; }
+        public double Precio { get; set; }
         public int Categoria { get; set; }
         public int Tipo { get; set; }
         public int Stock { get; set; }
