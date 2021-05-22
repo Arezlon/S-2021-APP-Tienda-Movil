@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using TiendaMovil.Models;
 namespace TiendaMovil.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class PublicacionesController : ControllerBase
     {
@@ -26,14 +27,34 @@ namespace TiendaMovil.Controllers
         }
 
         [HttpGet("get")]
-        public IActionResult Get(int estado = 1, int usuarioId = -1)
+        public IActionResult Get(int estado = -1, int usuarioId = -1)
         {
             try
             {
                 var publicaciones = contexto.Publicaciones
-                    .Where(p => p.Estado == estado && (usuarioId == -1 ? true : p.UsuarioId == usuarioId))
+                    .Where(p => 
+                        (estado == -1 ? true : p.Estado == estado) && 
+                        (usuarioId == -1 ? true : p.UsuarioId == usuarioId))
+                    .Include(p => p.Usuario)
                     .ToList();
                 return Ok(publicaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpGet("getById")]
+        public IActionResult GetById(int publicacionId)
+        {
+            try
+            {
+                var publicacione = contexto.Publicaciones
+                    .Where(p => p.Id == publicacionId)
+                    .Include(p => p.Usuario)
+                    .FirstOrDefault();
+                return Ok(publicacione);
             }
             catch (Exception ex)
             {
@@ -57,26 +78,15 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpPatch("patch")]
-        public IActionResult Patch(Publicacion publicacion)
+        [HttpPut("put")]
+        public IActionResult Put(Publicacion publicacion)
         {
             try
             {
                 var entidad = contexto.Publicaciones.FirstOrDefault(p => p.Id == publicacion.Id);
                 if (entidad != null)
                 {
-                    // entidad = publicacion; // error de tracking
-                    entidad.UsuarioId = publicacion.UsuarioId;
-                    entidad.Titulo = publicacion.Titulo;
-                    entidad.Descripcion = publicacion.Descripcion;
-                    entidad.Precio = publicacion.Precio;
-                    entidad.Categoria = publicacion.Categoria;
-                    entidad.Tipo = publicacion.Tipo;
-                    entidad.Stock = publicacion.Stock;
-                    entidad.Estado = publicacion.Estado;
-                    entidad.Creacion = publicacion.Creacion;
-
-                    contexto.Publicaciones.Update(entidad);
+                    contexto.Entry(entidad).CurrentValues.SetValues(publicacion);
                     contexto.SaveChanges();
                     return Ok();
                 }
@@ -97,6 +107,26 @@ namespace TiendaMovil.Controllers
                 if (entidad != null)
                 {
                     contexto.Publicaciones.Remove(entidad);
+                    contexto.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPatch("baja")]
+        public IActionResult Baja(int publicacionId)
+        {
+            try
+            {
+                var entidad = contexto.Publicaciones.FirstOrDefault(p => p.Id == publicacionId);
+                if (entidad != null)
+                {
+                    entidad.Estado = 0;
                     contexto.SaveChanges();
                     return Ok();
                 }
