@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(Boolean ok) {
                 if (ok){
                     Log.d("salida","login correcto");
-                    //startActivity(new Intent(getApplicationContext(), MenuNavegacion.class));
+                    startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
                 }
             }
         });
