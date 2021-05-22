@@ -12,10 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TiendaMovil"
         android:usesCleartextTraffic="true">
+        <activity android:name=".RegistroActivity"></activity>
         <activity
             android:name=".MenuNavegacionActivity"
             android:label="@string/title_activity_menu_navegacion"
-            android:theme="@style/Theme.TiendaMovil.NoActionBar"></activity>
+            android:theme="@style/Theme.TiendaMovil.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

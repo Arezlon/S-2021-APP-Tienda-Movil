@@ -26,8 +26,9 @@ namespace TiendaMovil.Controllers
             this.config = config;
         }
 
+        /// <summary>Obtiene todas las entidades</summary>
         [HttpGet("get")]
-        public IActionResult Get(int estado = -1, int usuarioId = -1)
+        public IActionResult Get(int estado = 1, int usuarioId = -1)
         {
             try
             {
@@ -45,6 +46,7 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        /// <summary>Obtiene una sola entidad por su clave primaria</summary>
         [HttpGet("getById")]
         public IActionResult GetById(int publicacionId)
         {
@@ -62,8 +64,9 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpPost("post")]
-        public IActionResult Post(Publicacion publicacion)
+        /// <summary>Alta de una nueva entidad</summary>
+        [HttpPost("create")]
+        public IActionResult Create(Publicacion publicacion)
         {
             try
             {
@@ -78,8 +81,9 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpPut("put")]
-        public IActionResult Put(Publicacion publicacion)
+        /// <summary>Editar toda la entidad</summary>
+        [HttpPut("edit")]
+        public IActionResult Edit(Publicacion publicacion)
         {
             try
             {
@@ -98,6 +102,7 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        /// <summary>Eliminación real</summary>
         [HttpDelete("delete")]
         public IActionResult Delete(int publicacionId)
         {
@@ -118,8 +123,9 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpPatch("baja")]
-        public IActionResult Baja(int publicacionId)
+        /// <summary>Eliminación lógica</summary>
+        [HttpPatch("disable")]
+        public IActionResult Disable(int publicacionId)
         {
             try
             {

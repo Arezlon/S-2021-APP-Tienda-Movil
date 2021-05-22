@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         btRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
                 Log.d("Salida","ir al registro");
             }
         });

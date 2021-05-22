@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +65,36 @@ namespace TiendaMovil.Controllers
                     signingCredentials: credenciales
                 );
                 return Ok(new { statusCode = 10, token = new JwtSecurityTokenHandler().WriteToken(token), usuario = u });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("create")]
+        [AllowAnonymous]
+        public IActionResult Create(Usuario usuario)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    usuario.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: usuario.Clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes(config["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 400,
+                        numBytesRequested: 256 / 8));
+                    usuario.Permisos = 1;
+                    usuario.Estado = 1;
+                    usuario.Creacion = DateTime.Now;
+
+                    contexto.Usuarios.Add(usuario);
+                    contexto.SaveChanges();
+                    return Ok(true);
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {
