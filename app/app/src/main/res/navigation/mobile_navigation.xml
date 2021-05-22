@@ -22,4 +22,34 @@
         android:name="com.spartano.tiendamovil.ui.nuevaPublicacion.NuevaPublicacionFragment"
         android:label="Nueva publicación"
         tools:layout="@layout/fragment_nueva_publicacion" />
+
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.spartano.tiendamovil.ui.perfil.PerfilFragment"
+        android:label="Perfil del usuario #ID"
+        tools:layout="@layout/fragment_perfil" />
+
+    <fragment
+        android:id="@+id/nav_publicaciones"
+        android:name="com.spartano.tiendamovil.ui.publicaciones.PublicacionesFragment"
+        android:label="Mis publicaciones"
+        tools:layout="@layout/fragment_publicaciones" />
+
+    <fragment
+        android:id="@+id/nav_fondos"
+        android:name="com.spartano.tiendamovil.ui.fondos.FondosFragment"
+        android:label="Mis fondos"
+        tools:layout="@layout/fragment_fondos" />
+
+    <fragment
+        android:id="@+id/nav_mensajes"
+        android:name="com.spartano.tiendamovil.ui.mensajes.MensajesFragment"
+        android:label="Mis mensajes"
+        tools:layout="@layout/fragment_mensajes" />
+
+    <fragment
+        android:id="@+id/nav_salir"
+        android:name="com.spartano.tiendamovil.ui.cerrarSesion.CerrarSesionFragment"
+        android:label="Cerrar sesión"
+        tools:layout="@layout/fragment_cerrar_sesion" />
 </navigation>
