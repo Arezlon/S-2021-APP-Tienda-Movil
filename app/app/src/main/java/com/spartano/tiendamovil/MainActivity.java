@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class)); //Pruebas para evitar el login
                             }
                         }).show();
             }

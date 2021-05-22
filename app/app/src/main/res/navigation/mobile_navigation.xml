@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_inicio">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.spartano.tiendamovil.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_inicio"
+        android:name="com.spartano.tiendamovil.ui.inicio.InicioFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_inicio" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.spartano.tiendamovil.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_busqueda_avanzada"
+        android:name="com.spartano.tiendamovil.ui.busqueda.BusquedaFragment"
+        android:label="Búsqueda avanzada"
+        tools:layout="@layout/fragment_busqueda" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.spartano.tiendamovil.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_nueva_publicacion"
+        android:name="com.spartano.tiendamovil.ui.nuevaPublicacion.NuevaPublicacionFragment"
+        android:label="Nueva publicación"
+        tools:layout="@layout/fragment_nueva_publicacion" />
 </navigation>

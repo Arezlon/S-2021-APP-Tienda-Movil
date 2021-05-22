@@ -1,16 +1,16 @@
-package com.spartano.tiendamovil.ui.gallery;
+package com.spartano.tiendamovil.ui.nuevaPublicacion;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class NuevaPublicacionViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public NuevaPublicacionViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("Placeholder fragment de Creación de Publicación");
     }
 
     public LiveData<String> getText() {

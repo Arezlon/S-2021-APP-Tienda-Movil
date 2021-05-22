@@ -1,16 +1,16 @@
-package com.spartano.tiendamovil.ui.home;
+package com.spartano.tiendamovil.ui.inicio;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class InicioViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public InicioViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("Placeholder fragment de Inicio");
     }
 
     public LiveData<String> getText() {
