@@ -8,15 +8,15 @@
         android:id="@+id/menu">
         <item
             android:id="@+id/nav_inicio"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/baseline_home_24"
             android:title="Inicio" />
         <item
             android:id="@+id/nav_busqueda_avanzada"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_search_24"
             android:title="Búsqueda avanzada" />
         <item
             android:id="@+id/nav_nueva_publicacion"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_add_24"
             android:title="Nueva publicación" />
     </group>
     <group
@@ -24,15 +24,15 @@
         android:id="@+id/menu2">
         <item
             android:id="@+id/nav_perfil"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_account_circle_24"
             android:title="Mi perfil" />
         <item
             android:id="@+id/nav_publicaciones"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_backup_table_24"
             android:title="Mis publicaciones" />
         <item
             android:id="@+id/nav_fondos"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/baseline_payments_24"
             android:title="Mis fondos" />
     </group>
 
@@ -41,11 +41,11 @@
         android:id="@+id/menu3">
         <item
             android:id="@+id/nav_mensajes"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_forum_24"
             android:title="Mensajes" />
         <item
             android:id="@+id/nav_salir"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_logout_24"
             android:title="Cerrar sesión" />
     </group>
 
