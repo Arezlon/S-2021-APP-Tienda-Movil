@@ -19,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public class ApiClient {
     private static ApiClient api = null;
@@ -52,6 +53,12 @@ public class ApiClient {
 
         @GET("publicaciones/gettipos")
         public Call<Map<Integer, String>> getTiposPublicaciones(@Header("Authorization") String token);
+
+        @PUT("usuarios/edit")
+        public Call<Void> editUsuario(@Body Usuario usuario, @Header("Authorization") String token);
+
+        @GET("usuarios/get")
+        public Call<Usuario> getUsuario(@Header("Authorization") String token);
     }
 
     public String getToken(Context context) {

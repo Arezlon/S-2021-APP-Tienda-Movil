@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TiendaMovil.Models;
@@ -93,6 +94,46 @@ namespace TiendaMovil.Controllers
                     contexto.Usuarios.Add(usuario);
                     contexto.SaveChanges();
                     return Ok(true);
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("get")]
+        public IActionResult ObtenerUsuario()
+        {
+            try
+            {
+                int id = int.Parse(User.Claims.First(x => x.Type == "Id").Value);
+                var usuario = contexto.Usuarios.Find(id);
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditarUsuario([FromBody] Usuario Usuario)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Usuario u = contexto.Usuarios.Find(int.Parse(User.Claims.First(c => c.Type == "Id").Value));
+                    u.Nombre = Usuario.Nombre;
+                    u.Apellido = Usuario.Apellido;
+                    u.Dni = Usuario.Dni;
+                    u.Telefono = Usuario.Telefono;
+                    u.Email = Usuario.Email;
+
+                    contexto.Usuarios.Update(u);
+                    await contexto.SaveChangesAsync();
+                    return Ok(Usuario);
                 }
                 return BadRequest();
             }

@@ -46,7 +46,6 @@ public class RegistroActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Usuario creado correctamente", Toast.LENGTH_LONG).show();
             }
         });
-
         inicializarVista();
     }
 

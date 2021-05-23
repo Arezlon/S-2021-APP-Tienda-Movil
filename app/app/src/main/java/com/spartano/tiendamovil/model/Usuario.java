@@ -1,111 +1,122 @@
 package com.spartano.tiendamovil.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Usuario {
-    public String Nombre;
-    public String Apellido;
-    public String Dni;
-    public String Email;
-    public String Telefono;
-    public String Clave;
-    public int Permisos;
-    public int Estado;
-    public Date Creacion;
-    public String PermisosNombre;
+public class Usuario implements Serializable {
+    public int id;
+    public String nombre;
+    public String apellido;
+    public String dni;
+    public String email;
+    public String telefono;
+    public String clave;
+    public int permisos;
+    public int estado;
+    public String creacion;
+    public String permisosNombre;
 
     public Usuario(){}
 
-    public Usuario(String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, int estado, Date creacion, String permisosNombre) {
-        Nombre = nombre;
-        Apellido = apellido;
-        Dni = dni;
-        Email = email;
-        Telefono = telefono;
-        Clave = clave;
-        Permisos = permisos;
-        Estado = estado;
-        Creacion = creacion;
-        PermisosNombre = permisosNombre;
+    public Usuario(int id, String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, int estado, String creacion, String permisosNombre) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.email = email;
+        this.telefono = telefono;
+        this.clave = clave;
+        this.permisos = permisos;
+        this.estado = estado;
+        this.creacion = creacion;
+        this.permisosNombre = permisosNombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getApellido() {
-        return Apellido;
+        return apellido;
     }
 
     public void setApellido(String apellido) {
-        Apellido = apellido;
+        this.apellido = apellido;
     }
 
     public String getDni() {
-        return Dni;
+        return dni;
     }
 
     public void setDni(String dni) {
-        Dni = dni;
+        this.dni = dni;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getTelefono() {
-        return Telefono;
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
-        Telefono = telefono;
+        this.telefono = telefono;
     }
 
     public String getClave() {
-        return Clave;
+        return clave;
     }
 
     public void setClave(String clave) {
-        Clave = clave;
+        this.clave = clave;
     }
 
     public int getPermisos() {
-        return Permisos;
+        return permisos;
     }
 
     public void setPermisos(int permisos) {
-        Permisos = permisos;
+        this.permisos = permisos;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
-    public Date getCreacion() {
-        return Creacion;
+    public String getCreacion() {
+        return creacion;
     }
 
-    public void setCreacion(Date creacion) {
-        Creacion = creacion;
+    public void setCreacion(String creacion) {
+        this.creacion = creacion;
     }
 
     public String getPermisosNombre() {
-        return PermisosNombre;
+        return permisosNombre;
     }
 
     public void setPermisosNombre(String permisosNombre) {
-        PermisosNombre = permisosNombre;
+        this.permisosNombre = permisosNombre;
     }
 }
