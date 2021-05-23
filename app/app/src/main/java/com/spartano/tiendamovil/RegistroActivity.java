@@ -32,7 +32,9 @@ public class RegistroActivity extends AppCompatActivity {
         viewModel.getErrorValidacionMutable().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                btConfirmar.setEnabled(true);
+                btConfirmar.setText("Crear cuenta");
             }
         });
 
@@ -52,6 +54,8 @@ public class RegistroActivity extends AppCompatActivity {
         btConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btConfirmar.setEnabled(false);
+                btConfirmar.setText("Cargando...");
                 Usuario u = new Usuario();
                 u.setNombre(etNombre.getText().toString());
                 u.setApellido(etApellido.getText().toString());

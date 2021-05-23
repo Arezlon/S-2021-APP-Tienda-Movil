@@ -37,20 +37,22 @@ public class RegistroActivityViewModel extends AndroidViewModel {
     }
 
     public void validarRegistro(Usuario u, String confirmacionClave){
-        if(u.getNombre().length() > 16 || u.getNombre().length() < 3 || u.getApellido().length() > 16 || u.getApellido().length() < 3)
-            errorValidacionMutable.setValue("El nombre/apellido ingresado no es válido (3 caracteres mínimo, 16 máximo)");
+        if(u.getNombre().length() > 16 || u.getNombre().length() < 3)
+            errorValidacionMutable.setValue("El nombre ingresado no es válido (3 a 16 caracteres)");
+        else if (u.getApellido().length() > 16 || u.getApellido().length() < 3)
+            errorValidacionMutable.setValue("El apellido ingresado no es válido (3 a 16 caracteres)");
         else if(u.getTelefono().length() > 15 || u.getTelefono().length() < 9)
-            errorValidacionMutable.setValue("El número de teléfono ingresado no es válido (9-15 dígitos)");
+            errorValidacionMutable.setValue("El número de teléfono no es válido (9 a 15 dígitos)");
         else if(u.getDni().length() != 8)
-            errorValidacionMutable.setValue("El DNI ingresado no es válido (debe tener 8 dígitos)");
+            errorValidacionMutable.setValue("El DNI ingresado no es válido");
         else if(!Patterns.EMAIL_ADDRESS.matcher(u.getEmail()).matches())
-            errorValidacionMutable.setValue("La dirección de correo electrónico ingresada no es válida.");
+            errorValidacionMutable.setValue("El correo electrónico no es válido");
         else if (u.getClave().length() > 30 || u.getClave().length() < 3)
-            errorValidacionMutable.setValue("La contraseña ingresada no es válida (3 caracteres mínimo, 30 máximo)");
+            errorValidacionMutable.setValue("La contraseña ingresada no es válida (3 a 30 caracteres)");
         else if (!u.getClave().equals(confirmacionClave))
-            errorValidacionMutable.setValue("Las contraseñas ingresadas no coinciden.");
+            errorValidacionMutable.setValue("Las contraseñas ingresadas no coinciden");
         else if (u.getNombre().isEmpty() || u.getApellido().isEmpty() || u.getTelefono().isEmpty() || u.getDni().isEmpty() || u.getEmail().isEmpty() || u.getClave().isEmpty() || confirmacionClave.isEmpty())
-            errorValidacionMutable.setValue("Los campos no pueden estar vacíos.");
+            errorValidacionMutable.setValue("Los campos no pueden estar vacíos");
         else{
             Call<Boolean> resAsync = ApiClient.getRetrofit().createUsuario(u);
             resAsync.enqueue(new Callback<Boolean>() {
@@ -62,14 +64,14 @@ public class RegistroActivityViewModel extends AndroidViewModel {
                             return;
                         }
                     }
-                    errorValidacionMutable.setValue("Ocurrió un error inesperado.");
+                    errorValidacionMutable.setValue("Ocurrió un error inesperado");
                     // como distinguir que tipo de error es?? entra acá cuando falla una unique constraint
                     Log.d("salida", response.message() + " " + response.code());
                 }
 
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
-                    errorValidacionMutable.setValue("No se pudo conectar con el servidor. Intente de nuevo más tarde.");
+                    errorValidacionMutable.setValue("No se pudo conectar con el servidor");
                     Log.d("salida", t.getMessage());
                 }
             });

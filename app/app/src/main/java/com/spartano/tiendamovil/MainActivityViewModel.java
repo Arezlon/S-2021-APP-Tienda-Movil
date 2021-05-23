@@ -51,11 +51,12 @@ public class MainActivityViewModel extends AndroidViewModel {
                             resultadoMutable.setValue(true);
                             String token = response.body().getToken();
                             preferences.edit().putString("token", "Bearer " + token).apply();
+                            mensajeMutable.setValue("Sesión iniciada correctamente");
                         } else {
                             mensajeMutable.setValue("Error desconocido");
                         }
                     }else {
-                        mensajeMutable.setValue("Error de validación");
+                        mensajeMutable.setValue("Usuario o contraseña incorrectos");
                     }
                     Log.d("salida", "Login: "+response.message());
                 }
@@ -63,7 +64,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
                     Log.d("salida", t.getMessage());
-                    mensajeMutable.setValue("Error de conexión");
+                    mensajeMutable.setValue("No se pudo conectar con el servidor");
                 }
             });
         } else {

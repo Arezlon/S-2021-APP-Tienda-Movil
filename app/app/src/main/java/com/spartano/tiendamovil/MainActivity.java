@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel viewModel;
@@ -35,15 +36,11 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getMensajeMutable().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Error")
-                        .setMessage(s)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class)); //Pruebas para evitar el login
-                            }
-                        }).show();
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                //startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
+                btIngresar.setEnabled(true);
+                btRegistrarse.setEnabled(true);
+                btIngresar.setText("Ingresar");
             }
         });
 
@@ -68,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btIngresar.setEnabled(false);
+                btRegistrarse.setEnabled(false);
+                btIngresar.setText("Cargando...");
                 viewModel.verificarDatos(
                         etMail.getText().toString(),
                         etClave.getText().toString()
