@@ -26,7 +26,7 @@ public class RegistroActivityViewModel extends AndroidViewModel {
         return errorValidacionMutable;
     }
 
-    public MutableLiveData<Boolean> registroExitosoMutable() {
+    public MutableLiveData<Boolean> getRegistroExitosoMutable() {
         if (registroExitosoMutable == null)
             registroExitosoMutable = new MutableLiveData<>();
         return registroExitosoMutable;

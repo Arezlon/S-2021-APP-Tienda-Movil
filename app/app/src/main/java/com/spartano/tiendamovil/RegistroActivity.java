@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,14 @@ public class RegistroActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                 btConfirmar.setEnabled(true);
                 btConfirmar.setText("Crear cuenta");
+            }
+        });
+
+        viewModel.getRegistroExitosoMutable().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "Usuario creado correctamente", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -23,13 +23,13 @@ public class NuevaPublicacionFragment extends Fragment {
         nuevaPublicacionViewModel =
                 new ViewModelProvider(this).get(NuevaPublicacionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_nueva_publicacion, container, false);
-        final TextView textView = root.findViewById(R.id.nueva_publicacion);
+        /*final TextView textView = root.findViewById(R.id.nueva_publicacion);
         nuevaPublicacionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 }

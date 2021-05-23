@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 if (ok){
                     Log.d("salida","login correcto");
                     startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
+                    Toast.makeText(getApplicationContext(), "Sesión iniciada correctamente", Toast.LENGTH_LONG).show();
                 }
             }
         });

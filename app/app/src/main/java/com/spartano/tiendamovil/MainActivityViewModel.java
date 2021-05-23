@@ -51,7 +51,6 @@ public class MainActivityViewModel extends AndroidViewModel {
                             resultadoMutable.setValue(true);
                             String token = response.body().getToken();
                             preferences.edit().putString("token", "Bearer " + token).apply();
-                            mensajeMutable.setValue("Sesión iniciada correctamente");
                         } else {
                             mensajeMutable.setValue("Error desconocido");
                         }
