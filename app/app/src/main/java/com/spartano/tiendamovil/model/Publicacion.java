@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Publicacion implements Serializable {
+    public int Id;
     public int UsuarioId;
     public String Titulo;
     public String Descripcion;
@@ -14,12 +15,11 @@ public class Publicacion implements Serializable {
     public int Estado;
     public Date Creacion;
     public Usuario Usuario;
-    public String CategoriaNombre;
-    public String TipoNombr;
 
     public Publicacion(){}
 
-    public Publicacion(int usuarioId, String titulo, String descripcion, float precio, int categoria, int tipo, int stock, int estado, Date creacion, com.spartano.tiendamovil.model.Usuario usuario, String categoriaNombre, String tipoNombr) {
+    public Publicacion(int id, int usuarioId, String titulo, String descripcion, float precio, int categoria, int tipo, int stock, int estado, Date creacion, Usuario usuario) {
+        Id = id;
         UsuarioId = usuarioId;
         Titulo = titulo;
         Descripcion = descripcion;
@@ -30,8 +30,14 @@ public class Publicacion implements Serializable {
         Estado = estado;
         Creacion = creacion;
         Usuario = usuario;
-        CategoriaNombre = categoriaNombre;
-        TipoNombr = tipoNombr;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public int getUsuarioId() {
@@ -112,21 +118,5 @@ public class Publicacion implements Serializable {
 
     public void setUsuario(com.spartano.tiendamovil.model.Usuario usuario) {
         Usuario = usuario;
-    }
-
-    public String getCategoriaNombre() {
-        return CategoriaNombre;
-    }
-
-    public void setCategoriaNombre(String categoriaNombre) {
-        CategoriaNombre = categoriaNombre;
-    }
-
-    public String getTipoNombr() {
-        return TipoNombr;
-    }
-
-    public void setTipoNombr(String tipoNombr) {
-        TipoNombr = tipoNombr;
     }
 }

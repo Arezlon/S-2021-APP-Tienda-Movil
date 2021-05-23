@@ -37,5 +37,27 @@ namespace TiendaMovil.Models
         public Usuario Usuario { get; set; }
         public string CategoriaNombre => Categoria > 0 ? ((CategoriasEnum)Categoria).ToString() : "";
         public string TipoNombre => Tipo > 0 ? ((TiposEnum)Tipo).ToString() : "";
+
+        public static IDictionary<int, string> ObtenerCategorias()
+        {
+            SortedDictionary<int, string> categorias = new SortedDictionary<int, string>();
+            Type tipoEnumCategorias = typeof(CategoriasEnum);
+            foreach (var valor in Enum.GetValues(tipoEnumCategorias))
+            {
+                categorias.Add((int)valor, Enum.GetName(tipoEnumCategorias, valor));
+            }
+            return categorias;
+        }
+
+        public static IDictionary<int, string> ObtenerTipos()
+        {
+            SortedDictionary<int, string> tipos = new SortedDictionary<int, string>();
+            Type tipoEnumTipos = typeof(TiposEnum);
+            foreach (var valor in Enum.GetValues(tipoEnumTipos))
+            {
+                tipos.Add((int)valor, Enum.GetName(tipoEnumTipos, valor));
+            }
+            return tipos;
+        }
     }
 }

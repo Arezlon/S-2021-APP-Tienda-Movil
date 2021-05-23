@@ -70,6 +70,8 @@ namespace TiendaMovil.Controllers
         {
             try
             {
+                publicacion.Creacion = DateTime.Now;
+                publicacion.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
                 publicacion.Usuario = null;
                 contexto.Publicaciones.Add(publicacion);
                 contexto.SaveChanges();
@@ -141,6 +143,34 @@ namespace TiendaMovil.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("getcategorias")]
+        [AllowAnonymous] // esto no deberia ir
+        public IActionResult GetCategorias()
+        {
+            try
+            {
+                return Ok(Publicacion.ObtenerCategorias());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpGet("gettipos")]
+        [AllowAnonymous] // esto no deberia ir
+        public IActionResult GetTipos()
+        {
+            try
+            {
+                return Ok(Publicacion.ObtenerTipos());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
             }
         }
     }
