@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">#2AC2DD</item>
+        <item name="android:windowBackground">#FAFAFA</item>
         <!-- Customize your theme here. -->
     </style>
 
