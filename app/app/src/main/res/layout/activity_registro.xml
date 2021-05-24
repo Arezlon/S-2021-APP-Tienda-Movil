@@ -67,6 +67,8 @@
                         android:ems="10"
                         android:inputType="textPersonName"
                         android:nextFocusDown="@id/etApellido"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -78,8 +80,10 @@
                         android:layout_marginEnd="8dp"
                         android:width="180dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
                         android:inputType="textPersonName"
                         android:nextFocusDown="@id/etTelefono"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -91,8 +95,10 @@
                         android:layout_marginTop="48dp"
                         android:width="180dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
                         android:inputType="number"
                         android:nextFocusDown="@id/etDni"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etNombre" />
 
@@ -104,7 +110,9 @@
                         android:layout_marginEnd="8dp"
                         android:width="180dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
                         android:inputType="number"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etApellido" />
 
@@ -117,7 +125,9 @@
                         android:layout_marginEnd="8dp"
                         android:width="160dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
                         android:inputType="textEmailAddress"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etTelefono" />
@@ -130,7 +140,9 @@
                         android:layout_marginTop="48dp"
                         android:layout_marginEnd="8dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
                         android:inputType="textPassword"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etMailRegistro" />
@@ -145,6 +157,8 @@
                         android:width="180dp"
                         android:ems="10"
                         android:inputType="textPassword"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etClaveRegistro" />
