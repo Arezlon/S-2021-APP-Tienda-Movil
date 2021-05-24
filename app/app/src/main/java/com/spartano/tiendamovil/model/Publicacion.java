@@ -16,9 +16,12 @@ public class Publicacion implements Serializable {
     public String creacion;
     public Usuario usuario;
 
+    public String categoriaNombre;
+    public String tipoNombre;
+
     public Publicacion(){}
 
-    public Publicacion(int id, int usuarioId, String titulo, String descripcion, float precio, int categoria, int tipo, int stock, int estado, String creacion, Usuario usuario) {
+    public Publicacion(int id, int usuarioId, String titulo, String descripcion, float precio, int categoria, int tipo, int stock, int estado, String creacion, Usuario usuario, String categoriaNombre, String tipoNombre) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.titulo = titulo;
@@ -30,6 +33,9 @@ public class Publicacion implements Serializable {
         this.estado = estado;
         this.creacion = creacion;
         this.usuario = usuario;
+
+        this.categoriaNombre = categoriaNombre;
+        this.tipoNombre = tipoNombre;
     }
 
     public int getId() {
@@ -110,6 +116,22 @@ public class Publicacion implements Serializable {
 
     public void setCreacion(String creacion) {
         this.creacion = creacion;
+    }
+
+    public String getCategoriaNombre() {
+        return categoriaNombre;
+    }
+
+    public void setCategoriaNombre(String categoriaNombre) {
+        this.categoriaNombre = categoriaNombre;
+    }
+
+    public String getTipoNombre() {
+        return tipoNombre;
+    }
+
+    public void setTipoNombre(String tipoNombre) {
+        this.tipoNombre = tipoNombre;
     }
 
     public com.spartano.tiendamovil.model.Usuario getUsuario() {

@@ -38,13 +38,7 @@ public class NuevaPublicacionFragment extends Fragment {
         viewModel =
                 new ViewModelProvider(this).get(NuevaPublicacionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_nueva_publicacion, container, false);
-        /*final TextView textView = root.findViewById(R.id.nueva_publicacion);
-        nuevaPublicacionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
+
         viewModel.getCategoriasMutable().observe(getViewLifecycleOwner(), new Observer<Map<Integer, String>>() {
             @Override
             public void onChanged(Map<Integer, String> listaCategorias) {
@@ -55,6 +49,7 @@ public class NuevaPublicacionFragment extends Fragment {
                 spnCP_Categorias.setAdapter(adapter);
             }
         });
+
         viewModel.getTiposMutable().observe(getViewLifecycleOwner(), new Observer<Map<Integer, String>>() {
             @Override
             public void onChanged(Map<Integer, String> listaTipos) {
@@ -65,6 +60,7 @@ public class NuevaPublicacionFragment extends Fragment {
                 spnCP_Tipos.setAdapter(adapter);
             }
         });
+
         viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {

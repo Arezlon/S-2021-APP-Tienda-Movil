@@ -7,24 +7,4 @@
     <string name="nav_header_subtitle">Spartano Diego - Spartano Sebastián</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <string-array name="categorias_publicacion_array">
-        <item>Indefinida</item>
-        <item>Vehículos</item>
-        <item>Tecnología</item>
-        <item>Hogar y muebles</item>
-        <item>Parque y jardín</item>
-        <item>Electrodomésticos</item>
-        <item>Herramientas</item>
-        <item>Deportes y fitness</item>
-        <item>Moda y vestimenta</item>
-        <item>Juegos y juguetes</item>
-        <item>Bebés</item>
-        <item>Belleza y cuidado personal</item>
-    </string-array>
-
-    <string-array name="tipos_publicacion_array">
-        <item>Usado</item>
-        <item>Nuevo</item>
-    </string-array>
 </resources>

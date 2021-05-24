@@ -173,5 +173,23 @@ namespace TiendaMovil.Controllers
                 return BadRequest("ERROR: " + ex);
             }
         }
+
+        [HttpGet("getmias")]
+        public IActionResult GetMias()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var publicaciones = contexto.Publicaciones
+                    .Where(p => p.UsuarioId == id)
+                    .Include(p => p.Usuario)
+                    .ToList();
+                return Ok(publicaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
     }
 }

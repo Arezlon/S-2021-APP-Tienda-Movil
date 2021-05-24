@@ -11,15 +11,28 @@ namespace TiendaMovil.Models
     {
         public enum CategoriasEnum
         {
-            uno = 1,
-            dos = 2,
-            tres = 3
+            NULL = 0,
+            Varios = 1,
+            Vehículos = 2,
+            Tecnología = 3,
+            Hogar = 4,
+            Jardín = 5,
+            Oficina = 6,
+            Electrodomésticos = 7,
+            Herramientas = 8,
+            Deportes = 9,
+            Vestimenta = 10,
+            Juguetes = 11,
+            Bebés = 12,
+            Belleza = 13,
+            Entretenimiento = 14
         }
 
         public enum TiposEnum
         {
-            usado = 1,
-            nuevo = 2
+            NULL = 0,
+            Usado = 1,
+            Nuevo = 2
         }
 
         [Key]

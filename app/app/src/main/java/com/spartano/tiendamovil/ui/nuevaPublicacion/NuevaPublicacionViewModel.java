@@ -71,18 +71,17 @@ public class NuevaPublicacionViewModel extends AndroidViewModel {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful())
-                        errorMutable.setValue("alta exitosa");
+                        errorMutable.setValue("Publicación creada");
                     else {
-                        errorMutable.setValue("error inesperado");
-                        Log.d("salida", "crear publicacion: " + response.message());
-
+                        errorMutable.setValue("Ocurrió un error inesperado");
                     }
+                    Log.d("salida", "Crear publicacion/response: " + response.message());
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    errorMutable.setValue("error de conexion " + t.getMessage());
-                    Log.d("salida", t.getMessage());
+                    errorMutable.setValue("No se pudo conectar con el servidor");
+                    Log.d("salida", "Crear publicacion/failure: " + t.getMessage());
                 }
             });
         }
