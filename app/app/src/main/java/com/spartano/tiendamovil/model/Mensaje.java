@@ -4,79 +4,89 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Mensaje implements Serializable {
-    public int CompraId;
-    public int UsuarioId;
-    public String Contenido;
-    public int Estado;
-    public Date Creacion;
-    public Compra Compra;
-    public Usuario Usuario;
+    public int id;
+    public int compraId;
+    public int usuarioId;
+    public String contenido;
+    public int estado;
+    public String creacion;
+    public Compra compra;
+    public Usuario usuario;
 
     public Mensaje(){}
 
-    public Mensaje(int compraId, int usuarioId, String contenido, int estado, Date creacion, com.spartano.tiendamovil.model.Compra compra, com.spartano.tiendamovil.model.Usuario usuario) {
-        CompraId = compraId;
-        UsuarioId = usuarioId;
-        Contenido = contenido;
-        Estado = estado;
-        Creacion = creacion;
-        Compra = compra;
-        Usuario = usuario;
+    public Mensaje(int id, int compraId, int usuarioId, String contenido, int estado, String creacion, com.spartano.tiendamovil.model.Compra compra, com.spartano.tiendamovil.model.Usuario usuario) {
+        this.id = id;
+        this.compraId = compraId;
+        this.usuarioId = usuarioId;
+        this.contenido = contenido;
+        this.estado = estado;
+        this.creacion = creacion;
+        this.compra = compra;
+        this.usuario = usuario;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCompraId() {
-        return CompraId;
+        return compraId;
     }
 
     public void setCompraId(int compraId) {
-        CompraId = compraId;
+        this.compraId = compraId;
     }
 
     public int getUsuarioId() {
-        return UsuarioId;
+        return usuarioId;
     }
 
     public void setUsuarioId(int usuarioId) {
-        UsuarioId = usuarioId;
+        this.usuarioId = usuarioId;
     }
 
     public String getContenido() {
-        return Contenido;
+        return contenido;
     }
 
     public void setContenido(String contenido) {
-        Contenido = contenido;
+        this.contenido = contenido;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
-    public Date getCreacion() {
-        return Creacion;
+    public String getCreacion() {
+        return creacion;
     }
 
-    public void setCreacion(Date creacion) {
-        Creacion = creacion;
+    public void setCreacion(String creacion) {
+        this.creacion = creacion;
     }
 
     public com.spartano.tiendamovil.model.Compra getCompra() {
-        return Compra;
+        return compra;
     }
 
     public void setCompra(com.spartano.tiendamovil.model.Compra compra) {
-        Compra = compra;
+        this.compra = compra;
     }
 
     public com.spartano.tiendamovil.model.Usuario getUsuario() {
-        return Usuario;
+        return usuario;
     }
 
     public void setUsuario(com.spartano.tiendamovil.model.Usuario usuario) {
-        Usuario = usuario;
+        this.usuario = usuario;
     }
 }

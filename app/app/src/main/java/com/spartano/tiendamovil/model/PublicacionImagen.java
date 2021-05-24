@@ -4,59 +4,69 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PublicacionImagen implements Serializable {
-    public int PublicacionId;
-    public String Direccion;
-    public int Estado;
-    public Date Creacion;
-    public Publicacion Publicacion;
+    public int id;
+    public int publicacionId;
+    public String direccion;
+    public int estado;
+    public String creacion;
+    public Publicacion publicacion;
 
     public PublicacionImagen(){}
 
-    public PublicacionImagen(int publicacionId, String direccion, int estado, Date creacion, com.spartano.tiendamovil.model.Publicacion publicacion) {
-        PublicacionId = publicacionId;
-        Direccion = direccion;
-        Estado = estado;
-        Creacion = creacion;
-        Publicacion = publicacion;
+    public PublicacionImagen(int id, int publicacionId, String direccion, int estado, String creacion, com.spartano.tiendamovil.model.Publicacion publicacion) {
+        this.id = id;
+        this.publicacionId = publicacionId;
+        this.direccion = direccion;
+        this.estado = estado;
+        this.creacion = creacion;
+        this.publicacion = publicacion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getPublicacionId() {
-        return PublicacionId;
+        return publicacionId;
     }
 
     public void setPublicacionId(int publicacionId) {
-        PublicacionId = publicacionId;
+        this.publicacionId = publicacionId;
     }
 
     public String getDireccion() {
-        return Direccion;
+        return direccion;
     }
 
     public void setDireccion(String direccion) {
-        Direccion = direccion;
+        this.direccion = direccion;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
-    public Date getCreacion() {
-        return Creacion;
+    public String getCreacion() {
+        return creacion;
     }
 
-    public void setCreacion(Date creacion) {
-        Creacion = creacion;
+    public void setCreacion(String creacion) {
+        this.creacion = creacion;
     }
 
     public com.spartano.tiendamovil.model.Publicacion getPublicacion() {
-        return Publicacion;
+        return publicacion;
     }
 
     public void setPublicacion(com.spartano.tiendamovil.model.Publicacion publicacion) {
-        Publicacion = publicacion;
+        this.publicacion = publicacion;
     }
 }

@@ -4,84 +4,94 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Reseña implements Serializable {
-    public int UsuarioId;
-    public int PublicacionId;
-    public int Puntaje;
-    public String Encabezado;
-    public String Contenido;
-    public int Estado;
-    public Date Creacion;
+    public int id;
+    public int usuarioId;
+    public int publicacionId;
+    public int puntaje;
+    public String encabezado;
+    public String contenido;
+    public int estado;
+    public String creacion;
     public Usuario usuario;
     public Publicacion publicacion;
 
     public Reseña(){}
 
-    public Reseña(int usuarioId, int publicacionId, int puntaje, String encabezado, String contenido, int estado, Date creacion, Usuario usuario, Publicacion publicacion) {
-        UsuarioId = usuarioId;
-        PublicacionId = publicacionId;
-        Puntaje = puntaje;
-        Encabezado = encabezado;
-        Contenido = contenido;
-        Estado = estado;
-        Creacion = creacion;
+    public Reseña(int id, int usuarioId, int publicacionId, int puntaje, String encabezado, String contenido, int estado, String creacion, Usuario usuario, Publicacion publicacion) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.publicacionId = publicacionId;
+        this.puntaje = puntaje;
+        this.encabezado = encabezado;
+        this.contenido = contenido;
+        this.estado = estado;
+        this.creacion = creacion;
         this.usuario = usuario;
         this.publicacion = publicacion;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getUsuarioId() {
-        return UsuarioId;
+        return usuarioId;
     }
 
     public void setUsuarioId(int usuarioId) {
-        UsuarioId = usuarioId;
+        this.usuarioId = usuarioId;
     }
 
     public int getPublicacionId() {
-        return PublicacionId;
+        return publicacionId;
     }
 
     public void setPublicacionId(int publicacionId) {
-        PublicacionId = publicacionId;
+        this.publicacionId = publicacionId;
     }
 
     public int getPuntaje() {
-        return Puntaje;
+        return puntaje;
     }
 
     public void setPuntaje(int puntaje) {
-        Puntaje = puntaje;
+        this.puntaje = puntaje;
     }
 
     public String getEncabezado() {
-        return Encabezado;
+        return encabezado;
     }
 
     public void setEncabezado(String encabezado) {
-        Encabezado = encabezado;
+        this.encabezado = encabezado;
     }
 
     public String getContenido() {
-        return Contenido;
+        return contenido;
     }
 
     public void setContenido(String contenido) {
-        Contenido = contenido;
+        this.contenido = contenido;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
-    public Date getCreacion() {
-        return Creacion;
+    public String getCreacion() {
+        return creacion;
     }
 
-    public void setCreacion(Date creacion) {
-        Creacion = creacion;
+    public void setCreacion(String creacion) {
+        this.creacion = creacion;
     }
 
     public Usuario getUsuario() {

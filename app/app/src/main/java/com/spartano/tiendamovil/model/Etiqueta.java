@@ -3,39 +3,49 @@ package com.spartano.tiendamovil.model;
 import java.io.Serializable;
 
 public class Etiqueta implements Serializable {
-    public String Nombre;
-    public int Estado;
-    public String Creacion;
+    public int id;
+    public String nombre;
+    public int estado;
+    public String creacion;
 
     public Etiqueta(){}
 
-    public Etiqueta(String nombre, int estado, String creacion) {
-        Nombre = nombre;
-        Estado = estado;
-        Creacion = creacion;
+    public Etiqueta(int id, String nombre, int estado, String creacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.estado = estado;
+        this.creacion = creacion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
     public String getCreacion() {
-        return Creacion;
+        return creacion;
     }
 
     public void setCreacion(String creacion) {
-        Creacion = creacion;
+        this.creacion = creacion;
     }
 }

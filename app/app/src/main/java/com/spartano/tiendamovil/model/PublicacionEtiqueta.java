@@ -4,69 +4,79 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PublicacionEtiqueta implements Serializable {
-    public int PublicacionId;
-    public int EtiquetaId;
-    public int Estado;
-    public Date Creacion;
-    public Publicacion Publicacion;
-    public Etiqueta Etiqueta;
+    public int id;
+    public int publicacionId;
+    public int etiquetaId;
+    public int estado;
+    public String creacion;
+    public Publicacion publicacion;
+    public Etiqueta etiqueta;
 
     public PublicacionEtiqueta(){}
 
-    public PublicacionEtiqueta(int publicacionId, int etiquetaId, int estado, Date creacion, com.spartano.tiendamovil.model.Publicacion publicacion, com.spartano.tiendamovil.model.Etiqueta etiqueta) {
-        PublicacionId = publicacionId;
-        EtiquetaId = etiquetaId;
-        Estado = estado;
-        Creacion = creacion;
-        Publicacion = publicacion;
-        Etiqueta = etiqueta;
+    public PublicacionEtiqueta(int id, int publicacionId, int etiquetaId, int estado, String creacion, com.spartano.tiendamovil.model.Publicacion publicacion, com.spartano.tiendamovil.model.Etiqueta etiqueta) {
+        this.id = id;
+        this.publicacionId = publicacionId;
+        this.etiquetaId = etiquetaId;
+        this.estado = estado;
+        this.creacion = creacion;
+        this.publicacion = publicacion;
+        this.etiqueta = etiqueta;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getPublicacionId() {
-        return PublicacionId;
+        return publicacionId;
     }
 
     public void setPublicacionId(int publicacionId) {
-        PublicacionId = publicacionId;
+        this.publicacionId = publicacionId;
     }
 
     public int getEtiquetaId() {
-        return EtiquetaId;
+        return etiquetaId;
     }
 
     public void setEtiquetaId(int etiquetaId) {
-        EtiquetaId = etiquetaId;
+        this.etiquetaId = etiquetaId;
     }
 
     public int getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(int estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
-    public Date getCreacion() {
-        return Creacion;
+    public String getCreacion() {
+        return creacion;
     }
 
-    public void setCreacion(Date creacion) {
-        Creacion = creacion;
+    public void setCreacion(String creacion) {
+        this.creacion = creacion;
     }
 
     public com.spartano.tiendamovil.model.Publicacion getPublicacion() {
-        return Publicacion;
+        return publicacion;
     }
 
     public void setPublicacion(com.spartano.tiendamovil.model.Publicacion publicacion) {
-        Publicacion = publicacion;
+        this.publicacion = publicacion;
     }
 
     public com.spartano.tiendamovil.model.Etiqueta getEtiqueta() {
-        return Etiqueta;
+        return etiqueta;
     }
 
     public void setEtiqueta(com.spartano.tiendamovil.model.Etiqueta etiqueta) {
-        Etiqueta = etiqueta;
+        this.etiqueta = etiqueta;
     }
 }
