@@ -23,7 +23,7 @@ import retrofit2.http.PUT;
 
 public class ApiClient {
     private static ApiClient api = null;
-    private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
+    //private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
     //private static final String PATH="http://192.168.0.108:45455/api/"; //Sebastian
 
     private static MyRetrofit myRetrofit;
@@ -39,12 +39,20 @@ public class ApiClient {
     }
 
     public interface MyRetrofit {
+        //Usuarios
         @POST("usuarios/login")
         public Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
         @POST("usuarios/create")
         public Call<Boolean> createUsuario(@Body Usuario usuario);
 
+        @PUT("usuarios/edit")
+        public Call<Void> editUsuario(@Body Usuario usuario, @Header("Authorization") String token);
+
+        @GET("usuarios/get")
+        public Call<Usuario> getUsuario(@Header("Authorization") String token);
+
+        //Publicaciones
         @POST("publicaciones/create")
         public Call<Void> createPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
 
@@ -53,12 +61,6 @@ public class ApiClient {
 
         @GET("publicaciones/gettipos")
         public Call<Map<Integer, String>> getTiposPublicaciones(@Header("Authorization") String token);
-
-        @PUT("usuarios/edit")
-        public Call<Void> editUsuario(@Body Usuario usuario, @Header("Authorization") String token);
-
-        @GET("usuarios/get")
-        public Call<Usuario> getUsuario(@Header("Authorization") String token);
     }
 
     public String getToken(Context context) {

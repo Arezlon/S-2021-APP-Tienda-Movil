@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel viewModel;
     private EditText etMail, etClave;
     private Button btIngresar, btRegistrarse;
+    private TextView loginTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
                 btIngresar.setEnabled(true);
                 btRegistrarse.setEnabled(true);
                 btIngresar.setText("Ingresar");
@@ -62,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
         etClave = findViewById(R.id.etClave);
         btIngresar = findViewById(R.id.btIngresar);
         btRegistrarse = findViewById(R.id.btRegistrarse);
+
+        //Pruebas para iniciar sesión sin usuario/conexión
+        loginTest = findViewById(R.id.test);
+        loginTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "login de prueba sin usuario", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
+            }
+        });
 
         btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
