@@ -39,7 +39,14 @@ public class PerfilViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         Log.d("salida", response.body().getApellido());
-                        usuarioMutable.setValue(response.body());
+                        Usuario u = response.body();
+                        if(u.getDireccion() == null){
+                            u.setDireccion(null);
+                            u.setLocalidad(null);
+                            u.setProvinicia(null);
+                            u.setPais(null);
+                        }
+                        usuarioMutable.setValue(u);
                     }
                     else
                         Log.d("salida", "Error al buscar el usuario");

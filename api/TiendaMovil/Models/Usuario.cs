@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.OData.Edm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace TiendaMovil.Models
         public int Permisos { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
+        public string Direccion { get; set; }
+        public string Localidad { get; set; }
+        public string Provinicia { get; set; }
+        public string Pais { get; set; }
         public string PermisosNombre => Permisos > 0 ? ((PermisosEnum)Permisos).ToString() : "";
     }
 }

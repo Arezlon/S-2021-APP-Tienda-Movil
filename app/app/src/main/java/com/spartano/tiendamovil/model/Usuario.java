@@ -15,10 +15,14 @@ public class Usuario implements Serializable {
     public int estado;
     public String creacion;
     public String permisosNombre;
+    public String direccion;
+    public String localidad;
+    public String provinicia;
+    public String pais;
 
     public Usuario(){}
 
-    public Usuario(int id, String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, int estado, String creacion, String permisosNombre) {
+    public Usuario(int id, String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, int estado, String creacion, String permisosNombre, String direccion, String localidad, String provinicia, String pais) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -30,6 +34,10 @@ public class Usuario implements Serializable {
         this.estado = estado;
         this.creacion = creacion;
         this.permisosNombre = permisosNombre;
+        this.direccion = direccion;
+        this.localidad = localidad;
+        this.provinicia = provinicia;
+        this.pais = pais;
     }
 
     public int getId() {
@@ -118,5 +126,37 @@ public class Usuario implements Serializable {
 
     public void setPermisosNombre(String permisosNombre) {
         this.permisosNombre = permisosNombre;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getProvinicia() {
+        return provinicia;
+    }
+
+    public void setProvinicia(String provinicia) {
+        this.provinicia = provinicia;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 }
