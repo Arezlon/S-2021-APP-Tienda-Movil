@@ -62,11 +62,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="64dp"
+                        android:layout_marginTop="48dp"
                         android:width="180dp"
                         android:ems="10"
                         android:inputType="textPersonName"
                         android:nextFocusDown="@id/etEditarApellido"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -74,12 +76,14 @@
                         android:id="@+id/etEditarApellido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="64dp"
+                        android:layout_marginTop="48dp"
                         android:layout_marginEnd="8dp"
                         android:width="180dp"
                         android:ems="10"
                         android:inputType="textPersonName"
                         android:nextFocusDown="@id/etEditarTelefono"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -90,6 +94,8 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="48dp"
                         android:width="180dp"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         android:ems="10"
                         android:inputType="number"
                         android:nextFocusDown="@id/etEditarDni"
@@ -103,8 +109,11 @@
                         android:layout_marginTop="48dp"
                         android:layout_marginEnd="8dp"
                         android:width="180dp"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         android:ems="10"
                         android:inputType="number"
+                        android:nextFocusDown="@id/etEditarMail"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etEditarApellido" />
 
@@ -115,9 +124,14 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="48dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
                         android:width="160dp"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         android:ems="10"
+                        android:nextFocusDown="@id/etEditarDireccion"
                         android:inputType="textEmailAddress"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etEditarTelefono" />
@@ -162,36 +176,194 @@
                         app:layout_constraintBottom_toTopOf="@+id/etEditarMail"
                         app:layout_constraintStart_toStartOf="@+id/etEditarMail" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView1">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tvEditarDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView101"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Edición de la ubicación"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Dirección"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView102"></TextView>
+
+                    <TextView
+                        android:id="@+id/textView102"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="placeholder"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView101"></TextView>
+
+                    <EditText
+                        android:id="@+id/etEditarDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:width="180dp"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:nextFocusDown="@id/etEditarLocalidad"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvDireccion" />
+
+                    <LinearLayout
+                        android:id="@+id/lin1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/etEditarDireccion">
+
+                        <TextView
+                            android:id="@+id/tvLocalidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Localidad"></TextView>
+
+                        <TextView
+                            android:id="@+id/tvProvinicia"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Provincia"></TextView>
+
+                        <TextView
+                            android:id="@+id/tvPais"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pais"></TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lin1">
+
+
+                        <EditText
+                            android:id="@+id/etEditarLocalidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:nextFocusDown="@id/etEditarProvincia"
+                            android:textColor="@color/color_secundario"
+                            app:backgroundTint="@color/color_secundario"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+
+                        <EditText
+                            android:id="@+id/etEditarProvincia"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_secundario"
+                            app:backgroundTint="@color/color_secundario"
+                            android:nextFocusDown="@id/etEditarPais"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+
+                        <EditText
+                            android:id="@+id/etEditarPais"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_secundario"
+                            app:backgroundTint="@color/color_secundario"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/btGuardarCambios"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="Guardar cambios"
                         android:textSize="16sp"
                         app:cornerRadius="2dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/etEditarMail" />
-
-                    <!--<TextView
-                        android:id="@+id/textView100"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="*Al crear una cuenta, está aceptando los términos y condiciones de [Nombre App]"
-                        android:textAlignment="center"
-                        android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btGuardarCambios"></TextView>-->
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lin2" />
+
+                    <TextView
+                       android:id="@+id/textView100"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_marginTop="3dp"
+                       android:layout_marginEnd="8dp"
+                       android:layout_marginBottom="8dp"
+                       android:text="*placeholder"
+                       android:textAlignment="center"
+                       android:textSize="10sp"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toBottomOf="@id/btGuardarCambios"></TextView>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

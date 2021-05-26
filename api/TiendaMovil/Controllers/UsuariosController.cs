@@ -130,6 +130,10 @@ namespace TiendaMovil.Controllers
                     u.Dni = Usuario.Dni;
                     u.Telefono = Usuario.Telefono;
                     u.Email = Usuario.Email;
+                    u.Direccion = Usuario.Direccion;
+                    u.Localidad = Usuario.Localidad;
+                    u.Provinicia = Usuario.Provinicia;
+                    u.Pais = Usuario.Pais;
 
                     contexto.Usuarios.Update(u);
                     await contexto.SaveChangesAsync();

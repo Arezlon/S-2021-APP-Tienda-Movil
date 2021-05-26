@@ -26,7 +26,7 @@ public class EditarPerfilFragment extends Fragment {
 
     private EditarPerfilViewModel viewModel;
     private Button btGuardarCambios;
-    private EditText etEditarNombre, etEditarApellido, etEditarTelefono, etEditarDni, etEditarMail;
+    private EditText etEditarNombre, etEditarApellido, etEditarTelefono, etEditarDni, etEditarMail, etEditarDireccion, etEditarLocalidad, etEditarProvincia, etEditarPais;
     private Usuario usuario;
 
     public static PerfilFragment newInstance() {
@@ -66,12 +66,25 @@ public class EditarPerfilFragment extends Fragment {
         etEditarTelefono = root.findViewById(R.id.etEditarTelefono);
         etEditarDni = root.findViewById(R.id.etEditarDni);
         etEditarMail = root.findViewById(R.id.etEditarMail);
+        etEditarDireccion = root.findViewById(R.id.etEditarDireccion);
+        etEditarLocalidad = root.findViewById(R.id.etEditarLocalidad);
+        etEditarProvincia = root.findViewById(R.id.etEditarProvincia);
+        etEditarPais = root.findViewById(R.id.etEditarPais);
 
         etEditarNombre.setText(usuario.getNombre());
         etEditarApellido.setText(usuario.getApellido());
         etEditarTelefono.setText(usuario.getTelefono());
         etEditarDni.setText(usuario.getDni());
         etEditarMail.setText(usuario.getEmail());
+
+        try {
+            etEditarDireccion.setText(usuario.getDireccion().toString());
+            etEditarLocalidad.setText(usuario.getLocalidad().toString());
+            etEditarProvincia.setText(usuario.getProvinicia().toString());
+            etEditarPais.setText(usuario.getPais().toString());
+        }catch(NullPointerException e){
+            Log.d("salida", "Los campos de ubicación están vacíos (antes de entrar a la edición)");
+        }
 
         btGuardarCambios.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +98,15 @@ public class EditarPerfilFragment extends Fragment {
                 usuarioEditado.setDni(etEditarDni.getText().toString());
                 usuarioEditado.setEmail(etEditarMail.getText().toString());
 
-                viewModel.verificarEdicion(usuarioEditado);
+                try {
+                    usuarioEditado.setDireccion(etEditarDireccion.getText().toString());
+                    usuarioEditado.setLocalidad(etEditarLocalidad.getText().toString());
+                    usuarioEditado.setProvinicia(etEditarProvincia.getText().toString());
+                    usuarioEditado.setPais(etEditarPais.getText().toString());
+                }catch(NullPointerException e){
+                    Log.d("salida", "Los campos de ubicación están vacíos (al intentar guardar los cambios)");
+                }
+                viewModel.verificarEdicion(usuarioEditado, usuario);
             }
         });
 

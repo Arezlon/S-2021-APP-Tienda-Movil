@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean ok) {
                 if (ok){
-                    Log.d("salida","login correcto");
                     startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
                     Toast.makeText(getApplicationContext(), "Sesión iniciada correctamente", Toast.LENGTH_LONG).show();
                 }
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
-                Log.d("Salida","ir al registro");
             }
         });
     }

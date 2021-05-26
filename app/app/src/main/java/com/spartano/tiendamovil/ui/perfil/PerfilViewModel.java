@@ -38,7 +38,6 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.d("salida", response.body().getApellido());
                         Usuario u = response.body();
                         if(u.getDireccion() == null){
                             u.setDireccion(null);
