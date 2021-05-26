@@ -11,7 +11,6 @@ namespace TiendaMovil.Models
     {
         public enum CategoriasEnum
         {
-            NULL = 0,
             Varios = 1,
             Vehículos = 2,
             Tecnología = 3,
@@ -30,7 +29,6 @@ namespace TiendaMovil.Models
 
         public enum TiposEnum
         {
-            NULL = 0,
             Usado = 1,
             Nuevo = 2
         }
