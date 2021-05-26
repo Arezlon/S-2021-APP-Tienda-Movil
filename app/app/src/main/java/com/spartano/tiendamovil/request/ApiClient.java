@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -64,6 +65,9 @@ public class ApiClient {
 
         @GET("publicaciones/gettipos")
         public Call<Map<Integer, String>> getTiposPublicaciones(@Header("Authorization") String token);
+
+        @PUT("publicaciones/edit")
+        public Call<Void> editPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
     }
 
     public String getToken(Context context) {
