@@ -227,7 +227,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="placeholder"
+                        android:text="Agregue o edite los datos de su ubicación"
                         android:textAlignment="center"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -346,20 +346,19 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lin2" />
 
-                    <TextView
+                    <!--<TextView
                        android:id="@+id/textView100"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:layout_marginTop="3dp"
                        android:layout_marginEnd="8dp"
                        android:layout_marginBottom="8dp"
-                       android:text="*placeholder"
+                       android:text="*"
                        android:textAlignment="center"
                        android:textSize="10sp"
                        app:layout_constraintBottom_toBottomOf="parent"
                        app:layout_constraintEnd_toEndOf="parent"
-                       app:layout_constraintTop_toBottomOf="@id/btGuardarCambios"></TextView>
-
+                       app:layout_constraintTop_toBottomOf="@id/btGuardarCambios"></TextView>-->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

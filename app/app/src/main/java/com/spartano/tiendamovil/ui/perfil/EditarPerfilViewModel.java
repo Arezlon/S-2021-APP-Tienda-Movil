@@ -83,8 +83,10 @@ public class EditarPerfilViewModel extends AndroidViewModel {
         else if(usuarioEditado.getPais() != null && (usuarioEditado.getLocalidad() == null || usuarioEditado.getProvinicia() == null || usuarioEditado.getDireccion() == null)){
             errorVerificacionMutable.setValue("Todos los campos de ubicación son obligatorios si se edita el pais");
         }
-        else if(usuarioEditado.getDireccion().length() < 4 || usuarioEditado.getDireccion().length() > 50 || usuarioEditado.getLocalidad().length() < 4 || usuarioEditado.getLocalidad().length() > 50 || usuarioEditado.getProvinicia().length() < 4 || usuarioEditado.getProvinicia().length() > 50 || usuarioEditado.getPais().length() < 4 || usuarioEditado.getPais().length() > 50)
-            errorVerificacionMutable.setValue("Los datos de la ubicación no son válidos (4 a 50 caracteres)");
+        else if(usuarioEditado.getDireccion() != null && usuarioEditado.getLocalidad() != null && usuarioEditado.getProvinicia() != null && usuarioEditado.getPais() != null) {
+            if(usuarioEditado.getDireccion().length() < 4 || usuarioEditado.getDireccion().length() > 50 || usuarioEditado.getLocalidad().length() < 4 || usuarioEditado.getLocalidad().length() > 50 || usuarioEditado.getProvinicia().length() < 4 || usuarioEditado.getProvinicia().length() > 50 || usuarioEditado.getPais().length() < 4 || usuarioEditado.getPais().length() > 50)
+                errorVerificacionMutable.setValue("Los datos de la ubicación no son válidos (4 a 50 caracteres)");
+        }
         else{
             Call<Void> resAsync = ApiClient.getRetrofit().editUsuario(usuarioEditado, ApiClient.getApi().getToken(context));
             resAsync.enqueue(new Callback<Void>() {
