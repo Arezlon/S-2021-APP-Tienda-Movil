@@ -12,6 +12,7 @@ public class Usuario implements Serializable {
     public String telefono;
     public String clave;
     public int permisos;
+    public float fondos;
     public int estado;
     public String creacion;
     public String permisosNombre;
@@ -22,7 +23,7 @@ public class Usuario implements Serializable {
 
     public Usuario(){}
 
-    public Usuario(int id, String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, int estado, String creacion, String permisosNombre, String direccion, String localidad, String provinicia, String pais) {
+    public Usuario(int id, String nombre, String apellido, String dni, String email, String telefono, String clave, int permisos, float fondos, int estado, String creacion, String permisosNombre, String direccion, String localidad, String provinicia, String pais) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -31,6 +32,7 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
         this.clave = clave;
         this.permisos = permisos;
+        this.fondos = fondos;
         this.estado = estado;
         this.creacion = creacion;
         this.permisosNombre = permisosNombre;
@@ -158,5 +160,13 @@ public class Usuario implements Serializable {
 
     public void setPais(String pais) {
         this.pais = pais;
+    }
+
+    public float getFondos() {
+        return fondos;
+    }
+
+    public void setFondos(float fondos) {
+        this.fondos = fondos;
     }
 }

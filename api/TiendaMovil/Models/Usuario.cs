@@ -23,6 +23,7 @@ namespace TiendaMovil.Models
         public string Email { get; set; }
         public string Telefono { get; set; }
         public string Clave { get; set; }
+        public double Fondos { get; set; }
         public int Permisos { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }

@@ -18,5 +18,6 @@ namespace TiendaMovil.Models
         public DbSet<PublicacionImagen> PublicacionImagenes { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Transaccion> Transacciones { get; set; }
     }
 }
