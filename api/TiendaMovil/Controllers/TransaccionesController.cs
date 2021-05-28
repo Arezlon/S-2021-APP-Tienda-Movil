@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
 using TiendaMovil.Models;
 
 namespace TiendaMovil.Controllers
@@ -19,6 +21,34 @@ namespace TiendaMovil.Controllers
         {
             this.contexto = contexto;
             this.config = config;
+        }
+
+        [HttpPost("create")]
+        [AllowAnonymous]
+        public IActionResult Create(Transaccion transaccion)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Usuario u = contexto.Usuarios.Find(int.Parse(User.Claims.First(c => c.Type == "Id").Value));
+                    u.Fondos += transaccion.Importe;
+
+                    transaccion.UsuarioId = u.Id;
+                    transaccion.Balance = u.Fondos;
+                    transaccion.Estado = 1;
+                    transaccion.Creacion = DateTime.Now;
+
+                    contexto.Transacciones.Add(transaccion);
+                    contexto.SaveChanges();
+                    return Ok(true);
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

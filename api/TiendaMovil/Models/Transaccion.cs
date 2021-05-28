@@ -8,12 +8,12 @@ namespace TiendaMovil.Models
 {
     public class Transaccion
     {
-        public enum TiposEnum
+        /*public enum TiposEnum
         {
             Carga = 1,
             Compra = 2,
             Venta = 3
-        }
+        }*/
 
         [Key]
         public int Id { get; set; }
@@ -21,8 +21,9 @@ namespace TiendaMovil.Models
         public int UsuarioId { get; set; }
         public double Importe { get; set; }
         public double Balance { get; set; }
-        public int Tipos { get; set; }
-        public string TiposNombre => Tipos > 0 ? ((TiposEnum)Tipos).ToString() : "";
+        public int Tipo { get; set; }
+        public int MetodoPagoCarga { get; set; }
+        //public string TiposNombre => Tipo > 0 ? ((TiposEnum)Tipo).ToString() : "";
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
         public Compra Compra { get; set; }

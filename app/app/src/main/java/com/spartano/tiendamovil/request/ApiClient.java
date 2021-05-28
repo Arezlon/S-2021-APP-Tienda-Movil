@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.spartano.tiendamovil.model.LoginRequest;
 import com.spartano.tiendamovil.model.LoginResponse;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.Transaccion;
 import com.spartano.tiendamovil.model.Usuario;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import retrofit2.http.PUT;
 
 public class ApiClient {
     private static ApiClient api = null;
-    private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
+    //private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
     //private static final String PATH="http://192.168.0.108:45455/api/"; //Sebastian
 
     private static MyRetrofit myRetrofit;
@@ -68,6 +69,13 @@ public class ApiClient {
 
         @PUT("publicaciones/edit")
         public Call<Void> editPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
+
+        //Transacciones
+        @POST("transacciones/create")
+        public Call<Void> createTransaccion(@Body Transaccion transaccion, @Header("Authorization") String token);
+
+        @GET("transacciones/get")
+        public Call<List<Transaccion>> getTransacciones(@Header("Authorization") String token);
     }
 
     public String getToken(Context context) {
