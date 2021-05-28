@@ -72,6 +72,7 @@ namespace TiendaMovil
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 

@@ -10,18 +10,26 @@ import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Transaccion;
 import com.spartano.tiendamovil.model.Usuario;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public class ApiClient {
     private static ApiClient api = null;
@@ -40,6 +48,10 @@ public class ApiClient {
         return myRetrofit;
     }
 
+    public static String getPath(){
+        return PATH.substring(0,26); // Excluir /api/
+    }
+
     public interface MyRetrofit {
         //Usuarios
         @POST("usuarios/login")
@@ -55,6 +67,19 @@ public class ApiClient {
         public Call<Usuario> getUsuario(@Header("Authorization") String token);
 
         //Publicaciones
+        @Multipart
+        @POST("publicaciones/createimagenes")
+        public Call<Void> createImagenes(@Header("Authorization") String token,
+                                         //@Part MultipartBody.Part[] imagenes,
+                                         @Part Collection<MultipartBody.Part> imagenes,
+                                         @Part("publicacionId") RequestBody id);
+
+        @Multipart
+        @PUT("publicaciones/test")
+        public Call<Void> publicacionesTest(@Header("Authorization") String token,
+                                            @Part("id") RequestBody id,
+                                            @Part MultipartBody.Part image);
+
         @POST("publicaciones/create")
         public Call<Void> createPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
 

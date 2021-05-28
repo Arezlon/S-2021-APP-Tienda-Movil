@@ -13,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
@@ -29,7 +31,11 @@ import android.widget.ViewSwitcher;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,7 +95,7 @@ public class PublicacionFragment extends Fragment {
                 }
                 Intent i = new Intent();
                 i.setType("image/*");
-                //i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 i.setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(i, "Imagenes"), 200);
@@ -116,7 +122,7 @@ public class PublicacionFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 200) {
-            /*if (data.getClipData() != null) {
+            if (data.getClipData() != null) {
                 int cantidad = data.getClipData().getItemCount();
                 if (cantidad > 10) {
                     Toast.makeText(getContext(), "Se seleccionaron muchas imágenes. El máximo es de 10", Toast.LENGTH_SHORT).show();
@@ -125,29 +131,41 @@ public class PublicacionFragment extends Fragment {
                 for (int i = 0; i < cantidad; i++) {
                     uris.add(data.getClipData().getItemAt(i).getUri());
                 }
-            } else {*/
-            //uris.add(data.getData());
-            Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-                ((ImageView)ivPreviewImagen.getCurrentView()).setImageBitmap(bitmap);
+            } else
+                uris.add(data.getData());
 
-                byte[] b = baos.toByteArray();
+            ArrayList<File> files = new ArrayList<>();
+            for(Uri imageUri : uris) {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,80, baos);
+                    byte[] b = baos.toByteArray();
 
-                Log.d("salida", "Bitmap: " + bitmap.toString());
-                Log.d("salida", "Byte Array: " + Arrays.toString(b));
+                    File archivo =new File(getContext().getFilesDir(),"imagen_publicacion.jpg");
+                    if(archivo.exists())
+                        archivo.delete();
 
-                viewModel.prueba2(b, publicacion);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    try {
+                        FileOutputStream fo=new FileOutputStream(archivo);
+                        BufferedOutputStream bo=new BufferedOutputStream(fo);
+                        bo.write(b);
+                        bo.flush();
+                        bo.close();
+
+                        files.add(new File(getContext().getFilesDir(),"imagen_publicacion.jpg"));
+                        //viewModel.prueba3(new File(getContext().getFilesDir(),"imagen_publicacion.jpg"), publicacion.getId());
+                    } catch (Exception e) {
+                        Log.d("salida", "a"+e.getMessage());
+                    }
+                } catch (IOException e) {
+                    Log.d("salida", "b"+e.getMessage());
+                }
             }
-                //Log.d("salida", "Llamando al viewmodel...");
-                //viewModel.testImagen(uris.get(0), publicacion);
-            //}
-            //ivPreviewImagen.setImageURI(uris.get(0));
-            //pos = 0;
+            //viewModel.prueba3(files.get(0), publicacion.getId());
+            viewModel.subirImagenes(files, publicacion.getId());
+            ivPreviewImagen.setImageURI(uris.get(0));
+            pos = 0;
         }
     }
 }

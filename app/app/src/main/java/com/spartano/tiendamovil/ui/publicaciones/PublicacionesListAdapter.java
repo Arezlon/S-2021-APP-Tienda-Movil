@@ -20,8 +20,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.request.ApiClient;
 
 import java.util.List;
 
@@ -52,12 +55,12 @@ public class PublicacionesListAdapter  extends ArrayAdapter<Publicacion> {
 
         tvTitulo.setText(publicacion.getTitulo());
         tvPrecio.setText("$"+publicacion.getPrecio());
-        /*try {
-            ivFotoPrincipalPublicacion.setImageBitmap();
+        try {
+            // cambiar getDescripcion() por la imagen principal
+            Glide.with(getContext()).load(ApiClient.getPath()+publicacion.getDescripcion()).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivFotoPrincipalPublicacion);
         } catch (Exception e){
             e.printStackTrace();
-        }*/
-        //Glide.with(getContext()).load(publicacion.getImagen()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivFoto);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
