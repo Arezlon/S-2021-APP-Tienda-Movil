@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -48,6 +49,24 @@ namespace TiendaMovil.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("get")]
+        public IActionResult Get()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var transacciones = contexto.Transacciones
+                    .Where(p => p.UsuarioId == id)
+                    .Include(p => p.Usuario)
+                    .ToList();
+                return Ok(transacciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
             }
         }
     }

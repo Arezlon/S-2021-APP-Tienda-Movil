@@ -9,6 +9,7 @@ public class Transaccion implements Serializable {
     public float importe;
     public float balance;
     public int tipo;
+    public String tiposNombre;
     public int metodoPagoCarga;
     public int estado;
     public String creacion;
@@ -17,13 +18,14 @@ public class Transaccion implements Serializable {
 
     public Transaccion() {}
 
-    public Transaccion(int id, int compraId, int usuarioId, float importe, float balance, int tipo, int metodoPagoCarga, int estado, String creacion, Compra compra, Usuario usuario) {
+    public Transaccion(int id, int compraId, int usuarioId, float importe, float balance, int tipo, String tiposNombre, int metodoPagoCarga, int estado, String creacion, Compra compra, Usuario usuario) {
         this.id = id;
         this.compraId = compraId;
         this.usuarioId = usuarioId;
         this.importe = importe;
         this.balance = balance;
         this.tipo = tipo;
+        this.tiposNombre = tiposNombre;
         this.metodoPagoCarga = metodoPagoCarga;
         this.estado = estado;
         this.creacion = creacion;
@@ -77,6 +79,14 @@ public class Transaccion implements Serializable {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public String getTiposNombre() {
+        return tiposNombre;
+    }
+
+    public void setTiposNombre(String tiposNombre) {
+        this.tiposNombre = tiposNombre;
     }
 
     public int getEstado() {

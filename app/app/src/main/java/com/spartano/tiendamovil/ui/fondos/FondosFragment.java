@@ -6,14 +6,16 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,9 @@ import android.widget.Toast;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Transaccion;
 import com.spartano.tiendamovil.model.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FondosFragment extends Fragment {
 
@@ -30,6 +35,7 @@ public class FondosFragment extends Fragment {
     private Spinner spTipoIngreso;
     private TextView tvFondos;
     private Usuario usuarioActual;
+    private ListView listHistorial;
 
     public static FondosFragment newInstance() {
         return new FondosFragment();
@@ -46,6 +52,7 @@ public class FondosFragment extends Fragment {
             public void onChanged(Usuario usuario) {
                 usuarioActual = usuario;
                 inicializarVista(root);
+                viewModel.leerHistorialTransacciones();
             }
         });
 
@@ -57,6 +64,14 @@ public class FondosFragment extends Fragment {
                 btIngresarFondos.setText("Ingresar fondos");
             }
         });
+
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+            }
+        });
+
         viewModel.getCargaCorrectaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -66,6 +81,18 @@ public class FondosFragment extends Fragment {
                 viewModel.ObtenerUsuario();
             }
         });
+
+        viewModel.getTransaccionesMutable().observe(getViewLifecycleOwner(), new Observer<List<Transaccion>>() {
+            @Override
+            public void onChanged(List<Transaccion> transacciones) {
+                ArrayList<Transaccion> arrayList = new ArrayList<Transaccion>(transacciones);
+                ArrayAdapter<Transaccion> adapter = new TransaccionesListAdapter(getContext(),
+                        R.layout.list_item_transaccion, arrayList,
+                        getLayoutInflater());
+                listHistorial.setAdapter(adapter);
+            }
+        });
+
         viewModel.ObtenerUsuario();
         return root;
     }
@@ -75,6 +102,7 @@ public class FondosFragment extends Fragment {
         etIngresarFondos = root.findViewById(R.id.etIngresarFondos);
         spTipoIngreso = root.findViewById(R.id.spTipoIngreso);
         tvFondos = root.findViewById(R.id.tvFondos);
+        listHistorial = root.findViewById(R.id.listHistorial);
 
         tvFondos.setText(""+usuarioActual.getFondos());
         btIngresarFondos.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +111,12 @@ public class FondosFragment extends Fragment {
                 btIngresarFondos.setEnabled(false);
                 btIngresarFondos.setText("Cargando...");
                 Transaccion transaccion = new Transaccion();
-                transaccion.setImporte(Float.parseFloat(etIngresarFondos.getText().toString()));
+                try {
+                    transaccion.setImporte(Float.parseFloat(etIngresarFondos.getText().toString()));
+                }
+                catch (NumberFormatException e) {
+                    transaccion.setImporte(99);
+                }
                 transaccion.setTipo(1);
                 transaccion.setMetodoPagoCarga(1); //Desplegable
                 viewModel.verificarCargaFondos(transaccion);

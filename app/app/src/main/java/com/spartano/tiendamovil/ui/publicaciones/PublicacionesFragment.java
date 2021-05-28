@@ -40,8 +40,6 @@ public class PublicacionesFragment extends Fragment {
         viewModel.getPublicacionesMutable().observe(getViewLifecycleOwner(), new Observer<List<Publicacion>>() {
             @Override
             public void onChanged(List<Publicacion> publicaciones) {
-                for (Publicacion p : publicaciones)
-                    Log.d("salida", "publicacion " + p.getId());
                 ArrayList<Publicacion> arrayList = new ArrayList<Publicacion>(publicaciones);
                 ArrayAdapter<Publicacion> adapter = new PublicacionesListAdapter(getContext(),
                         R.layout.list_item_publicacion, arrayList,
