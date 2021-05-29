@@ -1,5 +1,6 @@
 package com.spartano.tiendamovil.ui.nuevaPublicacion;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.gson.internal.bind.MapTypeAdapterFactory;
 import com.spartano.tiendamovil.R;
@@ -65,6 +67,14 @@ public class NuevaPublicacionFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        viewModel.getExitoMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean exito) {
+                Toast.makeText(getContext(), "Publicacion creada correctamente", Toast.LENGTH_LONG).show();
+                Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_publicaciones);
             }
         });
 

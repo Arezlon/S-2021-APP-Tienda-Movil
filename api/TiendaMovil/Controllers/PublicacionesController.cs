@@ -30,7 +30,6 @@ namespace TiendaMovil.Controllers
             this.environment = environment;
         }
 
-        /// <summary>Obtiene todas las entidades</summary>
         [HttpGet("get")]
         public IActionResult Get(int estado = 1, int usuarioId = -1)
         {
@@ -41,6 +40,21 @@ namespace TiendaMovil.Controllers
                         (estado == -1 ? true : p.Estado == estado) && 
                         (usuarioId == -1 ? true : p.UsuarioId == usuarioId))
                     .Include(p => p.Usuario)
+                    .Select(p => new { 
+                        Id = p.Id, 
+                        UsuarioId = p.UsuarioId, 
+                        Titulo = p.Titulo, 
+                        Descripcion = p.Descripcion, 
+                        Precio = p.Precio, 
+                        Categoria = p.Categoria, 
+                        Tipo = p.Tipo, 
+                        Stock = p.Stock, 
+                        Estado = p.Estado, 
+                        Creacion = p.Creacion, 
+                        Usuario = p.Usuario, 
+                        CategoriaNombre = p.CategoriaNombre,
+                        TipoNombre = p.TipoNombre,
+                        ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion })
                     .ToList();
                 return Ok(publicaciones);
             }
@@ -50,7 +64,6 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        /// <summary>Obtiene una sola entidad por su clave primaria</summary>
         [HttpGet("getById")]
         public IActionResult GetById(int publicacionId)
         {
@@ -68,12 +81,12 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        /// <summary>Alta de una nueva entidad</summary>
         [HttpPost("create")]
         public IActionResult Create(Publicacion publicacion)
         {
             try
             {
+                publicacion.Estado = 1;
                 publicacion.Creacion = DateTime.Now;
                 publicacion.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
                 publicacion.Usuario = null;
@@ -151,7 +164,6 @@ namespace TiendaMovil.Controllers
         }
 
         [HttpGet("getcategorias")]
-        [AllowAnonymous] // esto no deberia ir
         public IActionResult GetCategorias()
         {
             try
@@ -165,7 +177,6 @@ namespace TiendaMovil.Controllers
         }
 
         [HttpGet("gettipos")]
-        [AllowAnonymous] // esto no deberia ir
         public IActionResult GetTipos()
         {
             try
@@ -187,92 +198,28 @@ namespace TiendaMovil.Controllers
                 var publicaciones = contexto.Publicaciones
                     .Where(p => p.UsuarioId == id)
                     .Include(p => p.Usuario)
+                    .Select(p => new {
+                        Id = p.Id,
+                        UsuarioId = p.UsuarioId,
+                        Titulo = p.Titulo,
+                        Descripcion = p.Descripcion,
+                        Precio = p.Precio,
+                        Categoria = p.Categoria,
+                        Tipo = p.Tipo,
+                        Stock = p.Stock,
+                        Estado = p.Estado,
+                        Creacion = p.Creacion,
+                        Usuario = p.Usuario,
+                        CategoriaNombre = p.CategoriaNombre,
+                        TipoNombre = p.TipoNombre,
+                        ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion
+                    })
                     .ToList();
                 return Ok(publicaciones);
             }
             catch (Exception ex)
             {
                 return BadRequest("ERROR: " + ex);
-            }
-        }
-
-        [HttpPut("test")]
-        [AllowAnonymous]
-        public IActionResult Test(IFormFile image, [FromForm] int id)
-        {
-            try
-            {
-                var entidad = contexto.Publicaciones.FirstOrDefault(p => p.Id == id);
-                if (entidad != null)
-                {
-                    string wwwPath = environment.WebRootPath;
-                    string path = Path.Combine(wwwPath, "Uploads");
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    DateTime hoy = DateTime.Now;
-                    string fileName = $"{id}_{hoy.Day}_{hoy.Month}_{hoy.Year}{Path.GetExtension(image.FileName)}";
-                    string pathCompleto = Path.Combine(path, fileName);
-                    entidad.Descripcion = Path.Combine("/Uploads", fileName);
-                    using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                    {
-                        image.CopyTo(stream);
-                    }
-                    contexto.SaveChanges();
-                    return Ok();
-                    //int id = Int32.fileName(fileName.Split('_')[0]);
-                }
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpPost("createimagenes")]
-        public IActionResult CreateImagenes(IFormFileCollection imagenes, [FromForm] int publicacionId)
-        {
-            try
-            {
-                List<IFormFile> lista = imagenes.ToList();
-                var publicacion = contexto.Publicaciones.FirstOrDefault(p => p.Id == publicacionId);
-                if (publicacion != null)
-                {
-                    string wwwPath = environment.WebRootPath;
-                    string path = Path.Combine(wwwPath, "Uploads");
-                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    DateTime hoy = DateTime.Now;
-
-                    int cantidadImagenes = contexto.PublicacionImagenes.Count(i => i.PublicacionId == publicacionId);
-
-                    foreach (IFormFile imagen in imagenes)
-                    {
-                        string fileName = 
-                            $"{publicacionId}_{hoy.Day}_{hoy.Month}_{hoy.Year}_-_{cantidadImagenes+ lista.IndexOf(imagen)}{Path.GetExtension(imagen.FileName)}";
-                        string pathCompleto = Path.Combine(path, fileName);
-                        
-                        using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                        {
-                            imagen.CopyTo(stream);
-                        }
-
-                        contexto.PublicacionImagenes.Add(new PublicacionImagen
-                        {
-                            PublicacionId = publicacionId,
-                            Direccion = Path.Combine("/Uploads", fileName),
-                            Estado = (cantidadImagenes == 0 && lista.IndexOf(imagen) == 0) ? 2 : 1,
-                            Creacion = DateTime.Now
-                        });
-                        contexto.SaveChanges();
-                    }
-                    return Ok();
-                }
-                return BadRequest();
-            } catch (Exception ex)
-            {
-                return BadRequest(ex);
             }
         }
     }

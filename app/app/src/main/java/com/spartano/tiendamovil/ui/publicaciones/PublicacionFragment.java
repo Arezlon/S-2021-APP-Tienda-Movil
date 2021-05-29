@@ -1,7 +1,10 @@
 package com.spartano.tiendamovil.ui.publicaciones;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.icu.number.Scale;
@@ -28,8 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.spartano.tiendamovil.MainActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.PublicacionImagen;
+import com.spartano.tiendamovil.request.ApiClient;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,10 +56,10 @@ public class PublicacionFragment extends Fragment {
     private PublicacionViewModel viewModel;
     private Publicacion publicacion;
 
-    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente;
-    private ImageSwitcher ivPreviewImagen;
+    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen;
+    private ImageView ivPreviewImagen;
 
-    private ArrayList<Uri> uris;
+    private List<PublicacionImagen> imagenes;
     private int pos = 0;
 
     @Override
@@ -60,112 +69,155 @@ public class PublicacionFragment extends Fragment {
                 new ViewModelProvider(this).get(PublicacionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_publicacion, container, false);
 
+        // Si la publicacion tiene imagenes, mostrarlas el el carrusel
+        viewModel.getImagenesMutable().observe(getViewLifecycleOwner(), new Observer<List<PublicacionImagen>>() {
+            @Override
+            public void onChanged(List<PublicacionImagen> publicacionImagenes) {
+                imagenes = publicacionImagenes;
+                btImagenAnterior.setEnabled(imagenes.size() > 1);
+                btImagenSiguiente.setEnabled(imagenes.size() > 1);
+                pos = 0;
+                setImagen(pos);
+                btEliminarImagen.setEnabled(true);
+            }
+        });
+
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Si no hay imagenes cargadas o si se borraron todas las imagenes
+        viewModel.getSinImagenesMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                imagenes = new ArrayList<>();
+                pos = 0;
+                ivPreviewImagen.setImageDrawable(null);
+                btDestacarImagen.setEnabled(false);
+                btEliminarImagen.setEnabled(false);
+            }
+        });
+
+        viewModel.getPublicacionEsMia().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                btAgregarImagen.setVisibility(View.VISIBLE);
+                btEliminarImagen.setVisibility(View.VISIBLE);
+                btDestacarImagen.setVisibility(View.VISIBLE);
+            }
+        });
+
+        publicacion = (Publicacion)getArguments().getSerializable("publicacion");
         inicializarVista(root);
+        viewModel.leerImagenesPublicacion(publicacion.getId());
+        viewModel.comprobarUsuario(publicacion.getUsuarioId());
         return root;
     }
 
     private void inicializarVista(View root){
-        publicacion = (Publicacion)getArguments().getSerializable("publicacion");
         btAgregarImagen = root.findViewById(R.id.btAgregarImagen);
         btImagenAnterior = root.findViewById(R.id.btImagenAnterior);
         btImagenSiguiente = root.findViewById(R.id.btImagenSiguiente);
+        btEliminarImagen = root.findViewById(R.id.btEliminarImagen);
+        btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
         ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
 
-        uris = new ArrayList<>();
+        // Ocultar acciones exclusivas del dueño de la publicacion (despues de vuelven a activar en getPublicacionEsMia().observe() si el usuario es el dueño)
+        btAgregarImagen.setVisibility(View.INVISIBLE);
+        btEliminarImagen.setVisibility(View.INVISIBLE);
+        btDestacarImagen.setVisibility(View.INVISIBLE);
 
-        ViewSwitcher.ViewFactory factory = new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView iv = new ImageView(getContext());
-                iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                iv.setAdjustViewBounds(true);
-                iv.setMaxHeight(700);
-                return iv;
-            }
-        };
-
-        ivPreviewImagen.setFactory(factory);
-
+        // Abrir galería para seleccionar una o muchas imágenes
         btAgregarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uris.size() >= 10) {
-                    Toast.makeText(getContext(), "Ya hay demasiadas imágenes cargadas.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 Intent i = new Intent();
                 i.setType("image/*");
                 i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 i.setAction(Intent.ACTION_GET_CONTENT);
 
+                // Cuando el usuario termine de elegir las imágenes se llama al onActivityResult con los resultados de la activity
                 startActivityForResult(Intent.createChooser(i, "Imagenes"), 200);
             }
         });
 
+        // Imágen anterior/izquierda
         btImagenAnterior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pos = pos > 0 ? pos-1 : uris.size()-1;
-                ivPreviewImagen.setImageURI(uris.get(pos));
+                pos = (pos > 0) ? (pos - 1) : (imagenes.size() - 1);
+                setImagen(pos);
             }
         });
 
+        // Imágen siguiente/derecha
         btImagenSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pos = pos < uris.size() -1 ? pos+1 : 0;
-                ivPreviewImagen.setImageURI(uris.get(pos));
+                pos = (pos < imagenes.size() - 1) ? (pos + 1) : 0;
+                setImagen(pos);
+            }
+        });
+
+        // Eliminar imágen
+        btEliminarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Eliminar imágen")
+                        .setMessage("¿Seguro que quiere eliminar esta imágen?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Si, eliminar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                viewModel.eliminarImagen(imagenes.get(pos));
+                            }
+                        }).show();
+            }
+        });
+
+        // Destacar imágen/marcar como favorita
+        btDestacarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Destacar imágen")
+                        .setMessage("¿Quiere marcar esta imágen como destacada? La imagen destacada de una publicacion es la que se muetra en los listados como representacion del producto.")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                viewModel.destacarImagen(imagenes.get(pos));
+                            }
+                        }).show();
             }
         });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 200) {
-            if (data.getClipData() != null) {
-                int cantidad = data.getClipData().getItemCount();
-                if (cantidad > 10) {
-                    Toast.makeText(getContext(), "Se seleccionaron muchas imágenes. El máximo es de 10", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                for (int i = 0; i < cantidad; i++) {
-                    uris.add(data.getClipData().getItemAt(i).getUri());
-                }
-            } else
-                uris.add(data.getData());
+        viewModel.recibirImagenesGaleria(requestCode, resultCode, data, publicacion);
+    }
 
-            ArrayList<File> files = new ArrayList<>();
-            for(Uri imageUri : uris) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,80, baos);
-                    byte[] b = baos.toByteArray();
-
-                    File archivo =new File(getContext().getFilesDir(),"imagen_publicacion.jpg");
-                    if(archivo.exists())
-                        archivo.delete();
-
-                    try {
-                        FileOutputStream fo=new FileOutputStream(archivo);
-                        BufferedOutputStream bo=new BufferedOutputStream(fo);
-                        bo.write(b);
-                        bo.flush();
-                        bo.close();
-
-                        files.add(new File(getContext().getFilesDir(),"imagen_publicacion.jpg"));
-                        //viewModel.prueba3(new File(getContext().getFilesDir(),"imagen_publicacion.jpg"), publicacion.getId());
-                    } catch (Exception e) {
-                        Log.d("salida", "a"+e.getMessage());
-                    }
-                } catch (IOException e) {
-                    Log.d("salida", "b"+e.getMessage());
-                }
-            }
-            //viewModel.prueba3(files.get(0), publicacion.getId());
-            viewModel.subirImagenes(files, publicacion.getId());
-            ivPreviewImagen.setImageURI(uris.get(0));
-            pos = 0;
-        }
+    private void setImagen(int posicion) {
+        Glide.with(getContext())
+                .load(ApiClient.getPath()+imagenes.get(posicion).getDireccion())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(ivPreviewImagen);
+        btDestacarImagen.setEnabled(imagenes.get(posicion).getEstado() != 2);
     }
 }

@@ -55,19 +55,20 @@ public class PublicacionesListAdapter  extends ArrayAdapter<Publicacion> {
 
         tvTitulo.setText(publicacion.getTitulo());
         tvPrecio.setText("$"+publicacion.getPrecio());
-        try {
-            // cambiar getDescripcion() por la imagen principal
-            Glide.with(getContext()).load(ApiClient.getPath()+publicacion.getDescripcion()).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivFotoPrincipalPublicacion);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+
+        Glide.with(getContext())
+                .load(ApiClient.getPath()+publicacion.getImagenDir())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(ivFotoPrincipalPublicacion);
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putSerializable("publicacion", publicacion);
-                Navigation.findNavController((Activity)context, R.id.nav_host_fragment).navigate(R.id.nav_publicacion, b); // cambiar por vista detalles
+                Navigation.findNavController((Activity)context, R.id.nav_host_fragment).navigate(R.id.nav_publicacion, b);
             }
         });
 

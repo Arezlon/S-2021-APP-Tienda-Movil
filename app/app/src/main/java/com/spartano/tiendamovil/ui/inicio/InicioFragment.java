@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,26 +24,41 @@ import java.util.List;
 
 public class InicioFragment extends Fragment {
 
-    private InicioViewModel inicioViewModel;
+    private InicioViewModel viewModel;
     RecyclerView rvPrueba;
+
+    private List<Publicacion> destacadas;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        inicioViewModel =
+        viewModel =
                 new ViewModelProvider(this).get(InicioViewModel.class);
         View root = inflater.inflate(R.layout.fragment_inicio, container, false);
 
+        viewModel.getPublicacionesDestacadasMutable().observe(getViewLifecycleOwner(), new Observer<List<Publicacion>>() {
+            @Override
+            public void onChanged(List<Publicacion> publicaciones) {
+                destacadas = publicaciones;
+                rvPrueba.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        rvPrueba = root.findViewById(R.id.rvPrueba);
-        rvPrueba.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                PublicacionesRecyclerAdapter adapter = new PublicacionesRecyclerAdapter(destacadas, getContext());
+                rvPrueba.setAdapter(adapter);
+            }
+        });
 
-        List<Publicacion> lista = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-            lista.add(new Publicacion());
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        PublicacionesRecyclerAdapter adapter = new PublicacionesRecyclerAdapter(lista);
-        rvPrueba.setAdapter(adapter);
-
+        inicializarVista(root);
+        viewModel.leerPublicacionesDestacadas();
         return root;
+    }
+
+    private void inicializarVista(View root) {
+        rvPrueba = root.findViewById(R.id.rvPrueba);
     }
 }

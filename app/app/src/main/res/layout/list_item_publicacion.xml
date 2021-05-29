@@ -25,6 +25,7 @@
                 android:id="@+id/ivFotoPrincipalPublicacion"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
+                android:background="#F6F6F6"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"

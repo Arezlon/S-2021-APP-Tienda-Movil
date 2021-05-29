@@ -26,6 +26,7 @@ public class NuevaPublicacionViewModel extends AndroidViewModel {
     private MutableLiveData<Map<Integer, String>> categoriasMutable;
     private MutableLiveData<Map<Integer, String>> tiposMutable;
     private MutableLiveData<String> errorMutable;
+    private MutableLiveData<Boolean> exitoMutable;
 
     public LiveData<Map<Integer, String>> getCategoriasMutable(){
         if (categoriasMutable == null)
@@ -43,6 +44,12 @@ public class NuevaPublicacionViewModel extends AndroidViewModel {
         if (errorMutable == null)
             errorMutable = new MutableLiveData<>();
         return errorMutable;
+    }
+
+    public LiveData<Boolean> getExitoMutable(){
+        if (exitoMutable == null)
+            exitoMutable = new MutableLiveData<>();
+        return exitoMutable;
     }
 
     public NuevaPublicacionViewModel(@NonNull Application app) {
@@ -71,7 +78,7 @@ public class NuevaPublicacionViewModel extends AndroidViewModel {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful())
-                        errorMutable.setValue("Publicación creada");
+                        exitoMutable.setValue(true);
                     else {
                         errorMutable.setValue("Ocurrió un error inesperado");
                     }
