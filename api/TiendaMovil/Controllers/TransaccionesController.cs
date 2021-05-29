@@ -61,6 +61,7 @@ namespace TiendaMovil.Controllers
                 var transacciones = contexto.Transacciones
                     .Where(p => p.UsuarioId == id)
                     .Include(p => p.Usuario)
+                    .OrderByDescending(p => p.Creacion)
                     .ToList();
                 return Ok(transacciones);
             }

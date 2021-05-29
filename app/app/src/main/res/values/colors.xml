@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_principal">#388e3c</color>
     <color name="color_secundario">#689f38</color>
+    <color name="hCarga">#326CAC</color>
+    <color name="hCompra">#A53030</color>
+    <color name="hVenta">#44A32E</color>
 </resources>

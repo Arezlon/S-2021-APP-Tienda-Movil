@@ -78,6 +78,7 @@ public class FondosFragment extends Fragment {
                 Toast.makeText(getContext(),"$"+etIngresarFondos.getText()+" fondos cargados correctamente",Toast.LENGTH_LONG).show();
                 btIngresarFondos.setEnabled(true);
                 btIngresarFondos.setText("Ingresar fondos");
+                etIngresarFondos.setText("");
                 viewModel.ObtenerUsuario();
             }
         });
@@ -100,11 +101,10 @@ public class FondosFragment extends Fragment {
     private void inicializarVista(View root) {
         btIngresarFondos = root.findViewById(R.id.btIngresarFondos);
         etIngresarFondos = root.findViewById(R.id.etIngresarFondos);
-        spTipoIngreso = root.findViewById(R.id.spTipoIngreso);
         tvFondos = root.findViewById(R.id.tvFondos);
         listHistorial = root.findViewById(R.id.listHistorial);
 
-        tvFondos.setText(""+usuarioActual.getFondos());
+        tvFondos.setText("$"+usuarioActual.getFondos());
         btIngresarFondos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,6 @@ public class FondosFragment extends Fragment {
                     transaccion.setImporte(99);
                 }
                 transaccion.setTipo(1);
-                transaccion.setMetodoPagoCarga(1); //Desplegable
                 viewModel.verificarCargaFondos(transaccion);
             }
         });

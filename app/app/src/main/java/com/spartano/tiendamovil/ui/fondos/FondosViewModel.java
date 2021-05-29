@@ -85,9 +85,7 @@ public class FondosViewModel extends AndroidViewModel {
     }
 
     public void verificarCargaFondos(Transaccion transaccion){
-        if(transaccion.getMetodoPagoCarga() == 0)
-            errorCargaMutable.setValue("Seleccione un método de pago válido.");
-        else if(transaccion.importe > 1000000)
+        if(transaccion.importe > 1000000)
             errorCargaMutable.setValue("El monto para la carga de fondos no puede ser mayor a $1.000.000");
         else if(transaccion.importe < 100)
             errorCargaMutable.setValue("El monto para la carga de fondos no puede ser menor a $100");
@@ -119,11 +117,11 @@ public class FondosViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<List<Transaccion>> call, Response<List<Transaccion>> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
+                    if (response.body() != null && !response.body().isEmpty()) {
                         transaccionesMutable.setValue(response.body());
                     }
                 } else {
-                    errorMutable.setValue("Ocurrió un error inesperado al cargar el historial");
+                    errorMutable.setValue("Ocurrió un error al cargar el historial de transacciones");
                 }
                 Log.d("salida", "historial " + response.message());
             }

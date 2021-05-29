@@ -1,22 +1,24 @@
 package com.spartano.tiendamovil.ui.fondos;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
+import androidx.core.content.ContextCompat;
 
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Transaccion;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
@@ -39,15 +41,65 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
         Transaccion transaccion = transacciones.get(position);
 
         TextView tvHistorialImporte = convertView.findViewById(R.id.tvHistorialImporte);
+        TextView tvHistorialBalance = convertView.findViewById(R.id.tvHistorialBalance);
+        TextView tvHistorialFechaHora = convertView.findViewById(R.id.tvHistorialFechaHora);
+        TextView tvHistorialCompra = convertView.findViewById(R.id.tvHistorialCompra);
+        ImageView ivHistorialIcono = convertView.findViewById(R.id.ivHistorialIcono);
 
-        tvHistorialImporte.setText("$"+transaccion.getImporte());
+        String fecha = transaccion.getCreacion().substring(0,10);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyy");
+        try {
+            Date fechaConvertida = formatter.parse(fecha);
+            tvHistorialFechaHora.setText(formatter2.format(fechaConvertida));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //redireccion a detalles de la compra (en casos de compra/venta)
+        tvHistorialBalance.setText("$"+(int)transaccion.getBalance());
+        try{
+            if(transaccion.tipo == 1){
+                tvHistorialImporte.setText("+$"+(int)transaccion.getImporte());
+                ivHistorialIcono.setImageResource(R.drawable.baseline_payments_24);
+                ivHistorialIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.hCarga));
+                tvHistorialCompra.setText("");
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+            }else if(transaccion.tipo == 2){
+                tvHistorialImporte.setText("-$"+(int)transaccion.getImporte());
+                ivHistorialIcono.setImageResource(R.drawable.baseline_shopping_bag_24);
+                ivHistorialIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.hCompra));
+                //tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
+
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("salida", "Redirección a la compra");
+                    }
+                });
+
+            }else if(transaccion.tipo == 3){
+                tvHistorialImporte.setText("+$"+(int)transaccion.getImporte());
+                ivHistorialIcono.setImageResource(R.drawable.baseline_sell_24);
+                ivHistorialIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.hVenta));
+                //tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
+
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("salida", "Redirección a la venta");
+                    }
+                });
+
             }
-        });
+        }catch (NullPointerException e){
+            Log.d("salida", "Error en historial de transacciones, elemento: "+position);
+        }
 
         return convertView;
     }

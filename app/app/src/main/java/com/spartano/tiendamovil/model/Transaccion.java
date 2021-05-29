@@ -10,7 +10,6 @@ public class Transaccion implements Serializable {
     public float balance;
     public int tipo;
     public String tiposNombre;
-    public int metodoPagoCarga;
     public int estado;
     public String creacion;
     public Compra compra;
@@ -18,7 +17,7 @@ public class Transaccion implements Serializable {
 
     public Transaccion() {}
 
-    public Transaccion(int id, int compraId, int usuarioId, float importe, float balance, int tipo, String tiposNombre, int metodoPagoCarga, int estado, String creacion, Compra compra, Usuario usuario) {
+    public Transaccion(int id, int compraId, int usuarioId, float importe, float balance, int tipo, String tiposNombre, int estado, String creacion, Compra compra, Usuario usuario) {
         this.id = id;
         this.compraId = compraId;
         this.usuarioId = usuarioId;
@@ -26,7 +25,6 @@ public class Transaccion implements Serializable {
         this.balance = balance;
         this.tipo = tipo;
         this.tiposNombre = tiposNombre;
-        this.metodoPagoCarga = metodoPagoCarga;
         this.estado = estado;
         this.creacion = creacion;
         this.compra = compra;
@@ -119,13 +117,5 @@ public class Transaccion implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public int getMetodoPagoCarga() {
-        return metodoPagoCarga;
-    }
-
-    public void setMetodoPagoCarga(int metodoPagoCarga) {
-        this.metodoPagoCarga = metodoPagoCarga;
     }
 }

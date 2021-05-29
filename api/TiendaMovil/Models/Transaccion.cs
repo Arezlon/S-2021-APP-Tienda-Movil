@@ -24,7 +24,6 @@ namespace TiendaMovil.Models
         public double Balance { get; set; }
         public int Tipo { get; set; }
         public string TiposNombre => Tipo > 0 ? ((TiposEnum)Tipo).ToString() : "";
-        public int MetodoPagoCarga { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
         public Compra Compra { get; set; }
