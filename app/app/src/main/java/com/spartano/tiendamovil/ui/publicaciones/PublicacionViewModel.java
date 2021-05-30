@@ -103,9 +103,12 @@ public class PublicacionViewModel  extends AndroidViewModel {
             @Override
             public void onResponse(Call<List<PublicacionImagen>> call, Response<List<PublicacionImagen>> response) {
                 if (response.isSuccessful()){
-                    if (response.body() != null && !response.body().isEmpty())
-                        imagenesMutable.postValue(response.body());
-                    else{
+                    if (response.body() != null)
+                        if (response.body().isEmpty())
+                            sinImagenesMutable.setValue(true);
+                        else
+                            imagenesMutable.postValue(response.body());
+                    else {
                         errorMutable.postValue("No se encontraron imágenes");
                         sinImagenesMutable.setValue(true);
                     }

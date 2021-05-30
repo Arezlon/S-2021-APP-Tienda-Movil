@@ -97,9 +97,10 @@ namespace TiendaMovil.Controllers
                 var entidad = contexto.PublicacionImagenes.FirstOrDefault(i => i.Id == imagenId);
                 if (entidad != null)
                 {
-                    contexto.PublicacionImagenes.Remove(entidad);
                     if (entidad.Estado == 2)
-                        contexto.PublicacionImagenes.FirstOrDefault().Estado = 2;
+                        contexto.PublicacionImagenes.Where(i => i.PublicacionId == entidad.PublicacionId && i.Id != entidad.Id).FirstOrDefault().Estado = 2;
+                    contexto.PublicacionImagenes.Remove(entidad);
+                        
                     contexto.SaveChanges();
                     return Ok();
                 }

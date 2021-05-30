@@ -2,12 +2,7 @@ package com.spartano.tiendamovil.ui.publicaciones;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +44,7 @@ public class PublicacionesListAdapter  extends ArrayAdapter<Publicacion> {
 
         Log.d("salida", "getView " + position);
 
-        TextView tvTitulo = convertView.findViewById(R.id.tvTituloPublicacion);
+        TextView tvTitulo = convertView.findViewById(R.id.tvPublicacionTitulo);
         TextView tvPrecio = convertView.findViewById(R.id.tvPrecioPublicacion);
         ImageView ivFotoPrincipalPublicacion = convertView.findViewById(R.id.ivFotoPrincipalPublicacion);
 

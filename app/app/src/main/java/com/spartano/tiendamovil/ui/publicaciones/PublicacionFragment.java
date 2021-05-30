@@ -59,6 +59,8 @@ public class PublicacionFragment extends Fragment {
     private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen;
     private ImageView ivPreviewImagen;
 
+    private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
+
     private List<PublicacionImagen> imagenes;
     private int pos = 0;
 
@@ -98,6 +100,8 @@ public class PublicacionFragment extends Fragment {
                 ivPreviewImagen.setImageDrawable(null);
                 btDestacarImagen.setEnabled(false);
                 btEliminarImagen.setEnabled(false);
+                btImagenAnterior.setEnabled(false);
+                btImagenSiguiente.setEnabled(false);
             }
         });
 
@@ -125,10 +129,24 @@ public class PublicacionFragment extends Fragment {
         btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
         ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
 
+        tvPublicacionTitulo = root.findViewById(R.id.tvPublicacionTitulo);
+        tvPublicacionPrecio = root.findViewById(R.id.tvPublicacionPrecio);
+        tvPublicacionStock = root.findViewById(R.id.tvPublicacionStock);
+        tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
+        tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
+        tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
+
         // Ocultar acciones exclusivas del dueño de la publicacion (despues de vuelven a activar en getPublicacionEsMia().observe() si el usuario es el dueño)
         btAgregarImagen.setVisibility(View.INVISIBLE);
         btEliminarImagen.setVisibility(View.INVISIBLE);
         btDestacarImagen.setVisibility(View.INVISIBLE);
+
+        tvPublicacionTitulo.setText(publicacion.getTitulo());
+        tvPublicacionPrecio.setText("$"+publicacion.getPrecio());
+        tvPublicacionStock.setText("("+publicacion.getStock()+" disponible/s)");
+        tvPublicacionCategoria.setText(publicacion.getCategoriaNombre());
+        tvPublicacionDescripcion.setText(publicacion.getDescripcion());
+        tvPublicacionTipo.setText(publicacion.getTipoNombre());
 
         // Abrir galería para seleccionar una o muchas imágenes
         btAgregarImagen.setOnClickListener(new View.OnClickListener() {

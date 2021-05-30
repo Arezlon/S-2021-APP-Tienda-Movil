@@ -2,8 +2,8 @@
     <solid android:color="@color/color_principal" />
 
     <padding
-        android:left="2dp"
-        android:right="2dp"
+        android:left="4dp"
+        android:right="4dp"
         android:bottom="1dp"
         android:top="1dp"
         />
