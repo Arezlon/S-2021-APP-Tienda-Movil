@@ -39,60 +39,61 @@ public class EditarPerfilViewModel extends AndroidViewModel {
         return edicionCorrectaMutable;
     }
 
-    public void verificarEdicion(Usuario usuarioEditado, Usuario usuarioAnterior){
+    public void verificarEdicion(Usuario usuarioEditado) {
 
-        boolean eliminarUbicacion = false;
-        if(usuarioEditado.getDireccion().equals(""))
-            usuarioEditado.setDireccion(null);
-        if(usuarioEditado.getLocalidad().equals(""))
-            usuarioEditado.setLocalidad(null);
-        if(usuarioEditado.getProvinicia().equals(""))
-            usuarioEditado.setProvinicia(null);
-        if(usuarioEditado.getPais().equals(""))
-            usuarioEditado.setPais(null);
-
-        //Ubicación, Caso 1: Los 4 campos están vacíos -> vaciar ubicacion en bd
-        if(usuarioEditado.getDireccion() == null && usuarioEditado.getLocalidad() == null && usuarioEditado.getProvinicia() == null && usuarioEditado.getPais() == null){
-            eliminarUbicacion = true;
-        }
-
-        if(usuarioEditado.getNombre().length() > 16 || usuarioEditado.getNombre().length() < 3)
+        // Validacion de los campos que no son de la ubicación
+        boolean datosValidos = false;
+        if (usuarioEditado.getNombre().length() > 16 || usuarioEditado.getNombre().length() < 3)
             errorVerificacionMutable.setValue("El nombre ingresado no es válido (3 a 16 caracteres)");
         else if (usuarioEditado.getApellido().length() > 16 || usuarioEditado.getApellido().length() < 3)
             errorVerificacionMutable.setValue("El apellido ingresado no es válido (3 a 16 caracteres)");
-        else if(usuarioEditado.getTelefono().length() > 15 || usuarioEditado.getTelefono().length() < 9)
+        else if (usuarioEditado.getTelefono().length() > 15 || usuarioEditado.getTelefono().length() < 9)
             errorVerificacionMutable.setValue("El número de teléfono no es válido (9 a 15 dígitos)");
-        else if(usuarioEditado.getDni().length() != 8)
+        else if (usuarioEditado.getDni().length() != 8)
             errorVerificacionMutable.setValue("El DNI ingresado no es válido");
-        else if(!Patterns.EMAIL_ADDRESS.matcher(usuarioEditado.getEmail()).matches())
+        else if (!Patterns.EMAIL_ADDRESS.matcher(usuarioEditado.getEmail()).matches())
             errorVerificacionMutable.setValue("El correo electrónico no es válido");
-        //Ubicación, Caso 2: Algún campo está vacio y ya existía una ubicación en bd -> advertencia
-        else if(!eliminarUbicacion && usuarioAnterior.getDireccion() != null && (usuarioEditado.getDireccion() == null || usuarioEditado.getLocalidad() == null || usuarioEditado.getProvinicia() == null || usuarioEditado.getPais() == null)){
-            errorVerificacionMutable.setValue("Todos los campos de ubicación deben estar completos o vacíos");
+        else
+            datosValidos = true;
+
+        // Validacion de campos de ubicación
+        boolean edicionVacia = usuarioEditado.getDireccion().equals("") && usuarioEditado.getLocalidad().equals("") && usuarioEditado.getProvinicia().equals("") && usuarioEditado.getPais().equals("");
+        boolean edicionLlena = !usuarioEditado.getDireccion().equals("") && !usuarioEditado.getLocalidad().equals("") && !usuarioEditado.getProvinicia().equals("") && !usuarioEditado.getPais().equals("");
+        boolean ubicacionValidada = false;
+
+        // Solo hay dos caminos para que direccionValida sea true, si todos los campos de direccion estan vacios o si todos estan llenos y con longitudes válidas
+        if (edicionVacia) {
+            // Si todos los campos de ubicacion estan vacias quiere decir que el usuario no tenía dirección o que quiere borrarla
+            // Sea cual sea el caso, settear los valores de bd a null
+            usuarioEditado.setDireccion(null);
+            usuarioEditado.setLocalidad(null);
+            usuarioEditado.setProvinicia(null);
+            usuarioEditado.setPais(null);
+            ubicacionValidada = true;
+        } else if (edicionLlena) {
+            // Si todos los campos de ubicacion estan llenos quiere decir que el usuario quiere settear o editar su ubicacion
+            // Validar longitudes
+            if(usuarioEditado.getDireccion().length() < 4 || usuarioEditado.getDireccion().length() > 50)
+                errorVerificacionMutable.setValue("Los datos de la dirección no son válidos (4 a 50 caracteres)");
+            else if(usuarioEditado.getLocalidad().length() < 4 || usuarioEditado.getLocalidad().length() > 50)
+                errorVerificacionMutable.setValue("Los datos de la localidad no son válidos (4 a 50 caracteres)");
+            else if(usuarioEditado.getProvinicia().length() < 4 || usuarioEditado.getProvinicia().length() > 50)
+                errorVerificacionMutable.setValue("Los datos de la provincia no son válidos (4 a 50 caracteres)");
+            else if(usuarioEditado.getPais().length() < 4 || usuarioEditado.getPais().length() > 50)
+                errorVerificacionMutable.setValue("Los datos del pais no son válidos (4 a 50 caracteres)");
+            else
+                ubicacionValidada = true;
+        } else {
+            // Si no estan todos vacios o todos llenos la direción esta incompleta
+            errorVerificacionMutable.setValue("Los datos de la ubicación no son válidos (deben estar todos llenos o vaciós)");
         }
-        //Ubicación, Caso 3: Algun/os campos están vacíos y otros no -> advertencia
-        else if(usuarioEditado.getDireccion() != null && (usuarioEditado.getLocalidad() == null || usuarioEditado.getProvinicia() == null || usuarioEditado.getPais() == null)){
-            errorVerificacionMutable.setValue("Todos los campos de ubicación son obligatorios si se edita la dirección");
-        }
-        else if(usuarioEditado.getLocalidad() != null && (usuarioEditado.getDireccion() == null || usuarioEditado.getProvinicia() == null || usuarioEditado.getPais() == null)){
-            errorVerificacionMutable.setValue("Todos los campos de ubicación son obligatorios si se edita la localidad");
-        }
-        else if(usuarioEditado.getProvinicia() != null && (usuarioEditado.getLocalidad() == null || usuarioEditado.getDireccion() == null || usuarioEditado.getPais() == null)){
-            errorVerificacionMutable.setValue("Todos los campos de ubicación son obligatorios si se edita la provinicia");
-        }
-        else if(usuarioEditado.getPais() != null && (usuarioEditado.getLocalidad() == null || usuarioEditado.getProvinicia() == null || usuarioEditado.getDireccion() == null)){
-            errorVerificacionMutable.setValue("Todos los campos de ubicación son obligatorios si se edita el pais");
-        }
-        else if(usuarioEditado.getDireccion() != null && usuarioEditado.getLocalidad() != null && usuarioEditado.getProvinicia() != null && usuarioEditado.getPais() != null) {
-            if(usuarioEditado.getDireccion().length() < 4 || usuarioEditado.getDireccion().length() > 50 || usuarioEditado.getLocalidad().length() < 4 || usuarioEditado.getLocalidad().length() > 50 || usuarioEditado.getProvinicia().length() < 4 || usuarioEditado.getProvinicia().length() > 50 || usuarioEditado.getPais().length() < 4 || usuarioEditado.getPais().length() > 50)
-                errorVerificacionMutable.setValue("Los datos de la ubicación no son válidos (4 a 50 caracteres)");
-        }
-        else{
+
+        if (ubicacionValidada && datosValidos) {
             Call<Void> resAsync = ApiClient.getRetrofit().editUsuario(usuarioEditado, ApiClient.getApi().getToken(context));
             resAsync.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         edicionCorrectaMutable.setValue(true);
                         return;
                     }

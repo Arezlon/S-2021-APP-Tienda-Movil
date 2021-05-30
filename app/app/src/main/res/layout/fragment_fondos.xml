@@ -111,23 +111,23 @@
 
                         <EditText
                             android:id="@+id/etIngresarFondos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:textColor="@color/color_secundario"
                             app:backgroundTint="@color/color_secundario"
                             android:layout_marginStart="8dp"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:inputType="number"></EditText>
 
                         <Button
                             android:id="@+id/btIngresarFondos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Ingresar"
-                            android:translationY="-4dp"
+                            android:translationY="5dp"
                             app:cornerRadius="2dp"></Button>
                     </LinearLayout>
 

@@ -97,16 +97,12 @@ public class EditarPerfilFragment extends Fragment {
                 usuarioEditado.setTelefono(etEditarTelefono.getText().toString());
                 usuarioEditado.setDni(etEditarDni.getText().toString());
                 usuarioEditado.setEmail(etEditarMail.getText().toString());
+                usuarioEditado.setDireccion(etEditarDireccion.getText().toString());
+                usuarioEditado.setLocalidad(etEditarLocalidad.getText().toString());
+                usuarioEditado.setProvinicia(etEditarProvincia.getText().toString());
+                usuarioEditado.setPais(etEditarPais.getText().toString());
 
-                try {
-                    usuarioEditado.setDireccion(etEditarDireccion.getText().toString());
-                    usuarioEditado.setLocalidad(etEditarLocalidad.getText().toString());
-                    usuarioEditado.setProvinicia(etEditarProvincia.getText().toString());
-                    usuarioEditado.setPais(etEditarPais.getText().toString());
-                }catch(NullPointerException e){
-                    Log.d("salida", "Los campos de ubicación están vacíos (al intentar guardar los cambios)");
-                }
-                viewModel.verificarEdicion(usuarioEditado, usuario);
+                viewModel.verificarEdicion(usuarioEditado);
             }
         });
 
