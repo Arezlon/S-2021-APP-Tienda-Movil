@@ -62,8 +62,8 @@ public class NuevaPublicacionViewModel extends AndroidViewModel {
             errorMutable.setValue("El título no puede tener menos de 10 caracteres");
         else if (p.getTitulo().length() > 100)
             errorMutable.setValue("El título no puede tener más de 100 caracteres");
-        else if (p.getDescripcion().length() < 20)
-            errorMutable.setValue("La descripcion no puede tener menos de 20 caracteres");
+        else if (p.getDescripcion().length() < 10)
+            errorMutable.setValue("La descripcion no puede tener menos de 10 caracteres");
         else if (p.getDescripcion().length() > 200)
             errorMutable.setValue("La descripcion no puede tener más de 200 caracteres");
         else if (p.getPrecio() <= 0 || p.getPrecio() > 9999999)

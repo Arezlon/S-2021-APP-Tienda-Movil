@@ -61,13 +61,14 @@ public class FondosFragment extends Fragment {
             public void onChanged(String s) {
                 Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
                 btIngresarFondos.setEnabled(true);
-                btIngresarFondos.setText("Ingresar fondos");
+                btIngresarFondos.setText("Ingresar");
             }
         });
 
         viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                // TODO: cambiar este toast por un TextView que se muestre en lugar del ListView
                 Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
             }
         });
@@ -75,9 +76,9 @@ public class FondosFragment extends Fragment {
         viewModel.getCargaCorrectaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Toast.makeText(getContext(),"$"+etIngresarFondos.getText()+" fondos cargados correctamente",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"$"+etIngresarFondos.getText()+" cargados correctamente",Toast.LENGTH_LONG).show();
                 btIngresarFondos.setEnabled(true);
-                btIngresarFondos.setText("Ingresar fondos");
+                btIngresarFondos.setText("Ingresar");
                 etIngresarFondos.setText("");
                 viewModel.ObtenerUsuario();
             }

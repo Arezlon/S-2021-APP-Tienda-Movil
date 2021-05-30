@@ -48,13 +48,20 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getResultadoMutable().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean ok) {
-                if (ok){
-                    startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
-                    Toast.makeText(getApplicationContext(), "Sesión iniciada correctamente", Toast.LENGTH_LONG).show();
-                }
+                startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
+                Toast.makeText(getApplicationContext(), "Sesión iniciada correctamente", Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        btIngresar.setEnabled(true);
+        btRegistrarse.setEnabled(true);
+        btIngresar.setText("Ingresar");
     }
 
     private void inicializarVista() {

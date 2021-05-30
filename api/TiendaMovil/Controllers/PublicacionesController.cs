@@ -214,6 +214,7 @@ namespace TiendaMovil.Controllers
                         TipoNombre = p.TipoNombre,
                         ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion
                     })
+                    .OrderByDescending(p => p.Creacion)
                     .ToList();
                 return Ok(publicaciones);
             }
