@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.spartano.tiendamovil.model.Comentario;
 import com.spartano.tiendamovil.model.LoginRequest;
 import com.spartano.tiendamovil.model.LoginResponse;
 import com.spartano.tiendamovil.model.Publicacion;
@@ -75,6 +76,10 @@ public class ApiClient {
         @GET("publicacionimagenes/get") Call<List<PublicacionImagen>> getImagenes(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
         @DELETE("publicacionimagenes/delete") Call<Void> deleteImagen(@Header("Authorization") String token, @Query("imagenId") int imagenId);
         @PATCH("publicacionimagenes/destacar") Call<Void> destacarImagen(@Header("Authorization") String token, @Body PublicacionImagen imagen);
+
+        // Publicaciones>Comentarios
+        @GET("comentarios/get") Call<List<Comentario>> getComentarios(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
+        @POST("comentarios/create") Call<Void> createComentario(@Header("Authorization") String token, @Body Comentario comentario);
 
         //Transacciones
         @POST("transacciones/create") Call<Void> createTransaccion(@Body Transaccion transaccion, @Header("Authorization") String token);
