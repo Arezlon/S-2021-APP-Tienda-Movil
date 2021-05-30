@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.ui.nuevaPublicacion.NuevaPublicacionFragment;
 
 import androidx.navigation.NavController;
@@ -22,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MenuNavegacionActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private TextView tvMenuUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,5 +58,10 @@ public class MenuNavegacionActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void actualizarDatosUsuario(Usuario usuario){
+        tvMenuUsuario = findViewById(R.id.tvMenuUsuario);
+        tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
     }
 }

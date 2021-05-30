@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
 
 import java.util.List;
@@ -21,8 +22,15 @@ import retrofit2.Response;
 
 public class InicioViewModel extends AndroidViewModel {
     private Context context;
+    private MutableLiveData<Usuario> usuarioMutable;
     public MutableLiveData<List<Publicacion>> publicacionesDestacadasMutable;
     public MutableLiveData<String> errorMutable;
+
+    public LiveData<Usuario> getUsuarioMutable(){
+        if(usuarioMutable == null)
+            usuarioMutable = new MutableLiveData<>();
+        return usuarioMutable;
+    }
 
     public LiveData<List<Publicacion>> getPublicacionesDestacadasMutable() {
         if (publicacionesDestacadasMutable == null)
@@ -39,6 +47,27 @@ public class InicioViewModel extends AndroidViewModel {
     public InicioViewModel(@NonNull Application app) {
         super(app);
         context = app.getApplicationContext();
+    }
+
+    public void ObtenerUsuario(){
+        Call<Usuario> resAsync = ApiClient.getRetrofit().getUsuario(ApiClient.getApi().getToken(context));
+        resAsync.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Usuario u = response.body();
+                        usuarioMutable.setValue(u);
+                    }
+                    else
+                        Log.d("salida", "Error al buscar el usuario");
+                }
+            }
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("salida", "Error de conexion");
+            }
+        });
     }
 
     public void leerPublicacionesDestacadas() {

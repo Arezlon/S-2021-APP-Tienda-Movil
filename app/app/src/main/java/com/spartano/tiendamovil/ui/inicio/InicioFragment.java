@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +30,22 @@ public class InicioFragment extends Fragment {
 
     private InicioViewModel viewModel;
     RecyclerView rvPrueba;
-
     private List<Publicacion> destacadas;
+    private Usuario usuarioActual;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel =
                 new ViewModelProvider(this).get(InicioViewModel.class);
         View root = inflater.inflate(R.layout.fragment_inicio, container, false);
+
+        viewModel.getUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<Usuario>() {
+            @Override
+            public void onChanged(Usuario usuario) {
+                usuarioActual = usuario;
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioActual);
+            }
+        });
 
         viewModel.getPublicacionesDestacadasMutable().observe(getViewLifecycleOwner(), new Observer<List<Publicacion>>() {
             @Override
@@ -56,6 +66,7 @@ public class InicioFragment extends Fragment {
         });
 
         inicializarVista(root);
+        viewModel.ObtenerUsuario();
         viewModel.leerPublicacionesDestacadas();
         return root;
     }

@@ -70,16 +70,6 @@ public class MainActivity extends AppCompatActivity {
         btIngresar = findViewById(R.id.btIngresar);
         btRegistrarse = findViewById(R.id.btRegistrarse);
 
-        //Pruebas para iniciar sesión sin usuario/conexión
-        loginTest = findViewById(R.id.test);
-        loginTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "login de prueba sin usuario", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), MenuNavegacionActivity.class));
-            }
-        });
-
         btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

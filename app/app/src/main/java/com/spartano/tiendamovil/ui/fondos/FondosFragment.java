@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Transaccion;
 import com.spartano.tiendamovil.model.Usuario;
@@ -32,7 +33,6 @@ public class FondosFragment extends Fragment {
     private FondosViewModel viewModel;
     private Button btIngresarFondos;
     private EditText etIngresarFondos;
-    private Spinner spTipoIngreso;
     private TextView tvFondos;
     private Usuario usuarioActual;
     private ListView listHistorial;
@@ -52,6 +52,7 @@ public class FondosFragment extends Fragment {
             public void onChanged(Usuario usuario) {
                 usuarioActual = usuario;
                 inicializarVista(root);
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioActual);
                 viewModel.leerHistorialTransacciones();
             }
         });

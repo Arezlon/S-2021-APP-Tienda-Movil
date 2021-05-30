@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Usuario;
 
@@ -27,7 +28,7 @@ public class EditarPerfilFragment extends Fragment {
     private EditarPerfilViewModel viewModel;
     private Button btGuardarCambios;
     private EditText etEditarNombre, etEditarApellido, etEditarTelefono, etEditarDni, etEditarMail, etEditarDireccion, etEditarLocalidad, etEditarProvincia, etEditarPais;
-    private Usuario usuario;
+    private Usuario usuario, usuarioEditado;
 
     public static PerfilFragment newInstance() {
         return new PerfilFragment();
@@ -53,6 +54,7 @@ public class EditarPerfilFragment extends Fragment {
                 Toast.makeText(getContext(),"Datos editados correctamente",Toast.LENGTH_LONG).show();
                 btGuardarCambios.setEnabled(true);
                 btGuardarCambios.setText("Guardar cambios");
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioEditado);
             }
         });
         inicializarVista(root);
@@ -91,7 +93,8 @@ public class EditarPerfilFragment extends Fragment {
             public void onClick(View v) {
                 btGuardarCambios.setEnabled(false);
                 btGuardarCambios.setText("Cargando...");
-                Usuario usuarioEditado = new Usuario();
+                usuarioEditado = new Usuario();
+                usuarioEditado.setFondos(usuario.getFondos());
                 usuarioEditado.setNombre(etEditarNombre.getText().toString());
                 usuarioEditado.setApellido(etEditarApellido.getText().toString());
                 usuarioEditado.setTelefono(etEditarTelefono.getText().toString());
