@@ -27,6 +27,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -35,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spartano.tiendamovil.MainActivity;
 import com.spartano.tiendamovil.R;
+import com.spartano.tiendamovil.model.Comentario;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.PublicacionImagen;
 import com.spartano.tiendamovil.request.ApiClient;
@@ -60,6 +63,10 @@ public class PublicacionFragment extends Fragment {
     private ImageView ivPreviewImagen;
 
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
+
+    private ListView lvComentarios;
+    private Button btEnviarComentario;
+    private EditText etComentario;
 
     private List<PublicacionImagen> imagenes;
     private int pos = 0;
@@ -114,10 +121,20 @@ public class PublicacionFragment extends Fragment {
             }
         });
 
+        viewModel.getComentariosMutable().observe(getViewLifecycleOwner(), new Observer<List<Comentario>>() {
+            @Override
+            public void onChanged(List<Comentario> comentarios) {
+                ArrayAdapter<Comentario> adapter = new ComentariosListAdapter(getContext(), R.layout.list_item_comentario, comentarios, getLayoutInflater());
+                lvComentarios.setAdapter(adapter);
+                lvComentarios.canScrollVertically(0);
+            }
+        });
+
         publicacion = (Publicacion)getArguments().getSerializable("publicacion");
         inicializarVista(root);
         viewModel.leerImagenesPublicacion(publicacion.getId());
         viewModel.comprobarUsuario(publicacion.getUsuarioId());
+        viewModel.leerComentarios(publicacion.getId());
         return root;
     }
 
@@ -135,6 +152,21 @@ public class PublicacionFragment extends Fragment {
         tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
         tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
         tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
+
+        lvComentarios = root.findViewById(R.id.lvComentarios);
+        btEnviarComentario = root.findViewById(R.id.btEnviarComentario);
+        etComentario = root.findViewById(R.id.etComentario);
+
+        btEnviarComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comentario comentario = new Comentario();
+                comentario.setPregunta(etComentario.getText().toString());
+                comentario.setPublicacionId(publicacion.getId());
+
+                viewModel.crearComentario(comentario);
+            }
+        });
 
         // Ocultar acciones exclusivas del dueño de la publicacion (despues de vuelven a activar en getPublicacionEsMia().observe() si el usuario es el dueño)
         btAgregarImagen.setVisibility(View.INVISIBLE);

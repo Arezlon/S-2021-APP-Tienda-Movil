@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvComentarioUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="[USUARIO_PREGUNTA]"
+        app:layout_constraintBottom_toBottomOf="@+id/textView30"
+        app:layout_constraintStart_toEndOf="@+id/textView30"
+        app:layout_constraintTop_toTopOf="@+id/textView30" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" pregunta:"
+        app:layout_constraintBottom_toBottomOf="@+id/tvComentarioUsuario"
+        app:layout_constraintStart_toEndOf="@+id/tvComentarioUsuario"
+        app:layout_constraintTop_toTopOf="@+id/tvComentarioUsuario" />
+
+    <TextView
+        android:id="@+id/tvComentarioPregunta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="[PREGUNTA]"
+        app:layout_constraintStart_toStartOf="@+id/tvComentarioUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/tvComentarioUsuario" />
+
+    <TextView
+        android:id="@+id/tvRespuesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Respuesta del vendedor:"
+        app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
+        app:layout_constraintStart_toEndOf="@+id/icRespuesta"
+        app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
+
+    <TextView
+        android:id="@+id/tvComentarioRespuesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="[RESPUESTA]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvRespuesta"
+        app:layout_constraintTop_toBottomOf="@+id/tvRespuesta" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/baseline_forum_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/icRespuesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/outline_subdirectory_arrow_right_24"
+        app:layout_constraintStart_toStartOf="@+id/tvComentarioPregunta"
+        app:layout_constraintTop_toBottomOf="@+id/tvComentarioPregunta" />
+</androidx.constraintlayout.widget.ConstraintLayout>

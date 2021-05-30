@@ -23,7 +23,7 @@ import com.spartano.tiendamovil.request.ApiClient;
 
 import java.util.List;
 
-public class PublicacionesListAdapter  extends ArrayAdapter<Publicacion> {
+public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
     private final Context context;
     private final List<Publicacion> publicaciones;
     private final LayoutInflater inflater;
@@ -41,8 +41,6 @@ public class PublicacionesListAdapter  extends ArrayAdapter<Publicacion> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = convertView != null ? convertView : inflater.inflate(R.layout.list_item_publicacion, parent, false);
         Publicacion publicacion = publicaciones.get(position);
-
-        Log.d("salida", "getView " + position);
 
         TextView tvTitulo = convertView.findViewById(R.id.tvPublicacionTitulo);
         TextView tvPrecio = convertView.findViewById(R.id.tvPrecioPublicacion);

@@ -7,8 +7,8 @@ public class Comentario implements Serializable {
     public int id;
     public int usuarioId;
     public int publicacionId;
-    public int usuarioRespuestaId;
-    public String contenido;
+    public String pregunta;
+    public String respuesta;
     public int estado;
     public String creacion;
     public Usuario usuario;
@@ -16,12 +16,12 @@ public class Comentario implements Serializable {
 
     public Comentario(){}
 
-    public Comentario(int id, int usuarioId, int publicacionId, int usuarioRespuestaId, String contenido, int estado, String creacion, com.spartano.tiendamovil.model.Usuario usuario, com.spartano.tiendamovil.model.Publicacion publicacion) {
+    public Comentario(int id, int usuarioId, int publicacionId, String pregunta, String respuesta, int estado, String creacion, com.spartano.tiendamovil.model.Usuario usuario, com.spartano.tiendamovil.model.Publicacion publicacion) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.publicacionId = publicacionId;
-        this.usuarioRespuestaId = usuarioRespuestaId;
-        this.contenido = contenido;
+        this.pregunta = pregunta;
+        this.respuesta = respuesta;
         this.estado = estado;
         this.creacion = creacion;
         this.usuario = usuario;
@@ -52,20 +52,20 @@ public class Comentario implements Serializable {
         this.publicacionId = publicacionId;
     }
 
-    public int getUsuarioRespuestaId() {
-        return usuarioRespuestaId;
+    public String getPregunta() {
+        return pregunta;
     }
 
-    public void setUsuarioRespuestaId(int usuarioRespuestaId) {
-        this.usuarioRespuestaId = usuarioRespuestaId;
+    public void setPregunta(String pregunta) {
+        this.pregunta = pregunta;
     }
 
-    public String getContenido() {
-        return contenido;
+    public String getRespuesta() {
+        return respuesta;
     }
 
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
     }
 
     public int getEstado() {
