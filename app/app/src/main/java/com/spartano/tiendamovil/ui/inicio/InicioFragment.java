@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
 
@@ -60,5 +62,13 @@ public class InicioFragment extends Fragment {
 
     private void inicializarVista(View root) {
         rvPrueba = root.findViewById(R.id.rvPrueba);
+        
+        FloatingActionButton fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_nueva_publicacion);
+            }
+        });
     }
 }

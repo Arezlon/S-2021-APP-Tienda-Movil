@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.ui.nuevaPublicacion.NuevaPublicacionViewModel;
@@ -61,5 +63,13 @@ public class PublicacionesFragment extends Fragment {
 
     private void inicializarVista(View root) {
         lvPublicaciones = root.findViewById(R.id.lvPublicaciones);
+
+        FloatingActionButton fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_nueva_publicacion);
+            }
+        });
     }
 }
