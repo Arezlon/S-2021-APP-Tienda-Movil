@@ -29,6 +29,8 @@ public class TabComentariosFragment extends Fragment {
     private EditText etComentario;
     private Publicacion publicacion;
 
+    private boolean publicacionEsMia;
+
     public TabComentariosFragment(Publicacion publicacion) { this.publicacion = publicacion; }
 
     @Override
@@ -41,13 +43,20 @@ public class TabComentariosFragment extends Fragment {
         viewModel.getComentariosMutable().observe(getViewLifecycleOwner(), new Observer<List<Comentario>>() {
             @Override
             public void onChanged(List<Comentario> comentarios) {
-                ArrayAdapter<Comentario> adapter = new ComentariosListAdapter(getContext(), R.layout.list_item_comentario, comentarios, getLayoutInflater());
+                ArrayAdapter<Comentario> adapter = new ComentariosListAdapter(getContext(), R.layout.list_item_comentario, comentarios, getLayoutInflater(), publicacionEsMia);
                 lvComentarios.setAdapter(adapter);
-                lvComentarios.canScrollVertically(0);
             }
         });
 
-        viewModel.leerComentarios(publicacion.getId());
+        viewModel.getPublicacionEsMia().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                publicacionEsMia = bool;
+                viewModel.leerComentarios(publicacion.getId());
+            }
+        });
+
+        viewModel.comprobarUsuario(publicacion.getUsuarioId());
         inicializarVista(root);
         return root;
     }

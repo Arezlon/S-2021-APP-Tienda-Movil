@@ -5,69 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvComentarioUsuario"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="[USUARIO_PREGUNTA]"
-        app:layout_constraintBottom_toBottomOf="@+id/textView30"
-        app:layout_constraintStart_toEndOf="@+id/textView30"
-        app:layout_constraintTop_toTopOf="@+id/textView30" />
-
-    <TextView
-        android:id="@+id/textView25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" pregunta:"
-        app:layout_constraintBottom_toBottomOf="@+id/tvComentarioUsuario"
-        app:layout_constraintStart_toEndOf="@+id/tvComentarioUsuario"
-        app:layout_constraintTop_toTopOf="@+id/tvComentarioUsuario" />
-
-    <TextView
-        android:id="@+id/tvComentarioPregunta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="[PREGUNTA]"
-        app:layout_constraintStart_toStartOf="@+id/tvComentarioUsuario"
-        app:layout_constraintTop_toBottomOf="@+id/tvComentarioUsuario" />
-
-    <TextView
-        android:id="@+id/tvRespuesta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Respuesta del vendedor:"
-        app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
-        app:layout_constraintStart_toEndOf="@+id/icRespuesta"
-        app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
-
-    <TextView
-        android:id="@+id/tvComentarioRespuesta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="[RESPUESTA]"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvRespuesta"
-        app:layout_constraintTop_toBottomOf="@+id/tvRespuesta" />
-
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/baseline_forum_24"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/icRespuesta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/outline_subdirectory_arrow_right_24"
-        app:layout_constraintStart_toStartOf="@+id/tvComentarioPregunta"
-        app:layout_constraintTop_toBottomOf="@+id/tvComentarioPregunta" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/baseline_forum_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvComentarioUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="[USUARIO_PREGUNTA]"
+                app:layout_constraintBottom_toBottomOf="@+id/textView30"
+                app:layout_constraintStart_toEndOf="@+id/textView30"
+                app:layout_constraintTop_toTopOf="@+id/textView30" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" preguntó:"
+                app:layout_constraintBottom_toBottomOf="@+id/tvComentarioUsuario"
+                app:layout_constraintStart_toEndOf="@+id/tvComentarioUsuario"
+                app:layout_constraintTop_toTopOf="@+id/tvComentarioUsuario" />
+
+            <TextView
+                android:id="@+id/icRespuesta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:drawableStart="@drawable/outline_subdirectory_arrow_right_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvComentarioPregunta"
+                app:layout_constraintTop_toBottomOf="@+id/tvComentarioPregunta" />
+
+            <TextView
+                android:id="@+id/tvComentarioPregunta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="[PREGUNTA]"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/tvComentarioUsuario"
+                app:layout_constraintTop_toBottomOf="@+id/tvComentarioUsuario" />
+
+            <TextView
+                android:id="@+id/tvComentarioRespuesta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="[RESPUESTA]"
+                app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
+                app:layout_constraintStart_toEndOf="@+id/icRespuesta"
+                app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
+
+            <TextView
+                android:id="@+id/tvComentarioFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="[fecha]"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btResponderComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="4dp"
+                android:text="responder"
+                android:textSize="10sp"
+                app:cornerRadius="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
+                app:layout_constraintStart_toEndOf="@+id/icRespuesta"
+                app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

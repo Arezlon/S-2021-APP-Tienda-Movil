@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spartano.tiendamovil.model.Comentario;
+import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import retrofit2.Response;
 public class TabComentariosViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<List<Comentario>> comentariosMutable;
+    private MutableLiveData<Boolean> publicacionEsMia;
 
     public LiveData<List<Comentario>> getComentariosMutable() {
         if (comentariosMutable == null)
@@ -28,9 +30,32 @@ public class TabComentariosViewModel extends AndroidViewModel {
         return comentariosMutable;
     }
 
+    public LiveData<Boolean> getPublicacionEsMia(){
+        if (publicacionEsMia == null)
+            publicacionEsMia = new MutableLiveData<>();
+        return publicacionEsMia;
+    }
+
     public TabComentariosViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
+    }
+
+    public void comprobarUsuario(int usuarioId) {
+        Call<Usuario> resAsync = ApiClient.getRetrofit().getUsuario(ApiClient.getApi().getToken(context));
+        resAsync.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    publicacionEsMia.postValue(response.body().getId() == usuarioId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("salida", "Error al comprobar el dueño de la publicación: " + t.getMessage());
+            }
+        });
     }
 
     public void leerComentarios(int publicacionId) {
