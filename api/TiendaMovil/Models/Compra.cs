@@ -16,7 +16,7 @@ namespace TiendaMovil.Models
         [ForeignKey("PublicacionId")]
         public int PublicacionId { get; set; }
         public int Cantidad { get; set; }
-        public float Precio { get; set; }
+        public double Precio { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
         public Usuario Usuario { get; set; }

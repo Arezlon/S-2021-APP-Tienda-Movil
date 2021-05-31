@@ -16,6 +16,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spartano.tiendamovil.model.Comentario;
+import com.spartano.tiendamovil.model.Compra;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.PublicacionImagen;
 import com.spartano.tiendamovil.model.Usuario;
@@ -49,6 +50,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     private MutableLiveData<List<PublicacionImagen>> imagenesMutable;
     private MutableLiveData<Boolean> sinImagenesMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
+    private float fondos;
 
     public LiveData<List<PublicacionImagen>> getImagenesMutable() {
         if (imagenesMutable == null)
@@ -94,6 +96,25 @@ public class TabPublicacionViewModel extends AndroidViewModel {
             public void onFailure(Call<Usuario> call, Throwable t) {
                 errorMutable.setValue("Error al comprobar el dueño de la publicación");
                 Log.d("salida", "Error al comprobar el dueño de la publicación: " + t.getMessage());
+            }
+        });
+    }
+
+    public void comprobarFondos(Publicacion publicacion, int cantidad) {
+        Call<Usuario> resAsync = ApiClient.getRetrofit().getUsuario(ApiClient.getApi().getToken(context));
+        resAsync.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    fondos = response.body().getFondos();
+                    verificarCompra(publicacion, cantidad);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                errorMutable.setValue("Error");
+                Log.d("salida", "Error: " + t.getMessage());
             }
         });
     }
@@ -245,5 +266,40 @@ public class TabPublicacionViewModel extends AndroidViewModel {
                 Log.d("salida", "3OnFailure " + t.getMessage());
             }
         });
+    }
+
+    public void verificarCompra(Publicacion publicacion, int cantidad){
+
+        if(cantidad <= 0)
+            errorMutable.setValue("Error, la cantidad de elementos de una compra no puede ser 0");
+        else if(publicacion.stock < cantidad)
+            errorMutable.setValue("Error, el stock de la publicación es menor a la cantidad ingresada");
+        else if(publicacion.precio > fondos)
+            errorMutable.setValue("Error, fondos insuficientes");
+        else {
+            Compra compra = new Compra();
+            compra.setPublicacion(publicacion);
+            compra.setCantidad(cantidad);
+
+            Call<Void> resAsync = ApiClient.getRetrofit().createCompra(compra, ApiClient.getApi().getToken(context));
+            resAsync.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("salida", "compra correcta");
+                        //redirección a los detalles de la compra
+                        return;
+                    }
+                    errorMutable.setValue("Ocurrió un error inesperado");
+                    Log.d("salida", response.message() + " " + response.code());
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    errorMutable.setValue("No se pudo conectar con el servidor");
+                    Log.d("salida", t.getMessage());
+                }
+            });
+        }
     }
 }

@@ -74,7 +74,7 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
                 tvHistorialImporte.setText("-$"+(int)transaccion.getImporte());
                 ivHistorialIcono.setImageResource(R.drawable.baseline_shopping_bag_24);
                 ivHistorialIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.hCompra));
-                //tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
+                tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
 
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -87,7 +87,7 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
                 tvHistorialImporte.setText("+$"+(int)transaccion.getImporte());
                 ivHistorialIcono.setImageResource(R.drawable.baseline_sell_24);
                 ivHistorialIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.hVenta));
-                //tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
+                tvHistorialCompra.setText(transaccion.getCompra().getPublicacion().getTitulo());
 
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override

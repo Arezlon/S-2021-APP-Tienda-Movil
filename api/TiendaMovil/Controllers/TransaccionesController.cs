@@ -59,10 +59,14 @@ namespace TiendaMovil.Controllers
             {
                 int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
                 var transacciones = contexto.Transacciones
-                    .Where(p => p.UsuarioId == id)
-                    .Include(p => p.Usuario)
-                    .OrderByDescending(p => p.Creacion)
+                    .Where(t => t.UsuarioId == id)
+                    .Include(t => t.Usuario)
+                    .Include(t => t.Compra)
+                    .ThenInclude(c => c.Publicacion)
+                    .OrderByDescending(t => t.Creacion)
                     .ToList();
+                transacciones.AddRange(contexto.Transacciones.Where(t => t.UsuarioId == id && t.Tipo == 1).Include(t => t.Usuario).ToList());
+                transacciones = transacciones.OrderByDescending(t => t.Creacion).ToList();
                 return Ok(transacciones);
             }
             catch (Exception ex)

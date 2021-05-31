@@ -39,9 +39,9 @@ public class TabPublicacionFragment extends Fragment {
     private TabPublicacionViewModel viewModel;
     private Publicacion publicacion;
 
-    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen;
+    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen, btPublicacionComprar;
     private ImageView ivPreviewImagen;
-
+    private EditText etPublicacionCantidad;
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
 
 
@@ -74,6 +74,8 @@ public class TabPublicacionFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                btPublicacionComprar.setEnabled(true);
+                btPublicacionComprar.setText("Comprar");
             }
         });
 
@@ -97,6 +99,7 @@ public class TabPublicacionFragment extends Fragment {
                 btAgregarImagen.setVisibility(View.VISIBLE);
                 btEliminarImagen.setVisibility(View.VISIBLE);
                 btDestacarImagen.setVisibility(View.VISIBLE);
+                btPublicacionComprar.setEnabled(false);
             }
         });
 
@@ -113,6 +116,7 @@ public class TabPublicacionFragment extends Fragment {
         btEliminarImagen = root.findViewById(R.id.btEliminarImagen);
         btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
         ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
+        btPublicacionComprar = root.findViewById(R.id.btPublicacionComprar);
 
         tvPublicacionTitulo = root.findViewById(R.id.tvPublicacionTitulo);
         tvPublicacionPrecio = root.findViewById(R.id.tvPublicacionPrecio);
@@ -120,11 +124,7 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
         tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
         tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
-
-        // Ocultar acciones exclusivas del dueño de la publicacion (despues de vuelven a activar en getPublicacionEsMia().observe() si el usuario es el dueño)
-        btAgregarImagen.setVisibility(View.INVISIBLE);
-        btEliminarImagen.setVisibility(View.INVISIBLE);
-        btDestacarImagen.setVisibility(View.INVISIBLE);
+        etPublicacionCantidad = root.findViewById(R.id.etPublicacionCantidad);
 
         tvPublicacionTitulo.setText(publicacion.getTitulo());
         tvPublicacionPrecio.setText("$"+publicacion.getPrecio());
@@ -193,7 +193,7 @@ public class TabPublicacionFragment extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Destacar imágen")
-                        .setMessage("¿Quiere marcar esta imágen como destacada? La imagen destacada de una publicacion es la que se muetra en los listados como representacion del producto.")
+                        .setMessage("¿Quiere marcar esta imágen como destacada? La imagen destacada de una publicacion es la que se muestra en los listados como representacion del producto.")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -206,6 +206,16 @@ public class TabPublicacionFragment extends Fragment {
                                 viewModel.destacarImagen(imagenes.get(pos));
                             }
                         }).show();
+            }
+        });
+
+        btPublicacionComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btPublicacionComprar.setEnabled(false);
+                btPublicacionComprar.setText("Cargando...");
+                int cantidad = Integer.parseInt(etPublicacionCantidad.getText().toString());
+                viewModel.comprobarFondos(publicacion, cantidad);
             }
         });
     }
