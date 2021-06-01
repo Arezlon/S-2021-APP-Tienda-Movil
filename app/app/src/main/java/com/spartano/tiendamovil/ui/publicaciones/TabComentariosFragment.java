@@ -43,8 +43,13 @@ public class TabComentariosFragment extends Fragment {
         viewModel.getComentariosMutable().observe(getViewLifecycleOwner(), new Observer<List<Comentario>>() {
             @Override
             public void onChanged(List<Comentario> comentarios) {
-                ArrayAdapter<Comentario> adapter = new ComentariosListAdapter(getContext(), R.layout.list_item_comentario, comentarios, getLayoutInflater(), publicacionEsMia);
+                ArrayAdapter<Comentario> adapter = new ComentariosListAdapter(getContext(), R.layout.list_item_comentario, comentarios, getLayoutInflater(), publicacionEsMia, viewModel);
                 lvComentarios.setAdapter(adapter);
+
+                btEnviarComentario.setEnabled(!publicacionEsMia);
+                etComentario.setEnabled(!publicacionEsMia);
+                btEnviarComentario.setText("ENVIAR");
+                etComentario.setText("");
             }
         });
 
@@ -53,6 +58,9 @@ public class TabComentariosFragment extends Fragment {
             public void onChanged(Boolean bool) {
                 publicacionEsMia = bool;
                 viewModel.leerComentarios(publicacion.getId());
+
+                btEnviarComentario.setEnabled(!publicacionEsMia);
+                etComentario.setEnabled(!publicacionEsMia);
             }
         });
 
@@ -74,6 +82,8 @@ public class TabComentariosFragment extends Fragment {
                 comentario.setPublicacionId(publicacion.getId());
 
                 viewModel.crearComentario(comentario);
+                btEnviarComentario.setEnabled(false);
+                btEnviarComentario.setText("Enviando...");
             }
         });
     }

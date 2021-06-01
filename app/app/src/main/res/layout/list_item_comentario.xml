@@ -62,21 +62,25 @@
 
             <TextView
                 android:id="@+id/tvComentarioPregunta"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="[PREGUNTA]"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvComentarioUsuario"
                 app:layout_constraintTop_toBottomOf="@+id/tvComentarioUsuario" />
 
             <TextView
                 android:id="@+id/tvComentarioRespuesta"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
                 android:text="[RESPUESTA]"
                 app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icRespuesta"
                 app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
 
@@ -95,10 +99,21 @@
                 android:id="@+id/btResponderComentario"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_marginStart="4dp"
                 android:text="responder"
                 android:textSize="10sp"
                 app:cornerRadius="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/etResponderComentario"
+                app:layout_constraintStart_toEndOf="@+id/etResponderComentario"
+                app:layout_constraintTop_toTopOf="@+id/etResponderComentario" />
+
+            <EditText
+                android:id="@+id/etResponderComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
                 app:layout_constraintStart_toEndOf="@+id/icRespuesta"
                 app:layout_constraintTop_toTopOf="@+id/icRespuesta" />

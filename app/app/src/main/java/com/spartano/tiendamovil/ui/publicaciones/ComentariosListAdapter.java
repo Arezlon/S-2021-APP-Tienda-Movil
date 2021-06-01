@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,14 +35,16 @@ public class ComentariosListAdapter extends ArrayAdapter<Comentario> {
     private final List<Comentario> comentarios;
     private final LayoutInflater inflater;
     private boolean publicacionEsMia;
+    private TabComentariosViewModel viewModel;
 
-    public ComentariosListAdapter(@NonNull Context context, int resource, @NonNull List<Comentario> objects, LayoutInflater layoutInflater, boolean publicacionEsMia) {
+    public ComentariosListAdapter(@NonNull Context context, int resource, @NonNull List<Comentario> objects, LayoutInflater layoutInflater, boolean publicacionEsMia, TabComentariosViewModel viewModel) {
         super(context, resource, objects);
 
         this.context = context;
         this.comentarios = objects;
         this.inflater = layoutInflater;
         this.publicacionEsMia = publicacionEsMia;
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -56,6 +59,7 @@ public class ComentariosListAdapter extends ArrayAdapter<Comentario> {
         TextView tvComentarioFecha = convertView.findViewById(R.id.tvComentarioFecha);
         TextView icRespuesta = convertView.findViewById(R.id.icRespuesta);
         Button btResponderComentario = convertView.findViewById(R.id.btResponderComentario);
+        EditText etResponderComentario = convertView.findViewById(R.id.etResponderComentario);
 
         String fecha = comentario.getCreacion().substring(0,10);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,6 +79,7 @@ public class ComentariosListAdapter extends ArrayAdapter<Comentario> {
             // Si hay respuesta, mostrar el texto, mostrar el icono de subdirectorio, ocultar el boton "responder"
             tvComentarioRespuesta.setVisibility(View.VISIBLE);
             btResponderComentario.setVisibility(View.GONE);
+            etResponderComentario.setVisibility(View.GONE);
 
             tvComentarioRespuesta.setText(comentario.getRespuesta());
             icRespuesta.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_subdirectory_arrow_right_24, 0, 0, 0);
@@ -82,16 +87,28 @@ public class ComentariosListAdapter extends ArrayAdapter<Comentario> {
             // Si no hay respuesta y la publicacion es mía, mostrar el icono de "pendiente" y el boton "responder"
             tvComentarioRespuesta.setVisibility(View.GONE);
             btResponderComentario.setVisibility(View.VISIBLE);
+            etResponderComentario.setVisibility(View.VISIBLE);
 
             icRespuesta.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_pending_24, 0, 0, 0);
         } else {
             // Si no hay respuesta y la publicacion no es mia, mostrar el icono "pendiente" y el texto de respuesta pendiente
             tvComentarioRespuesta.setVisibility(View.VISIBLE);
             btResponderComentario.setVisibility(View.GONE);
+            etResponderComentario.setVisibility(View.GONE);
 
             tvComentarioRespuesta.setText("El vendedor todavía no respondió");
             icRespuesta.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_pending_24, 0, 0, 0);
         }
+
+        btResponderComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String respuesta = etResponderComentario.getText().toString();
+                viewModel.responderComentario(comentario, respuesta);
+                btResponderComentario.setEnabled(false);
+                btResponderComentario.setText("Enviando...");
+            }
+        });
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

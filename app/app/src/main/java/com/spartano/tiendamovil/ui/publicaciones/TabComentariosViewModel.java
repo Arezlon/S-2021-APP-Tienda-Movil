@@ -97,4 +97,26 @@ public class TabComentariosViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void responderComentario(Comentario comentario, String respuesta) {
+        if (respuesta != null && !respuesta.equals("")) {
+            comentario.setRespuesta(respuesta);
+            Call<Void> resAsync = ApiClient.getRetrofit().responderComentario(ApiClient.getApi().getToken(context), comentario);
+            resAsync.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        leerComentarios(comentario.getPublicacionId());
+                        return;
+                    }
+                    Log.d("salida", "Error al responder comentario: " + response.message());
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("salida", "Failure al responder comentario: " + t.getMessage());
+                }
+            });
+        }
+    }
 }

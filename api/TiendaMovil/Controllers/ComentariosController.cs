@@ -62,5 +62,25 @@ namespace TiendaMovil.Controllers
                 return BadRequest("ERROR: " + ex);
             }
         }
+
+        [HttpPatch("patch")]
+        public IActionResult Patch(Comentario comentario)
+        {
+            try
+            {
+                var entidad = contexto.Comentarios.FirstOrDefault(c => c.Id == comentario.Id);
+                if (entidad != null)
+                {
+                    contexto.Entry(entidad).CurrentValues.SetValues(comentario);
+                    contexto.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }
