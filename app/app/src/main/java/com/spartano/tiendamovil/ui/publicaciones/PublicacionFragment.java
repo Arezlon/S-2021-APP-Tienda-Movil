@@ -47,6 +47,7 @@ public class PublicacionFragment extends Fragment {
         ViewPageAdapter vpa = new ViewPageAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         vpa.addFragment(new TabPublicacionFragment(publicacion), "Publicación");
         vpa.addFragment(new TabComentariosFragment(publicacion), "Preguntas");
+        vpa.addFragment(new TabReseñasFragment(publicacion), "Reseñas");
 
         viewPage.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPage);

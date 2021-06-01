@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TiendaMovil.Models;
 
@@ -22,6 +24,43 @@ namespace TiendaMovil.Controllers
         {
             this.contexto = contexto;
             this.config = config;
+        }
+
+        [HttpGet("get")]
+        public IActionResult Get(int publicacionId)
+        {
+            try
+            {
+                var reseñas = contexto.Reseñas
+                    .Where(r => r.PublicacionId == publicacionId)
+                    .Include(r => r.Usuario)
+                    .Include(r => r.Publicacion)
+                    .ToList()
+                    .OrderByDescending(r => r.Creacion);
+                return Ok(reseñas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create(Reseña reseña)
+        {
+            try
+            {
+                reseña.Estado = 1;
+                reseña.Creacion = DateTime.Now;
+                reseña.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                contexto.Reseñas.Add(reseña);
+                contexto.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
         }
     }
 }

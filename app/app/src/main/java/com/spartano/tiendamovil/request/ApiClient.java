@@ -65,6 +65,10 @@ public class ApiClient {
         @POST("comentarios/create") Call<Void> createComentario(@Header("Authorization") String token, @Body Comentario comentario);
         @PATCH("comentarios/patch") Call<Void> responderComentario(@Header("Authorization") String token, @Body Comentario comentario);
 
+        // Publicaciones>Reseñas
+        @GET("reseñas/get") Call<List<Reseña>> getReseñas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
+        @POST("reseñas/create") Call<Void> createReseña(@Header("Authorization") String token, @Body Reseña reseña);
+
         //Transacciones
         @POST("transacciones/create") Call<Void> createTransaccion(@Body Transaccion transaccion, @Header("Authorization") String token);
         @GET("transacciones/get") Call<List<Transaccion>> getTransacciones(@Header("Authorization") String token);

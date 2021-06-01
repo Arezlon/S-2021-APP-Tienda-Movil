@@ -20,7 +20,7 @@ namespace TiendaMovil.Models
         public string Contenido { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
-        public Usuario usuario { get; set; }
-        public Publicacion publicacion { get; set; }
+        public Usuario Usuario { get; set; }
+        public Publicacion Publicacion { get; set; }
     }
 }
