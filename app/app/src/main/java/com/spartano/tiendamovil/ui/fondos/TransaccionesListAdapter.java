@@ -1,6 +1,8 @@
 package com.spartano.tiendamovil.ui.fondos;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.Navigation;
 
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Transaccion;
@@ -66,7 +69,7 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        //
                     }
                 });
 
@@ -79,7 +82,9 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("salida", "Redirección a la compra");
+                        Bundle b = new Bundle();
+                        b.putSerializable("compra", transaccion.getCompra());
+                        Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra, b);
                     }
                 });
 
@@ -91,8 +96,11 @@ public class TransaccionesListAdapter extends ArrayAdapter<Transaccion> {
 
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
+
                     public void onClick(View v) {
-                        Log.d("salida", "Redirección a la venta");
+                        Bundle b = new Bundle();
+                        b.putSerializable("compra", transaccion.getCompra());
+                        Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra, b);
                     }
                 });
 

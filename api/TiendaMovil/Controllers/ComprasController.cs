@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -83,5 +84,48 @@ namespace TiendaMovil.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpGet("get")]
+        public IActionResult Get()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var compras = contexto.Compras
+                    .Where(c => c.UsuarioId == id)
+                    .Include(c => c.Usuario)
+                    .Include(c => c.Publicacion)
+                    .ThenInclude(p => p.Usuario)
+                    .OrderByDescending(c => c.Creacion)
+                    .ToList();
+                return Ok(compras);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpGet("getultima")]
+        public IActionResult GetUltima()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var compra = contexto.Compras
+                    .Where(c => c.UsuarioId == id)
+                    .Include(c => c.Usuario)
+                    .Include(c => c.Publicacion)
+                    .ThenInclude(p => p.Usuario)
+                    .OrderByDescending(c => c.Creacion)
+                    .FirstOrDefault();
+                return Ok(compra);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+        
     }
 }

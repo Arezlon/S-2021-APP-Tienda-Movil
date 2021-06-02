@@ -75,6 +75,8 @@ public class ApiClient {
 
         //Compras
         @POST("compras/create") Call<Void> createCompra(@Body Compra compra, @Header("Authorization") String token);
+        @GET("compras/getultima") Call<Compra> getUltima(@Header("Authorization") String token);
+        @GET("compras/get") Call <List<Compra>> getCompras(@Header("Authorization") String token);
     }
 
     public String getToken(Context context) {

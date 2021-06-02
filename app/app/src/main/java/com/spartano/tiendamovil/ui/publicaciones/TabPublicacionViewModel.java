@@ -3,19 +3,16 @@ package com.spartano.tiendamovil.ui.publicaciones;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Observable;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.spartano.tiendamovil.model.Comentario;
 import com.spartano.tiendamovil.model.Compra;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.PublicacionImagen;
@@ -28,19 +25,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,6 +42,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     private MutableLiveData<List<PublicacionImagen>> imagenesMutable;
     private MutableLiveData<Boolean> sinImagenesMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
+    private MutableLiveData<Boolean> compraMutable;
     private float fondos;
 
     public LiveData<List<PublicacionImagen>> getImagenesMutable() {
@@ -74,6 +67,12 @@ public class TabPublicacionViewModel extends AndroidViewModel {
         if (publicacionEsMia == null)
             publicacionEsMia = new MutableLiveData<>();
         return publicacionEsMia;
+    }
+
+    public LiveData<Boolean> getCompraMutable(){
+        if (compraMutable == null)
+            compraMutable = new MutableLiveData<>();
+        return compraMutable;
     }
 
     public TabPublicacionViewModel(@NonNull Application app) {
@@ -286,8 +285,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("salida", "compra correcta");
-                        //redirección a los detalles de la compra
+                        compraMutable.setValue(true);
                         return;
                     }
                     errorMutable.setValue("Ocurrió un error inesperado");
