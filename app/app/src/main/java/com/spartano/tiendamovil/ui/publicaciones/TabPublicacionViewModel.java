@@ -270,10 +270,10 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     public void verificarCompra(Publicacion publicacion, int cantidad){
 
         if(cantidad <= 0)
-            errorMutable.setValue("Error, la cantidad de elementos de una compra no puede ser 0");
+            errorMutable.setValue("Error, la cantidad no puede ser 0");
         else if(publicacion.stock < cantidad)
-            errorMutable.setValue("Error, el stock de la publicación es menor a la cantidad ingresada");
-        else if(publicacion.precio > fondos)
+            errorMutable.setValue("Error, stock insufciente");
+        else if(publicacion.precio*cantidad > fondos)
             errorMutable.setValue("Error, fondos insuficientes");
         else {
             Compra compra = new Compra();
