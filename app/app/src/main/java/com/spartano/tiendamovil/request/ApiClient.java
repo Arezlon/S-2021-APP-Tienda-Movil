@@ -19,7 +19,7 @@ import retrofit2.http.*;
 
 public class ApiClient {
     private static ApiClient api = null;
-    private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
+    //private static final String PATH="http://192.168.0.107:45455/api/"; //Diego
     //private static final String PATH="http://192.168.0.108:45455/api/"; //Sebastian
 
     private static MyRetrofit myRetrofit;
@@ -81,6 +81,7 @@ public class ApiClient {
         @POST("compras/create") Call<Void> createCompra(@Body Compra compra, @Header("Authorization") String token);
         @GET("compras/getultima") Call<Compra> getUltima(@Header("Authorization") String token);
         @GET("compras/get") Call <List<Compra>> getCompras(@Header("Authorization") String token);
+        @GET("compras/getVentas") Call <List<Compra>> getVentas(@Header("Authorization") String token);
     }
 
     public String getToken(Context context) {
