@@ -63,6 +63,7 @@ namespace TiendaMovil.Controllers
                     .Include(t => t.Usuario)
                     .Include(t => t.Compra)
                     .ThenInclude(c => c.Publicacion)
+                    .ThenInclude(p => p.Usuario)
                     .OrderByDescending(t => t.Creacion)
                     .ToList();
                 transacciones.AddRange(contexto.Transacciones.Where(t => t.UsuarioId == id && t.Tipo == 1).Include(t => t.Usuario).ToList());

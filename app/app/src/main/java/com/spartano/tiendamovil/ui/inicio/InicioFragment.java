@@ -43,7 +43,7 @@ public class InicioFragment extends Fragment {
             @Override
             public void onChanged(Usuario usuario) {
                 usuarioActual = usuario;
-                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioActual);
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
             }
         });
 

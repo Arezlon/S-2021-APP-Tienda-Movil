@@ -1,18 +1,14 @@
 package com.spartano.tiendamovil;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.spartano.tiendamovil.model.Usuario;
-import com.spartano.tiendamovil.ui.nuevaPublicacion.NuevaPublicacionFragment;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,6 +21,8 @@ public class MenuNavegacionActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private TextView tvMenuUsuario;
+    private Usuario usuario;
+    private MenuNavegacionViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +33,7 @@ public class MenuNavegacionActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        viewModel = new ViewModelProvider(this).get(MenuNavegacionViewModel.class);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -44,6 +43,16 @@ public class MenuNavegacionActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        viewModel.getUsuarioMutable().observe(this, new Observer<Usuario>() {
+            @Override
+            public void onChanged(Usuario usuariom) {
+                usuario = usuariom;
+                tvMenuUsuario = findViewById(R.id.tvMenuUsuario);
+                tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
+            }
+        });
+        actualizarDatosUsuario();
     }
 
     @Override
@@ -60,8 +69,7 @@ public class MenuNavegacionActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void actualizarDatosUsuario(Usuario usuario){
-        tvMenuUsuario = findViewById(R.id.tvMenuUsuario);
-        tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
+    public void actualizarDatosUsuario(){
+        viewModel.ObtenerUsuario();
     }
 }

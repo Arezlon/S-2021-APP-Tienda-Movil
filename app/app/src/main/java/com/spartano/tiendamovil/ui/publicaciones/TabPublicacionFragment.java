@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.PublicacionImagen;
@@ -105,6 +106,7 @@ public class TabPublicacionFragment extends Fragment {
         viewModel.getCompraMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
                 Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra);
             }
         });

@@ -15,14 +15,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Compra;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CompraFragment extends Fragment {
 
     private CompraViewModel viewModel;
     private TextView tvCompraTituloPublicacion, tvCompraCantidad, tvCompraComprador, tvCompraId, tvCompraImporte, tvCompraVendedor, tvCompraFecha;
-    private Button btCompraReseña;
     private Compra compraActual;
 
     public static CompraFragment newInstance() {
@@ -39,7 +43,6 @@ public class CompraFragment extends Fragment {
             public void onChanged(Compra compra) {
                 compraActual = compra;
                 inicializarVista(root);
-                //Actualizar datos del usuario (fondos) en el menú
             }
         });
         viewModel.ObtenerCompra(getArguments());
@@ -54,14 +57,29 @@ public class CompraFragment extends Fragment {
     private void inicializarVista(View root){
         tvCompraTituloPublicacion = root.findViewById(R.id.tvCompraTituloPublicacion);
         tvCompraCantidad = root.findViewById(R.id.tvCompraCantidad);
-        tvCompraComprador = root.findViewById(R.id.tvCompraComprador);
+        tvCompraVendedor = root.findViewById(R.id.tvCompraVendedor);
         tvCompraId = root.findViewById(R.id.tvCompraId);
         tvCompraImporte = root.findViewById(R.id.tvCompraImporte);
-        tvCompraVendedor = root.findViewById(R.id.tvCompraVendedor);
+        tvCompraComprador = root.findViewById(R.id.tvCompraComprador);
         tvCompraFecha = root.findViewById(R.id.tvCompraFecha);
-        btCompraReseña = root.findViewById(R.id.btCompraReseña);
 
-        tvCompraId.setText("#"+compraActual.getId());
+        tvCompraTituloPublicacion.setText(compraActual.getPublicacion().getTitulo());
+        tvCompraCantidad.setText(compraActual.getCantidad()+" unidad/es");
+        tvCompraComprador.setText("Comprador: "+compraActual.getUsuario().getApellido()+" "+compraActual.getUsuario().getNombre());
+        tvCompraId.setText("Compra #"+compraActual.getId());
+        tvCompraImporte.setText("$"+compraActual.getPrecio());
+        tvCompraVendedor.setText("Vendedor: "+compraActual.getPublicacion().getUsuario().getApellido()+" "+compraActual.getPublicacion().getUsuario().getNombre());
+
+        String fecha = compraActual.getCreacion().substring(0,10);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyy");
+        try {
+            Date fechaConvertida = formatter.parse(fecha);
+            tvCompraFecha.setText(formatter2.format(fechaConvertida));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            tvCompraFecha.setText("Error de fecha");
+        }
     }
 
 }

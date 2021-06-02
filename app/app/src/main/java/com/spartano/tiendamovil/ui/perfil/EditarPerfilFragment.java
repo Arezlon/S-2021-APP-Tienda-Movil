@@ -54,7 +54,7 @@ public class EditarPerfilFragment extends Fragment {
                 Toast.makeText(getContext(),"Datos editados correctamente",Toast.LENGTH_LONG).show();
                 btGuardarCambios.setEnabled(true);
                 btGuardarCambios.setText("Guardar cambios");
-                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioEditado);
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
             }
         });
         inicializarVista(root);

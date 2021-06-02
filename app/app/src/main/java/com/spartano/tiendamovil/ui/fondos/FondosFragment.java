@@ -52,7 +52,7 @@ public class FondosFragment extends Fragment {
             public void onChanged(Usuario usuario) {
                 usuarioActual = usuario;
                 inicializarVista(root);
-                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario(usuarioActual);
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
                 viewModel.leerHistorialTransacciones();
             }
         });
