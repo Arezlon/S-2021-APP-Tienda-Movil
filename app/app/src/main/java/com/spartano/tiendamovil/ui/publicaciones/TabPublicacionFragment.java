@@ -49,7 +49,7 @@ public class TabPublicacionFragment extends Fragment {
     private ImageView ivPreviewImagen;
     private EditText etPublicacionCantidad;
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
-    private TextView tvAgregarEtiqueta;
+    private Button btNuevaEtiqueta;
     private RecyclerView rvEtiquetas;
 
 
@@ -107,6 +107,7 @@ public class TabPublicacionFragment extends Fragment {
                 btAgregarImagen.setVisibility(View.VISIBLE);
                 btEliminarImagen.setVisibility(View.VISIBLE);
                 btDestacarImagen.setVisibility(View.VISIBLE);
+                btNuevaEtiqueta.setEnabled(true);
                 btPublicacionComprar.setEnabled(false);
             }
         });
@@ -119,11 +120,11 @@ public class TabPublicacionFragment extends Fragment {
             }
         });
 
-        viewModel.getEtiquetasMutable().observe(getViewLifecycleOwner(), new Observer<List<Etiqueta>>() {
+        viewModel.getEtiquetasMutable().observe(getViewLifecycleOwner(), new Observer<List<PublicacionEtiqueta>>() {
             @Override
-            public void onChanged(List<Etiqueta> etiquetas) {
+            public void onChanged(List<PublicacionEtiqueta> etiquetas) {
                 rvEtiquetas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext());
+                EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext(), viewModel);
                 rvEtiquetas.setAdapter(adapter);
             }
         });
@@ -160,9 +161,9 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionTipo.setText(publicacion.getTipoNombre());
 
         // Boton agregar etiquetas > abre un dialog que permite hacer alta de muchas etiquetas
-        tvAgregarEtiqueta = root.findViewById(R.id.tvAgregarEtiqueta);
+        btNuevaEtiqueta = root.findViewById(R.id.btNuevaEtiqueta);
         rvEtiquetas = root.findViewById(R.id.rvEtiquetas);
-        tvAgregarEtiqueta.setOnClickListener(new View.OnClickListener() {
+        btNuevaEtiqueta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Las etiquetas creadas se guardan en esta lista, no se suben al servidor hasta que se toca el boton "confirmar"
@@ -183,14 +184,13 @@ public class TabPublicacionFragment extends Fragment {
                 Button btAgregarEtiqueta = dialog.findViewById(R.id.btAgregarEtiqueta);
                 RecyclerView rvEtiquetas = dialog.findViewById(R.id.rvEtiquetas);
                 rvEtiquetas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                List<Etiqueta> etiquetas = new ArrayList<>();
 
                 // Cuando se agrega una etiqueta, sumarla a la lista y mostrarla en el RecyclerView
                 btAgregarEtiqueta.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Etiqueta e = new Etiqueta();
-                        e.setNombre(etEtiqueta.getText().toString());
+                        e.setNombre(etEtiqueta.getText().toString().toLowerCase());
 
                         PublicacionEtiqueta pe = new PublicacionEtiqueta();
                         pe.setEtiqueta(e);
@@ -198,9 +198,10 @@ public class TabPublicacionFragment extends Fragment {
                         pe.setPublicacionId(publicacion.getId());
                         etiquetasPublicacion.add(pe);
 
-                        etiquetas.add(e);
-                        EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext());
+                        EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetasPublicacion, getContext(), viewModel);
                         rvEtiquetas.setAdapter(adapter);
+
+                        etEtiqueta.setText("");
                     }
                 });
             }

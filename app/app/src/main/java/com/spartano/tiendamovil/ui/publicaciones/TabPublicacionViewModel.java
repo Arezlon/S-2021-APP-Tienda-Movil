@@ -42,13 +42,13 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<String> errorMutable;
     private MutableLiveData<List<PublicacionImagen>> imagenesMutable;
-    private MutableLiveData<List<Etiqueta>> etiquetasMutable;
+    private MutableLiveData<List<PublicacionEtiqueta>> etiquetasMutable;
     private MutableLiveData<Boolean> sinImagenesMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
     private MutableLiveData<Boolean> compraMutable;
     private float fondos;
 
-    public LiveData<List<Etiqueta>> getEtiquetasMutable() {
+    public LiveData<List<PublicacionEtiqueta>> getEtiquetasMutable() {
         if (etiquetasMutable == null)
             etiquetasMutable = new MutableLiveData<>();
         return etiquetasMutable;
@@ -109,16 +109,13 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     }
 
     public void leerEtiquetas(int publicacionId) {
-        Call<List<Etiqueta>> resAsync = ApiClient.getRetrofit().getEtiquetas(ApiClient.getApi().getToken(context), publicacionId);
-        resAsync.enqueue(new Callback<List<Etiqueta>>() {
+        Call<List<PublicacionEtiqueta>> resAsync = ApiClient.getRetrofit().getEtiquetas(ApiClient.getApi().getToken(context), publicacionId);
+        resAsync.enqueue(new Callback<List<PublicacionEtiqueta>>() {
             @Override
-            public void onResponse(Call<List<Etiqueta>> call, Response<List<Etiqueta>> response) {
+            public void onResponse(Call<List<PublicacionEtiqueta>> call, Response<List<PublicacionEtiqueta>> response) {
                 if (response.isSuccessful()){
                     if (response.body() != null)
-                        if (response.body().isEmpty()) {
-                            errorMutable.postValue("No se encontraron etiquetas");
-                        }else
-                            etiquetasMutable.postValue(response.body());
+                        etiquetasMutable.postValue(response.body());
                     else {
                         errorMutable.postValue("No se encontraron etiquetas");
                         //sinImagenesMutable.setValue(true);
@@ -130,9 +127,28 @@ public class TabPublicacionViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<List<Etiqueta>> call, Throwable t) {
+            public void onFailure(Call<List<PublicacionEtiqueta>> call, Throwable t) {
                 errorMutable.postValue("No se pudo conectar con el servidor");
                 Log.d("salida", "Error al leer etiquetas de la publicacion: " + t.getMessage());
+            }
+        });
+    }
+
+    public void deleteEtiqueta(PublicacionEtiqueta etiqueta) {
+        Call<Void> resAsync = ApiClient.getRetrofit().deleteEtiqueta(ApiClient.getApi().getToken(context), etiqueta.getId());
+        resAsync.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    leerEtiquetas(etiqueta.getPublicacionId());
+                } else {
+                    errorMutable.postValue("Error al eliminar la etiqueta");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMutable.postValue("No se pudo conectar con el servidor");
             }
         });
     }

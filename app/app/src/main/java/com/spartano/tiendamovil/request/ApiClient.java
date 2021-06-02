@@ -70,8 +70,9 @@ public class ApiClient {
         @POST("reseñas/create") Call<Void> createReseña(@Header("Authorization") String token, @Body Reseña reseña);
 
         // Publicaciones>Etiquetas
-        @GET("etiquetas/get") Call<List<Etiqueta>> getEtiquetas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
-        @POST("etiquetas/create") Call<Void> createEtiquetas(@Header("Authorization") String token, @Body List<PublicacionEtiqueta> publicacionEtiquetas);
+        @GET("publicacionetiquetas/get") Call<List<PublicacionEtiqueta>> getEtiquetas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
+        @POST("publicacionetiquetas/create") Call<Void> createEtiquetas(@Header("Authorization") String token, @Body List<PublicacionEtiqueta> publicacionEtiquetas);
+        @DELETE("publicacionetiquetas/delete") Call<Void> deleteEtiqueta(@Header("Authorization") String token, @Query("publicacionEtiquetaId") int publicacionEtiquetaId);
 
         //Transacciones
         @POST("transacciones/create") Call<Void> createTransaccion(@Body Transaccion transaccion, @Header("Authorization") String token);
