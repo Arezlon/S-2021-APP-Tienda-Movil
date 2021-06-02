@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +31,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
+import com.spartano.tiendamovil.model.Etiqueta;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.PublicacionEtiqueta;
 import com.spartano.tiendamovil.model.PublicacionImagen;
 import com.spartano.tiendamovil.request.ApiClient;
 
@@ -43,6 +49,8 @@ public class TabPublicacionFragment extends Fragment {
     private ImageView ivPreviewImagen;
     private EditText etPublicacionCantidad;
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
+    private TextView tvAgregarEtiqueta;
+    private RecyclerView rvEtiquetas;
 
 
     private List<PublicacionImagen> imagenes;
@@ -106,13 +114,23 @@ public class TabPublicacionFragment extends Fragment {
         viewModel.getCompraMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
-                Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra);
+                ((MenuNavegacionActivity) getActivity()).actualizarDatosUsuario();
+                Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra);
+            }
+        });
+
+        viewModel.getEtiquetasMutable().observe(getViewLifecycleOwner(), new Observer<List<Etiqueta>>() {
+            @Override
+            public void onChanged(List<Etiqueta> etiquetas) {
+                rvEtiquetas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext());
+                rvEtiquetas.setAdapter(adapter);
             }
         });
 
         inicializarVista(root);
         viewModel.leerImagenesPublicacion(publicacion.getId());
+        viewModel.leerEtiquetas(publicacion.getId());
         viewModel.comprobarUsuario(publicacion.getUsuarioId());
         return root;
     }
@@ -140,6 +158,53 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionCategoria.setText(publicacion.getCategoriaNombre());
         tvPublicacionDescripcion.setText(publicacion.getDescripcion());
         tvPublicacionTipo.setText(publicacion.getTipoNombre());
+
+        // Boton agregar etiquetas > abre un dialog que permite hacer alta de muchas etiquetas
+        tvAgregarEtiqueta = root.findViewById(R.id.tvAgregarEtiqueta);
+        rvEtiquetas = root.findViewById(R.id.rvEtiquetas);
+        tvAgregarEtiqueta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Las etiquetas creadas se guardan en esta lista, no se suben al servidor hasta que se toca el boton "confirmar"
+                List<PublicacionEtiqueta> etiquetasPublicacion = new ArrayList<>();
+                Dialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Agregar etiqueta")
+                        .setView(R.layout.dialog_crear_etiqueta)
+                        .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                viewModel.crearEtiquetas(etiquetasPublicacion, publicacion);
+                                dialog.dismiss();
+                            }
+                        }).show();
+
+                // Elementos de la vista interna del dialog (R.layout.dialog_crear_etiqueta)
+                EditText etEtiqueta = dialog.findViewById(R.id.etEtiqueta);
+                Button btAgregarEtiqueta = dialog.findViewById(R.id.btAgregarEtiqueta);
+                RecyclerView rvEtiquetas = dialog.findViewById(R.id.rvEtiquetas);
+                rvEtiquetas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                List<Etiqueta> etiquetas = new ArrayList<>();
+
+                // Cuando se agrega una etiqueta, sumarla a la lista y mostrarla en el RecyclerView
+                btAgregarEtiqueta.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Etiqueta e = new Etiqueta();
+                        e.setNombre(etEtiqueta.getText().toString());
+
+                        PublicacionEtiqueta pe = new PublicacionEtiqueta();
+                        pe.setEtiqueta(e);
+                        pe.setPublicacion(publicacion);
+                        pe.setPublicacionId(publicacion.getId());
+                        etiquetasPublicacion.add(pe);
+
+                        etiquetas.add(e);
+                        EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext());
+                        rvEtiquetas.setAdapter(adapter);
+                    }
+                });
+            }
+        });
 
         // Abrir galería para seleccionar una o muchas imágenes
         btAgregarImagen.setOnClickListener(new View.OnClickListener() {

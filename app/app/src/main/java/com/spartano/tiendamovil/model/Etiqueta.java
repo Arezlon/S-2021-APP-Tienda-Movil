@@ -22,7 +22,7 @@ public class Etiqueta implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = this.id;
     }
 
     public String getNombre() {

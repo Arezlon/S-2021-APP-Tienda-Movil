@@ -14,7 +14,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spartano.tiendamovil.model.Compra;
+import com.spartano.tiendamovil.model.Etiqueta;
 import com.spartano.tiendamovil.model.Publicacion;
+import com.spartano.tiendamovil.model.PublicacionEtiqueta;
 import com.spartano.tiendamovil.model.PublicacionImagen;
 import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
@@ -40,10 +42,17 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<String> errorMutable;
     private MutableLiveData<List<PublicacionImagen>> imagenesMutable;
+    private MutableLiveData<List<Etiqueta>> etiquetasMutable;
     private MutableLiveData<Boolean> sinImagenesMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
     private MutableLiveData<Boolean> compraMutable;
     private float fondos;
+
+    public LiveData<List<Etiqueta>> getEtiquetasMutable() {
+        if (etiquetasMutable == null)
+            etiquetasMutable = new MutableLiveData<>();
+        return etiquetasMutable;
+    }
 
     public LiveData<List<PublicacionImagen>> getImagenesMutable() {
         if (imagenesMutable == null)
@@ -78,6 +87,54 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     public TabPublicacionViewModel(@NonNull Application app) {
         super(app);
         context = app.getApplicationContext();
+    }
+
+    public void crearEtiquetas(List<PublicacionEtiqueta> etiquetas, Publicacion publicacion) {
+        Call<Void> resAsync = ApiClient.getRetrofit().createEtiquetas(ApiClient.getApi().getToken(context), etiquetas);
+        resAsync.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    leerEtiquetas(publicacion.getId());
+                }
+                Log.d("salida", "Crear etiquetas: " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMutable.setValue("Error al Crear etiquetas");
+                Log.d("salida", "Error al Crear etiquetas: " + t.getMessage());
+            }
+        });
+    }
+
+    public void leerEtiquetas(int publicacionId) {
+        Call<List<Etiqueta>> resAsync = ApiClient.getRetrofit().getEtiquetas(ApiClient.getApi().getToken(context), publicacionId);
+        resAsync.enqueue(new Callback<List<Etiqueta>>() {
+            @Override
+            public void onResponse(Call<List<Etiqueta>> call, Response<List<Etiqueta>> response) {
+                if (response.isSuccessful()){
+                    if (response.body() != null)
+                        if (response.body().isEmpty()) {
+                            errorMutable.postValue("No se encontraron etiquetas");
+                        }else
+                            etiquetasMutable.postValue(response.body());
+                    else {
+                        errorMutable.postValue("No se encontraron etiquetas");
+                        //sinImagenesMutable.setValue(true);
+                    }
+                } else {
+                    errorMutable.postValue("Error al leer las etiquetas de la publicación");
+                    Log.d("salida", "Error al leer etiquetas de la publicacion: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Etiqueta>> call, Throwable t) {
+                errorMutable.postValue("No se pudo conectar con el servidor");
+                Log.d("salida", "Error al leer etiquetas de la publicacion: " + t.getMessage());
+            }
+        });
     }
 
     public void comprobarUsuario(int usuarioId) {
