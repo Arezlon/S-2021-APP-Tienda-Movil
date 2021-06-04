@@ -23,7 +23,7 @@ namespace TiendaMovil.Models
                     case 2:
                         return "Alguien hizo una pregunta en tu publicación";
                     case 3:
-                        return "Alguien dejó una reseña en tu publicación";
+                        return "Alguien dejó una reseña en tu publicación"; //Sin terminar
                     case 4:
                         return "Tu publicación se quedó sin stock";
                     case 5:

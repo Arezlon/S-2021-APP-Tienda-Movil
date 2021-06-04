@@ -50,10 +50,22 @@ namespace TiendaMovil.Controllers
         {
             try
             {
+                Publicacion p = comentario.Publicacion;
+                comentario.Publicacion = null;
                 comentario.Estado = 1;
                 comentario.Creacion = DateTime.Now;
                 comentario.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
                 contexto.Comentarios.Add(comentario);
+
+                //Notificación tipo 2, nueva pregunta de un usuario
+                Notificacion notificacion = new Notificacion();
+                notificacion.PublicacionId = comentario.PublicacionId;
+                notificacion.Tipo = 2;
+                notificacion.UsuarioId = p.UsuarioId;
+                notificacion.Estado = 1;
+                notificacion.Creacion = DateTime.Now;
+                contexto.Notificaciones.Add(notificacion);
+
                 contexto.SaveChanges();
                 return Ok();
             }
@@ -72,6 +84,16 @@ namespace TiendaMovil.Controllers
                 if (entidad != null)
                 {
                     contexto.Entry(entidad).CurrentValues.SetValues(comentario);
+
+                    //Notificación tipo 5, nueva respuesta de un vendedor
+                    Notificacion notificacion = new Notificacion();
+                    notificacion.PublicacionId = comentario.PublicacionId;
+                    notificacion.Tipo = 5;
+                    notificacion.UsuarioId = comentario.UsuarioId;
+                    notificacion.Estado = 1;
+                    notificacion.Creacion = DateTime.Now;
+                    contexto.Notificaciones.Add(notificacion);
+
                     contexto.SaveChanges();
                     return Ok();
                 }

@@ -54,6 +54,16 @@ namespace TiendaMovil.Controllers
                 reseña.Creacion = DateTime.Now;
                 reseña.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
                 contexto.Reseñas.Add(reseña);
+
+                //Notificación tipo 3, nueva reseña
+                Notificacion notificacion = new Notificacion();
+                notificacion.PublicacionId = reseña.PublicacionId;
+                notificacion.Tipo = 3;
+                notificacion.UsuarioId = reseña.Publicacion.UsuarioId; //cambiar
+                notificacion.Estado = 1;
+                notificacion.Creacion = DateTime.Now;
+                contexto.Notificaciones.Add(notificacion);
+
                 contexto.SaveChanges();
                 return Ok();
             }

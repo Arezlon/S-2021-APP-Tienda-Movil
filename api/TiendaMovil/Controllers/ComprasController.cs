@@ -70,9 +70,31 @@ namespace TiendaMovil.Controllers
                     trVenta.Creacion = DateTime.Now;
                     contexto.Transacciones.Add(trVenta);
 
-                    //Publicacion
+                    //Publicación
                     Publicacion publicacion = contexto.Publicaciones.Find(compra.PublicacionId);
                     publicacion.Stock -= compra.Cantidad;
+
+                    if(publicacion.Stock == 0)
+                    {
+                        //Notificación tipo 4, publicación sin stock
+                        Notificacion notificacionStock = new Notificacion();
+                        notificacionStock.PublicacionId = compra.PublicacionId;
+                        notificacionStock.Tipo = 4;
+                        notificacionStock.UsuarioId = vendedor.Id;
+                        notificacionStock.Estado = 1;
+                        notificacionStock.Creacion = DateTime.Now;
+                        contexto.Notificaciones.Add(notificacionStock);
+                    }
+
+                    //Notificación tipo 1, venta de una publicación
+                    Notificacion notificacion = new Notificacion();
+                    notificacion.CompraId = compra.Id;
+                    notificacion.PublicacionId = compra.PublicacionId;
+                    notificacion.Tipo = 1;
+                    notificacion.UsuarioId = vendedor.Id;
+                    notificacion.Estado = 1;
+                    notificacion.Creacion = DateTime.Now;
+                    contexto.Notificaciones.Add(notificacion);
 
                     contexto.SaveChanges();
                     return Ok(true);

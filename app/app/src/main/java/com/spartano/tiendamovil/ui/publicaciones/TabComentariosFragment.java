@@ -80,6 +80,7 @@ public class TabComentariosFragment extends Fragment {
                 Comentario comentario = new Comentario();
                 comentario.setPregunta(etComentario.getText().toString());
                 comentario.setPublicacionId(publicacion.getId());
+                comentario.setPublicacion(publicacion);
 
                 viewModel.crearComentario(comentario);
                 btEnviarComentario.setEnabled(false);
