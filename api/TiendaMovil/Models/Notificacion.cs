@@ -19,11 +19,11 @@ namespace TiendaMovil.Models
                 switch (Tipo)
                 {
                     case 1:
-                        return "Alguien compró tu publicación";
+                        return "Nueva venta en tu publicación";
                     case 2:
-                        return "Alguien hizo una pregunta en tu publicación";
+                        return "Nueva pregunta en tu publicación";
                     case 3:
-                        return "Alguien dejó una reseña en tu publicación"; //Sin terminar
+                        return "Nueva reseña en tu publicación"; //Sin terminar
                     case 4:
                         return "Tu publicación se quedó sin stock";
                     case 5:

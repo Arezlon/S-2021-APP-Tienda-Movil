@@ -48,10 +48,10 @@
         tools:layout="@layout/fragment_fondos" />
 
     <fragment
-        android:id="@+id/nav_mensajes"
-        android:name="com.spartano.tiendamovil.ui.mensajes.MensajesFragment"
-        android:label="Mis mensajes"
-        tools:layout="@layout/fragment_mensajes" />
+        android:id="@+id/nav_notificaciones"
+        android:name="com.spartano.tiendamovil.ui.notificaciones.NotificacionesFragment"
+        android:label="Mis notificaciones"
+        tools:layout="@layout/fragment_notificaciones" />
 
     <fragment
         android:id="@+id/nav_salir"
