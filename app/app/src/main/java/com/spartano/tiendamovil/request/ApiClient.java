@@ -48,7 +48,7 @@ public class ApiClient {
         //Publicaciones
         @POST("publicaciones/create") Call<Void> createPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
         @GET("publicaciones/getmias") Call<List<Publicacion>> getMisPublicaciones(@Header("Authorization") String token);
-        @GET("publicaciones/get") Call<List<Publicacion>> getPublicacionesDestacadas(@Header("Authorization") String token);
+        @GET("publicaciones/getdestacadas") Call<List<Publicacion>> getPublicacionesDestacadas(@Header("Authorization") String token);
         @GET("publicaciones/getcategorias") Call<Map<Integer, String>> getCategoriasPublicaciones(@Header("Authorization") String token);
         @GET("publicaciones/gettipos") Call<Map<Integer, String>> getTiposPublicaciones(@Header("Authorization") String token);
         @PUT("publicaciones/edit") Call<Void> editPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);

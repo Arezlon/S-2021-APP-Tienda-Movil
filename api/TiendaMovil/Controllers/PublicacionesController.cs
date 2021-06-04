@@ -64,6 +64,78 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        /* Carousel publicaciones destacadas: (Populares de la semana en toda la app, ignorando las preferencias del usuario)
+	            * Creadas en la última semana
+	            * Ordenadas por:
+		            * Cantidad de ventas
+		            * Promedio de reseñas 
+		            * Cantidad de reseñas 
+		            * Cantidad de comentarios
+	            * Top 10
+-           En el card del carousel un boton que diga "ver mas publicaciones destacadas" que redirija a una lista de publicaciones con los mismos parametros pero con paginación infinita. */
+        [HttpGet("getdestacadas")]
+        public IActionResult GetDestacadas()
+        {
+            try
+            {
+                string query = "SELECT TOP 10 " +
+                        "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
+                    "FROM Publicaciones p " +
+                        "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
+                        "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
+                        "LEFT JOIN Comentarios q ON q.PublicacionId = p.Id " +
+                    "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
+                        " ORDER BY " +
+                            " COUNT(c.Id) DESC, " +
+                            " IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) DESC, " +
+                            " COUNT(r.Id) DESC, " +
+                            " COUNT(q.Id) DESC, " +
+                            " p.Id ASC";
+                var publicaciones = contexto.Publicaciones.FromSqlRaw(query);
+
+                return Ok(publicaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpGet("getrecomendacionesultimacompra")]
+        public IActionResult GetRecomendacionesUltimaCompra()
+        {
+            try
+            {
+                Compra ultimaCompra = contexto.Compras.Where(c => c.UsuarioId == int.Parse(User.Claims.First(c => c.Type == "Id").Value)).OrderByDescending(c => c.Creacion).FirstOrDefault();
+                string query = "SELECT TOP 10 " +
+                        "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion, " +
+                        "COUNT(e.Id) as CantidadEtiquetasEnComun, " +
+                        "COUNT(c.Id) as CantidadCompras, " +
+                        "COUNT(c.Id) as CantidadComentarios, " +
+                        "IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) as PromedioReseñas " +
+                    "FROM Publicaciones p " +
+                        "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
+                        "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
+                        "LEFT JOIN PublicacionEtiquetas pe ON pe.PublicacionId = p.Id " +
+                        "LEFT JOIN Etiquetas e ON pe.EtiquetaId = e.Id " +
+                    "WHERE e.Nombre IN((SELECT et.Nombre FROM Compras com " +
+                            "JOIN Publicaciones pub ON com.PublicacionId = pub.Id " +
+                            "JOIN PublicacionEtiquetas pet ON pet.PublicacionId = pub.Id " +
+                            "JOIN Etiquetas et ON et.Id = pet.EtiquetaId " +
+                            $"WHERE com.Id = {ultimaCompra.Id})) AND p.Id != {ultimaCompra.PublicacionId} " +
+                    "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
+                    "ORDER BY CantidadEtiquetasEnComun DESC, CantidadCompras DESC, CantidadComentarios DESC, PromedioReseñas DESC, p.Id ASC";
+                var publicaciones = contexto.Publicaciones.FromSqlRaw(query);
+
+                return Ok(publicaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+
         [HttpGet("getById")]
         public IActionResult GetById(int publicacionId)
         {
