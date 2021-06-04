@@ -13,12 +13,12 @@ namespace TiendaMovil.Controllers
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
-    public class MensajesController : ControllerBase
+    public class NotificacionesController : ControllerBase
     {
         private readonly DataContext contexto;
         private readonly IConfiguration config;
 
-        public MensajesController(DataContext contexto, IConfiguration config)
+        public NotificacionesController(DataContext contexto, IConfiguration config)
         {
             this.contexto = contexto;
             this.config = config;
