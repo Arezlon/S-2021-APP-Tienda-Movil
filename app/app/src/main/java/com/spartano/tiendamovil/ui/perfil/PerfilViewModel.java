@@ -113,7 +113,7 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Compra>> call, Response<List<Compra>> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        comprasMutable.setValue(response.body());
+                        ventasMutable.setValue(response.body());
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");

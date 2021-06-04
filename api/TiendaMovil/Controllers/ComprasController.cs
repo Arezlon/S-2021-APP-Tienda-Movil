@@ -106,6 +106,27 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        [HttpGet("getventas")]
+        public IActionResult GetVentas()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var ventas = contexto.Compras
+                    .Include(c => c.Usuario)
+                    .Include(c => c.Publicacion)
+                    .ThenInclude(p => p.Usuario)
+                    .Where(c => c.Publicacion.UsuarioId == id)
+                    .OrderByDescending(c => c.Creacion)
+                    .ToList();
+                return Ok(ventas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
         [HttpGet("getultima")]
         public IActionResult GetUltima()
         {
