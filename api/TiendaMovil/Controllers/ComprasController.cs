@@ -49,8 +49,8 @@ namespace TiendaMovil.Controllers
                     Transaccion trCompra = new Transaccion();
                     trCompra.CompraId = compra.Id;
                     trCompra.UsuarioId = compra.UsuarioId;
-                    trCompra.Importe = compra.Precio * compra.Cantidad;
-                    comprador.Fondos -= compra.Precio * compra.Cantidad;
+                    trCompra.Importe = compra.Precio;
+                    comprador.Fondos -= compra.Precio;
                     trCompra.Balance = comprador.Fondos;
                     trCompra.Tipo = 2;
                     trCompra.Estado = 1;
@@ -61,9 +61,9 @@ namespace TiendaMovil.Controllers
                     Transaccion trVenta = new Transaccion();
                     trVenta.CompraId = compra.Id;
                     trVenta.UsuarioId = VendedorId;
-                    trVenta.Importe = compra.Precio * compra.Cantidad;
+                    trVenta.Importe = compra.Precio;
                     Usuario vendedor = contexto.Usuarios.Find(trVenta.UsuarioId);
-                    vendedor.Fondos += trVenta.Importe * compra.Cantidad;
+                    vendedor.Fondos += trVenta.Importe;
                     trVenta.Balance = vendedor.Fondos;
                     trVenta.Tipo = 3;
                     trVenta.Estado = 1;
