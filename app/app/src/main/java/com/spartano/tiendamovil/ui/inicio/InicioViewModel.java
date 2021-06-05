@@ -24,6 +24,7 @@ public class InicioViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<Usuario> usuarioMutable;
     public MutableLiveData<List<Publicacion>> publicacionesDestacadasMutable;
+    public MutableLiveData<List<Publicacion>> publicacionesRecomendadasMutable;
     public MutableLiveData<String> errorMutable;
 
     public LiveData<Usuario> getUsuarioMutable(){
@@ -36,6 +37,12 @@ public class InicioViewModel extends AndroidViewModel {
         if (publicacionesDestacadasMutable == null)
             publicacionesDestacadasMutable = new MutableLiveData<>();
         return publicacionesDestacadasMutable;
+    }
+
+    public LiveData<List<Publicacion>> getPublicacionesRecomendadasMutable() {
+        if (publicacionesRecomendadasMutable == null)
+            publicacionesRecomendadasMutable = new MutableLiveData<>();
+        return publicacionesRecomendadasMutable;
     }
 
     public LiveData<String> getErrorMutable() {
@@ -91,6 +98,31 @@ public class InicioViewModel extends AndroidViewModel {
             public void onFailure(Call<List<Publicacion>> call, Throwable t) {
                 errorMutable.postValue("No se pudo conectar con el servidor");
                 Log.d("salida", "Error al obtener las publicaciones destacadas: " + t.getMessage());
+            }
+        });
+    }
+
+    public void leerPublicacionesRecomendadas() {
+        Call<List<Publicacion>> resAsync = ApiClient.getRetrofit().getPublicacionesRecomendadas(ApiClient.getApi().getToken(context));
+        resAsync.enqueue(new Callback<List<Publicacion>>() {
+            @Override
+            public void onResponse(Call<List<Publicacion>> call, Response<List<Publicacion>> response) {
+                if (response.isSuccessful()) {
+                    if (!response.body().isEmpty()) {
+                        publicacionesRecomendadasMutable.postValue(response.body());
+                    } else {
+                        errorMutable.postValue("No se encontraron publicaciones recomendadas");
+                    }
+                } else {
+                    errorMutable.postValue("Error al obtener las publicaciones recomendadas");
+                    Log.d("salida", "Error al obtener las publicaciones recomendadas: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Publicacion>> call, Throwable t) {
+                errorMutable.postValue("No se pudo conectar con el servidor");
+                Log.d("salida", "Error al obtener las publicaciones recomendadas: " + t.getMessage());
             }
         });
     }

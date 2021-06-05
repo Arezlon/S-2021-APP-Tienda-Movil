@@ -62,12 +62,17 @@ namespace TiendaMovil.Controllers
                     .Where(t => t.UsuarioId == id)
                     .Include(t => t.Usuario)
                     .Include(t => t.Compra)
+                    .ThenInclude(t => t.Usuario)
+                    .Include(t => t.Compra)
                     .ThenInclude(c => c.Publicacion)
                     .ThenInclude(p => p.Usuario)
                     .OrderByDescending(t => t.Creacion)
                     .ToList();
                 transacciones.AddRange(contexto.Transacciones.Where(t => t.UsuarioId == id && t.Tipo == 1).Include(t => t.Usuario).ToList());
                 transacciones = transacciones.OrderByDescending(t => t.Creacion).ToList();
+                foreach (Transaccion t in transacciones)
+                    if (t.Compra != null && t.CompraId != 0)
+                        t.Compra.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == t.Compra.Publicacion.Id && i.Estado == 2).FirstOrDefault().Direccion;
                 return Ok(transacciones);
             }
             catch (Exception ex)

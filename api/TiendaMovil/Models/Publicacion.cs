@@ -48,6 +48,8 @@ namespace TiendaMovil.Models
         public Usuario Usuario { get; set; }
         public string CategoriaNombre => Categoria > 0 ? ((CategoriasEnum)Categoria).ToString() : "";
         public string TipoNombre => Tipo > 0 ? ((TiposEnum)Tipo).ToString() : "";
+        [NotMapped]
+        public string ImagenDir { get; set; }
 
         public static IDictionary<int, string> ObtenerCategorias()
         {

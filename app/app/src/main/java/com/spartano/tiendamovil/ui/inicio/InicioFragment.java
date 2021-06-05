@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +21,7 @@ import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
+import com.spartano.tiendamovil.ui.publicaciones.PublicacionesListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,10 @@ import java.util.List;
 public class InicioFragment extends Fragment {
 
     private InicioViewModel viewModel;
-    RecyclerView rvPrueba;
+    RecyclerView rvDestacadas;
+    ListView lvRecomendadas;
     private List<Publicacion> destacadas;
+    private List<Publicacion> recomendadas;
     private Usuario usuarioActual;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,10 +53,21 @@ public class InicioFragment extends Fragment {
             @Override
             public void onChanged(List<Publicacion> publicaciones) {
                 destacadas = publicaciones;
-                rvPrueba.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                rvDestacadas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
                 PublicacionesRecyclerAdapter adapter = new PublicacionesRecyclerAdapter(destacadas, getContext());
-                rvPrueba.setAdapter(adapter);
+                rvDestacadas.setAdapter(adapter);
+            }
+        });
+
+        viewModel.getPublicacionesRecomendadasMutable().observe(getViewLifecycleOwner(), new Observer<List<Publicacion>>() {
+            @Override
+            public void onChanged(List<Publicacion> publicaciones) {
+                recomendadas = publicaciones;
+                ArrayAdapter<Publicacion> adapter = new PublicacionesListAdapter(getContext(),
+                        R.layout.list_item_publicacion, recomendadas,
+                        getLayoutInflater(), false);
+                lvRecomendadas.setAdapter(adapter);
             }
         });
 
@@ -68,11 +81,13 @@ public class InicioFragment extends Fragment {
         inicializarVista(root);
         viewModel.ObtenerUsuario();
         viewModel.leerPublicacionesDestacadas();
+        viewModel.leerPublicacionesRecomendadas();
         return root;
     }
 
     private void inicializarVista(View root) {
-        rvPrueba = root.findViewById(R.id.rvPrueba);
+        rvDestacadas = root.findViewById(R.id.rvDestacadas);
+        lvRecomendadas = root.findViewById(R.id.lvRecomendadas);
         
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -91,7 +91,9 @@ namespace TiendaMovil.Controllers
                             " COUNT(r.Id) DESC, " +
                             " COUNT(q.Id) DESC, " +
                             " p.Id ASC";
-                var publicaciones = contexto.Publicaciones.FromSqlRaw(query);
+                List<Publicacion> publicaciones = contexto.Publicaciones.FromSqlRaw(query).ToList();
+                foreach (Publicacion p in publicaciones)
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
 
                 return Ok(publicaciones);
             }
@@ -101,33 +103,42 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpGet("getrecomendacionesultimacompra")]
-        public IActionResult GetRecomendacionesUltimaCompra()
+        [HttpGet("getrecomendadas")]
+        public IActionResult GetRecomendadas()
         {
             try
             {
-                Compra ultimaCompra = contexto.Compras.Where(c => c.UsuarioId == int.Parse(User.Claims.First(c => c.Type == "Id").Value)).OrderByDescending(c => c.Creacion).FirstOrDefault();
-                string query = "SELECT TOP 10 " +
-                        "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion, " +
-                        "COUNT(e.Id) as CantidadEtiquetasEnComun, " +
-                        "COUNT(c.Id) as CantidadCompras, " +
-                        "COUNT(c.Id) as CantidadComentarios, " +
-                        "IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) as PromedioReseñas " +
-                    "FROM Publicaciones p " +
-                        "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
-                        "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
-                        "LEFT JOIN PublicacionEtiquetas pe ON pe.PublicacionId = p.Id " +
-                        "LEFT JOIN Etiquetas e ON pe.EtiquetaId = e.Id " +
-                    "WHERE e.Nombre IN((SELECT et.Nombre FROM Compras com " +
-                            "JOIN Publicaciones pub ON com.PublicacionId = pub.Id " +
-                            "JOIN PublicacionEtiquetas pet ON pet.PublicacionId = pub.Id " +
-                            "JOIN Etiquetas et ON et.Id = pet.EtiquetaId " +
-                            $"WHERE com.Id = {ultimaCompra.Id})) AND p.Id != {ultimaCompra.PublicacionId} " +
-                    "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
-                    "ORDER BY CantidadEtiquetasEnComun DESC, CantidadCompras DESC, CantidadComentarios DESC, PromedioReseñas DESC, p.Id ASC";
-                var publicaciones = contexto.Publicaciones.FromSqlRaw(query);
+                int usuarioId = int.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                Compra ultimaCompra = contexto.Compras.Where(c => c.UsuarioId == usuarioId).OrderByDescending(c => c.Id).FirstOrDefault();
+                List<Publicacion> resultado = new List<Publicacion>();
+                if (ultimaCompra != null)
+                {
+                    string query = "SELECT TOP 10 " +
+                            "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
+                        "FROM Publicaciones p " +
+                            "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
+                            "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
+                            "LEFT JOIN PublicacionEtiquetas pe ON pe.PublicacionId = p.Id " +
+                            "LEFT JOIN Etiquetas e ON pe.EtiquetaId = e.Id " +
+                        "WHERE e.Nombre IN((SELECT et.Nombre FROM Compras com " +
+                                "JOIN Publicaciones pub ON com.PublicacionId = pub.Id " +
+                                "JOIN PublicacionEtiquetas pet ON pet.PublicacionId = pub.Id " +
+                                "JOIN Etiquetas et ON et.Id = pet.EtiquetaId " +
+                                $"WHERE com.Id = {ultimaCompra.Id})) AND p.Id != {ultimaCompra.PublicacionId} " +
+                        "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
+                        "ORDER BY COUNT(e.Id) DESC, COUNT(c.Id) DESC, COUNT(r.Id) DESC, IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) DESC, p.Id ASC";
+                    resultado = contexto.Publicaciones.FromSqlRaw(query).ToList();
+                    if (resultado.Count < 10)
+                        resultado.AddRange(contexto.Publicaciones.OrderByDescending(p => p.Id).Take(10 - resultado.Count).ToList());
+                } else
+                {
+                    resultado = contexto.Publicaciones.OrderByDescending(p => p.Id).Take(10).ToList();
+                }
 
-                return Ok(publicaciones);
+                foreach (Publicacion p in resultado)
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
+
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -270,7 +281,7 @@ namespace TiendaMovil.Controllers
                 var publicaciones = contexto.Publicaciones
                     .Where(p => p.UsuarioId == id)
                     .Include(p => p.Usuario)
-                    .Select(p => new {
+                    /*.Select(p => new {
                         Id = p.Id,
                         UsuarioId = p.UsuarioId,
                         Titulo = p.Titulo,
@@ -285,9 +296,11 @@ namespace TiendaMovil.Controllers
                         CategoriaNombre = p.CategoriaNombre,
                         TipoNombre = p.TipoNombre,
                         ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion
-                    })
+                    })*/
                     .OrderByDescending(p => p.Creacion)
                     .ToList();
+                foreach (Publicacion p in publicaciones)
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
                 return Ok(publicaciones);
             }
             catch (Exception ex)

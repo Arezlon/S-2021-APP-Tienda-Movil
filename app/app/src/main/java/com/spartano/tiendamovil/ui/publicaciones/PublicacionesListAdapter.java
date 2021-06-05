@@ -27,13 +27,15 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
     private final Context context;
     private final List<Publicacion> publicaciones;
     private final LayoutInflater inflater;
+    private final boolean publicacionesMias;
 
-    public PublicacionesListAdapter(@NonNull Context context, int resource, @NonNull List<Publicacion> objects, LayoutInflater layoutInflater) {
+    public PublicacionesListAdapter(@NonNull Context context, int resource, @NonNull List<Publicacion> objects, LayoutInflater layoutInflater, boolean publicacionesMias) {
         super(context, resource, objects);
 
         this.context = context;
         this.publicaciones = objects;
         this.inflater = layoutInflater;
+        this.publicacionesMias = publicacionesMias;
     }
 
     @NonNull
@@ -44,10 +46,21 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
 
         TextView tvTitulo = convertView.findViewById(R.id.tvPublicacionTitulo);
         TextView tvPrecio = convertView.findViewById(R.id.tvPrecioPublicacion);
+
         ImageView ivFotoPrincipalPublicacion = convertView.findViewById(R.id.ivFotoPrincipalPublicacion);
 
         tvTitulo.setText(publicacion.getTitulo());
         tvPrecio.setText("$"+publicacion.getPrecio());
+
+        TextView tvStock = convertView.findViewById(R.id.tvStock);
+        TextView tvVentas = convertView.findViewById(R.id.tvVentas);
+        if (publicacionesMias) {
+            tvStock.setText("Stock: " + publicacion.getStock());
+            tvVentas.setText("Ventas: 0");
+        } else {
+            tvStock.setText("");
+            tvVentas.setText("");
+        }
 
         Glide.with(getContext())
                 .load(ApiClient.getPath()+publicacion.getImagenDir())

@@ -45,7 +45,7 @@ public class PublicacionesFragment extends Fragment {
                 ArrayList<Publicacion> arrayList = new ArrayList<Publicacion>(publicaciones);
                 ArrayAdapter<Publicacion> adapter = new PublicacionesListAdapter(getContext(),
                         R.layout.list_item_publicacion, arrayList,
-                        getLayoutInflater());
+                        getLayoutInflater(), true);
                 lvPublicaciones.setAdapter(adapter);
             }
         });

@@ -60,7 +60,6 @@ public class TabComprasListAdapter extends ArrayAdapter<Compra> {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyy");
 
-            //Falta traer la imagen destacada de la publicacion, siempre es null
             Glide.with(getContext())
                     .load(ApiClient.getPath()+compra.getPublicacion().getImagenDir())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
