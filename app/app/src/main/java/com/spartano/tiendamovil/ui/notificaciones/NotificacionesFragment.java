@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Notificacion;
@@ -37,11 +38,19 @@ public class NotificacionesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notificaciones, container, false);
         lvNotificaciones = root.findViewById(R.id.lvNotificaciones);
 
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+            }
+        });
+
         viewModel.getNotificacionesMutable().observe(getViewLifecycleOwner(), new Observer<List<Notificacion>>() {
             @Override
             public void onChanged(List<Notificacion> notificaciones) {
                 ArrayList<Notificacion> arrayList = new ArrayList<Notificacion>(notificaciones);
-                ArrayAdapter<Notificacion> adapter = new NotificacionesListAdapter(getContext(),
+                ArrayAdapter<Notificacion> adapter = new NotificacionesListAdapter(viewModel,
+                        getContext(),
                         R.layout.list_item_notificacion, arrayList,
                         getLayoutInflater());
                 lvNotificaciones.setAdapter(adapter);

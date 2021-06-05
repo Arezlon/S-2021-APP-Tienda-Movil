@@ -62,6 +62,7 @@ namespace TiendaMovil.Controllers
                 notificacion.UsuarioId = reseña.Publicacion.UsuarioId; //cambiar
                 notificacion.Estado = 1;
                 notificacion.Creacion = DateTime.Now;
+                notificacion.CompraId = null;
                 contexto.Notificaciones.Add(notificacion);
 
                 contexto.SaveChanges();

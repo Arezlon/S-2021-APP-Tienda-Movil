@@ -23,7 +23,7 @@ namespace TiendaMovil.Models
                     case 2:
                         return "Nueva pregunta en tu publicación";
                     case 3:
-                        return "Nueva reseña en tu publicación"; //Sin terminar
+                        return "Nueva reseña en tu publicación";
                     case 4:
                         return "Tu publicación se quedó sin stock";
                     case 5:
@@ -38,9 +38,9 @@ namespace TiendaMovil.Models
         [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
         [ForeignKey("CompraId")]
-        public int CompraId { get; set; }
-        public int PublicacionId { get; set; }
+        public int? CompraId { get; set; }
         [ForeignKey("PublicacionId")]
+        public int? PublicacionId { get; set; }
         public int Estado { get; set; }
         public DateTime Creacion { get; set; }
         public Compra Compra { get; set; }

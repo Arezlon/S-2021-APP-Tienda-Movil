@@ -83,6 +83,7 @@ namespace TiendaMovil.Controllers
                         notificacionStock.UsuarioId = vendedor.Id;
                         notificacionStock.Estado = 1;
                         notificacionStock.Creacion = DateTime.Now;
+                        notificacionStock.CompraId = null;
                         contexto.Notificaciones.Add(notificacionStock);
                     }
 

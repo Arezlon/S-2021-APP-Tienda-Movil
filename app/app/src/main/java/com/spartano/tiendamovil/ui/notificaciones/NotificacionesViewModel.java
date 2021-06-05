@@ -52,13 +52,31 @@ public class NotificacionesViewModel extends AndroidViewModel {
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
                 }
-                Log.d("salida", "Error (onResponse) al obtener las notificaciones: " + response.message());
             }
 
             @Override
             public void onFailure(Call<List<Notificacion>> call, Throwable t) {
                 errorMutable.setValue("No se pudo conectar con el servidor");
-                Log.d("salida", "Error (onFailure) al obtener las notificaciones: " + t.getMessage());
+                Log.d("salida", "Error al obtener las notificaciones: " + t.getMessage());
+            }
+        });
+    }
+
+    public void LeerNotificacion(Notificacion notificacion){
+        Call<Void> resAsync = ApiClient.getRetrofit().leerNotificacion(ApiClient.getApi().getToken(context), notificacion);
+        resAsync.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    ObtenerNotificaciones();
+                } else {
+                    errorMutable.postValue("Error al leer la notificacion");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                errorMutable.postValue("No se pudo conectar con el servidor");
             }
         });
     }

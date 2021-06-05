@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TiendaMovil.Models;
 
@@ -22,6 +24,49 @@ namespace TiendaMovil.Controllers
         {
             this.contexto = contexto;
             this.config = config;
+        }
+
+        [HttpGet("get")]
+        public IActionResult Get()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                var notificaciones = contexto.Notificaciones
+                    .Where(c => c.UsuarioId == id)
+                    .Include(c => c.Publicacion)
+                    .ThenInclude(c => c.Usuario)
+                    .Include(c => c.Compra)
+                    .ThenInclude(c => c.Usuario)
+                    .OrderBy(c => c.Estado)
+                    .ThenByDescending(c => c.Creacion)
+                    .ToList();
+                return Ok(notificaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpPatch("patch")]
+        public IActionResult Patch(Notificacion notificacion)
+        {
+            try
+            {
+                var entidad = contexto.Notificaciones.FirstOrDefault(i => i.Id == notificacion.Id);
+                if (entidad != null)
+                {
+                    entidad.Estado = 2;
+                    contexto.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

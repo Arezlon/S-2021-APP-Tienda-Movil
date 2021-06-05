@@ -85,7 +85,8 @@ public class ApiClient {
         @GET("compras/getVentas") Call <List<Compra>> getVentas(@Header("Authorization") String token);
 
         //Notificaciones
-        @GET("notificaiones/get") Call <List<Notificacion>> getNotificaciones(@Header("Authorization") String token);
+        @GET("notificaciones/get") Call <List<Notificacion>> getNotificaciones(@Header("Authorization") String token);
+        @PATCH("notificaciones/patch") Call<Void> leerNotificacion(@Header("Authorization") String token, @Body Notificacion notificacion);
     }
 
     public String getToken(Context context) {

@@ -64,6 +64,7 @@ namespace TiendaMovil.Controllers
                 notificacion.UsuarioId = p.UsuarioId;
                 notificacion.Estado = 1;
                 notificacion.Creacion = DateTime.Now;
+                notificacion.CompraId = null;
                 contexto.Notificaciones.Add(notificacion);
 
                 contexto.SaveChanges();
@@ -92,6 +93,7 @@ namespace TiendaMovil.Controllers
                     notificacion.UsuarioId = comentario.UsuarioId;
                     notificacion.Estado = 1;
                     notificacion.Creacion = DateTime.Now;
+                    notificacion.CompraId = null;
                     contexto.Notificaciones.Add(notificacion);
 
                     contexto.SaveChanges();
