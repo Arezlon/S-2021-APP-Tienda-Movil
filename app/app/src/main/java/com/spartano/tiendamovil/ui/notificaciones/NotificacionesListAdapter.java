@@ -99,6 +99,7 @@ public class NotificacionesListAdapter extends ArrayAdapter<Notificacion> {
             ivNotificacionIr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    viewModel.LeerNotificacion(notificacion);
                     if(notificacion.getTipo() == 1){
                         Bundle b = new Bundle();
                         b.putSerializable("compra", notificacion.getCompra());
