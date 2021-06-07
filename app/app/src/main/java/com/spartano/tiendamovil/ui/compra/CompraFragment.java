@@ -31,7 +31,7 @@ public class CompraFragment extends Fragment {
 
     private CompraViewModel viewModel;
     private TextView tvCompraTituloPublicacion, tvCompraCantidad, tvCompraComprador, tvCompraId, tvCompraImporte, tvCompraVendedor, tvCompraFecha;
-    private CardView cvCompraReseña;
+    private CardView cvCompraReseña, cvReseña;
     private EditText tvReseñaTitulo, tvReseñaContenido;
     private RatingBar rbReseñaPuntaje;
     private Button btReseñaGuardar;
@@ -96,7 +96,9 @@ public class CompraFragment extends Fragment {
 
     private void inicializarVista(View root){
         cvCompraReseña = root.findViewById(R.id.cvCompraReseña);
+        cvReseña = root.findViewById(R.id.cvReseña);
         cvCompraReseña.setVisibility(View.INVISIBLE);
+        cvReseña.setVisibility(View.INVISIBLE);
 
         tvCompraTituloPublicacion = root.findViewById(R.id.tvCompraTituloPublicacion);
         tvCompraCantidad = root.findViewById(R.id.tvCompraCantidad);
