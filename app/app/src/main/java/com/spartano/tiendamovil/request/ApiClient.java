@@ -19,7 +19,7 @@ import retrofit2.http.*;
 
 public class ApiClient {
     private static ApiClient api = null;
-    private static final String PATH="http://192.168.1.106:45456/api/"; //Diego
+    //private static final String PATH="http://192.168.1.106:45456/api/"; //Diego
     //private static final String PATH="http://192.168.1.104:45456/api/"; //Sebastian
 
     private static MyRetrofit myRetrofit;
