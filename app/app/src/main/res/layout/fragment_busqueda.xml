@@ -6,17 +6,150 @@
     android:layout_height="match_parent"
     tools:context=".ui.busqueda.BusquedaFragment">
 
-    <TextView
-        android:id="@+id/busqueda"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Buscar en Tienda Movil"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/etBusqueda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <Button
+                android:id="@+id/btBuscar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableRight="@drawable/baseline_search_24"
+                android:drawableTint="#FFFFFF"
+                android:text="buscar"
+                app:cornerRadius="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/etBuscarPrecioMaximo" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Categoría"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etBusqueda" />
+
+            <EditText
+                android:id="@+id/etBuscarPrecioMaximo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView36" />
+
+            <TextView
+                android:id="@+id/textView36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Precio máximo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spnBuscarCategoria" />
+
+            <Spinner
+                android:id="@+id/spnBuscarEstado"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/spnBuscarCategoria"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/spnBuscarCategoria"
+                app:layout_constraintTop_toTopOf="@+id/spnBuscarCategoria" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado"
+                app:layout_constraintBottom_toTopOf="@+id/spnBuscarEstado"
+                app:layout_constraintStart_toStartOf="@+id/spnBuscarEstado" />
+
+            <Spinner
+                android:id="@+id/spnBuscarCategoria"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/etBuscarPrecioMaximo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ListView
+        android:id="@+id/lvPublicacionesBusqueda"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:divider="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView11"></ListView>
+
+    <TextView
+        android:id="@+id/tvListaPublicacionesVacia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Realiza una busqueda"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/lvPublicacionesBusqueda"
+        app:layout_constraintEnd_toEndOf="@+id/lvPublicacionesBusqueda"
+        app:layout_constraintStart_toStartOf="@+id/lvPublicacionesBusqueda"
+        app:layout_constraintTop_toTopOf="@+id/lvPublicacionesBusqueda" />
+
+    <ImageView
+        android:id="@+id/ivListaPublicacionesVacia"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/baseline_search_24"
+        app:layout_constraintBottom_toTopOf="@+id/tvListaPublicacionesVacia"
+        app:layout_constraintEnd_toEndOf="@+id/tvListaPublicacionesVacia"
+        app:layout_constraintStart_toStartOf="@+id/tvListaPublicacionesVacia" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

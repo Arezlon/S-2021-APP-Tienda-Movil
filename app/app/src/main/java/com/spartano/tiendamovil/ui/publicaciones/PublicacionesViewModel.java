@@ -64,6 +64,7 @@ public class PublicacionesViewModel extends AndroidViewModel {
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
+                    listaPublicacionesVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "Leer mis publicaciones/response: " + response.message());
             }
@@ -71,6 +72,7 @@ public class PublicacionesViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<List<Publicacion>> call, Throwable t) {
                 errorMutable.setValue("No se pudo conectar con el servidor");
+                listaPublicacionesVaciaMutable.setValue(true);
                 Log.d("salida", "Leer mis publicaciones/failure: " + t.getMessage());
             }
         });

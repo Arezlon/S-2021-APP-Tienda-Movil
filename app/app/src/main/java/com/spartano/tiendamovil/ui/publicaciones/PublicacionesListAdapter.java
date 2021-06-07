@@ -56,7 +56,7 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
         TextView tvVentas = convertView.findViewById(R.id.tvVentas);
         if (publicacionesMias) {
             tvStock.setText("Stock: " + publicacion.getStock());
-            tvVentas.setText("Ventas: 0");
+            tvVentas.setText(""); // falta obtener cantidad de ventas
         } else {
             tvStock.setText("");
             tvVentas.setText("");

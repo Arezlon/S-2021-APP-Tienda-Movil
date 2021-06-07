@@ -80,13 +80,19 @@ public class FondosViewModel extends AndroidViewModel {
                         Usuario u = response.body();
                         usuarioMutable.setValue(u);
                     }
-                    else
+                    else {
+
+                        errorMutable.setValue("Ocurrió un error inesperado");
+                        listaTransaccionesVaciaMutable.setValue(true);
                         Log.d("salida", "Error al buscar el usuario");
+                    }
                 }
             }
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
                 Log.d("salida", "Error de conexion");
+                errorMutable.setValue("No se pudo conectar con el servidor");
+                listaTransaccionesVaciaMutable.setValue(true);
             }
         });
     }
@@ -123,17 +129,17 @@ public class FondosViewModel extends AndroidViewModel {
         resAsync.enqueue(new Callback<List<Transaccion>>() {
             @Override
             public void onResponse(Call<List<Transaccion>> call, Response<List<Transaccion>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if(!response.body().isEmpty()) {
-                            transaccionesMutable.setValue(response.body());
-                            listaTransaccionesVaciaMutable.setValue(false);
-                        }else{
-                            listaTransaccionesVaciaMutable.setValue(true);
-                        }
+                if (response.isSuccessful() && response.body() != null) {
+                    if(!response.body().isEmpty()) {
+                        transaccionesMutable.setValue(response.body());
+                        listaTransaccionesVaciaMutable.setValue(false);
+                    }else{
+                        listaTransaccionesVaciaMutable.setValue(true);
                     }
+                    return;
                 } else {
-                    errorMutable.setValue("Ocurrió un error al cargar el historial de transacciones");
+                    errorMutable.setValue("Ocurrió un error inesperado");
+                    listaTransaccionesVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "historial " + response.message());
             }
@@ -141,6 +147,7 @@ public class FondosViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<List<Transaccion>> call, Throwable t) {
                 errorMutable.setValue("No se pudo conectar con el servidor");
+                listaTransaccionesVaciaMutable.setValue(true);
             }
         });
     }

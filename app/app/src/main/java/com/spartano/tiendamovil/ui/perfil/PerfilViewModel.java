@@ -65,12 +65,14 @@ public class PerfilViewModel extends AndroidViewModel {
                 }
                 Log.d("salida", "Error al obtener lista de publicaciones del vendedor: " + response.message());
                 errorMutable.setValue("Ocurrió un error inesperado");
+                listaPublicacionesVaciaMutable.setValue(true);
             }
 
             @Override
             public void onFailure(Call<List<Publicacion>> call, Throwable t) {
                 Log.d("salida", "Error al obtener lista de publicaciones del vendedor: " + t.getMessage());
                 errorMutable.setValue("No se pudo conectar con el servidor");
+                listaPublicacionesVaciaMutable.setValue(true);
             }
         });
     }

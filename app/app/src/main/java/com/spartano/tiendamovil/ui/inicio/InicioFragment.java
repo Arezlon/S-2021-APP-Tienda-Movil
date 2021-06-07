@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,6 +36,9 @@ public class InicioFragment extends Fragment {
     private List<Publicacion> destacadas;
     private List<Publicacion> recomendadas;
     private Usuario usuarioActual;
+
+    private EditText etBusqueda;
+    private Button btBuscar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +93,17 @@ public class InicioFragment extends Fragment {
     private void inicializarVista(View root) {
         rvDestacadas = root.findViewById(R.id.rvDestacadas);
         lvRecomendadas = root.findViewById(R.id.lvRecomendadas);
+        etBusqueda = root.findViewById(R.id.etBusqueda);
+        btBuscar = root.findViewById(R.id.btBuscar);
+
+        btBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putSerializable("busqueda", etBusqueda.getText().toString());
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_busqueda_avanzada, b);
+            }
+        });
         
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

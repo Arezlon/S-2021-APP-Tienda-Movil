@@ -116,6 +116,7 @@ public class MiPerfilViewModel extends AndroidViewModel {
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
+                    listaComprasVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "Error (onResponse) al obtener las compras: " + response.message());
             }
@@ -123,6 +124,7 @@ public class MiPerfilViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<List<Compra>> call, Throwable t) {
                 errorMutable.setValue("No se pudo conectar con el servidor");
+                listaComprasVaciaMutable.setValue(true);
                 Log.d("salida", "Error (onFailure) al obtener las compras: " + t.getMessage());
             }
         });
@@ -144,6 +146,7 @@ public class MiPerfilViewModel extends AndroidViewModel {
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
+                    listaVentasVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "Error (onResponse) al obtener las ventas: " + response.message());
             }
@@ -151,6 +154,7 @@ public class MiPerfilViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<List<Compra>> call, Throwable t) {
                 errorMutable.setValue("No se pudo conectar con el servidor");
+                listaVentasVaciaMutable.setValue(true);
                 Log.d("salida", "Error (onFailure) al obtener las ventas: " + t.getMessage());
             }
         });

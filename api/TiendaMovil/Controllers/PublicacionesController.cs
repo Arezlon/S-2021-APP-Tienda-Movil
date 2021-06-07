@@ -146,6 +146,46 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        [HttpGet("buscar")]
+        public IActionResult Buscar(string busqueda, float precioMaximo, int categoria, int estado)
+        {
+            // defaults: busqueda = null | precioMaximo = -1 | categoria = 0 | estado = 0
+            try
+            {
+                // Buscar por titulo, precio, categoria y estado
+                List<Publicacion> publicaciones = contexto.Publicaciones
+                    .Where(p => (precioMaximo != -1 ? p.Precio <= precioMaximo : true) && 
+                                (categoria != 0 ? p.Categoria == categoria : true) && 
+                                (estado != 0 ? p.Estado == estado : true) &&
+                                (busqueda != null ? EF.Functions.Like(p.Titulo, $"%{busqueda}%") : true))
+                    .OrderByDescending(p => p.Creacion)
+                    .ToList();
+
+                if (busqueda != null)
+                {
+                    // Buscar por etiqueta
+                    List<Publicacion> porEtiqueta = contexto.PublicacionEtiquetas
+                        .Include(pe => pe.Etiqueta)
+                        .Where(pe => EF.Functions.Like(pe.Etiqueta.Nombre, $"%{busqueda}%"))
+                        .Include(pe => pe.Publicacion)
+                        .Select(pe => pe.Publicacion)
+                        .ToList();
+                    foreach (Publicacion p in porEtiqueta)
+                        if (!publicaciones.Contains(p))
+                            publicaciones.Add(p);
+                    publicaciones.OrderByDescending(p => p.Creacion);
+                }
+
+                foreach (Publicacion p in publicaciones)
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
+
+                return Ok(publicaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
 
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)

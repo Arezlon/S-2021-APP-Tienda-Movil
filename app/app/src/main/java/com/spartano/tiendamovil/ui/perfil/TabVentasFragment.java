@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Compra;
@@ -51,6 +52,13 @@ public class TabVentasFragment extends Fragment {
                 ivListaVentasVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
                 tvListaVentasVacia.setText("No se encontraron ventas");
                 ivListaVentasVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
+
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
