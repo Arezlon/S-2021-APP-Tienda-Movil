@@ -1,39 +1,47 @@
 package com.spartano.tiendamovil.ui.perfil;
 
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.spartano.tiendamovil.R;
-import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
-import com.spartano.tiendamovil.ui.publicaciones.PublicacionesFragment;
 
-import java.util.List;
+public class MiPerfilFragment extends Fragment {
 
-public class PerfilFragment extends Fragment {
-
-    private PerfilViewModel viewModel;
+    private MiPerfilViewModel viewModel;
     private Usuario usuarioActual;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public static MiPerfilFragment newInstance() {
+        return new MiPerfilFragment();
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         viewModel =
-                new ViewModelProvider(this).get(PerfilViewModel.class);
+                new ViewModelProvider(this).get(MiPerfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        viewModel.getUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<Usuario>() {
+            @Override
+            public void onChanged(Usuario usuario) {
+                usuarioActual = usuario;
+                inicializarVista(root);
+            }
+        });
 
         viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -42,8 +50,7 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        usuarioActual = (Usuario)getArguments().getSerializable("usuario");
-        inicializarVista(root);
+        viewModel.ObtenerUsuario();
         return root;
     }
 
@@ -55,10 +62,12 @@ public class PerfilFragment extends Fragment {
         appBar.addView(tabLayout);
 
         ViewPageAdapter vpa = new ViewPageAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        vpa.addFragment(new TabPerfilFragment(usuarioActual), "Vendedor");
-        vpa.addFragment(new TabPublicacionesFragment(usuarioActual), "Publicaciones");
+        vpa.addFragment(new TabMiPerfilFragment(usuarioActual), "Mi perfil");
+        vpa.addFragment(new TabComprasFragment(), "Mis compras");
+        vpa.addFragment(new TabVentasFragment(), "Mis ventas");
 
         viewPage.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPage);
     }
+
 }

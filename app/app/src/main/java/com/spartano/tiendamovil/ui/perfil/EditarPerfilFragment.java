@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,8 +27,8 @@ public class EditarPerfilFragment extends Fragment {
     private EditText etEditarNombre, etEditarApellido, etEditarTelefono, etEditarDni, etEditarMail, etEditarDireccion, etEditarLocalidad, etEditarProvincia, etEditarPais;
     private Usuario usuario, usuarioEditado;
 
-    public static PerfilFragment newInstance() {
-        return new PerfilFragment();
+    public static MiPerfilFragment newInstance() {
+        return new MiPerfilFragment();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

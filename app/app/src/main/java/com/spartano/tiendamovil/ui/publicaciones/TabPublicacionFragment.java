@@ -17,7 +17,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,7 +167,9 @@ public class TabPublicacionFragment extends Fragment {
         tvNombreVendedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_perfil);
+                Bundle b = new Bundle();
+                b.putSerializable("usuario", publicacion.getUsuario());
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_perfil, b);
             }
         });
 

@@ -2,6 +2,7 @@ package com.spartano.tiendamovil.ui.perfil;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.spartano.tiendamovil.model.Compra;
+import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
 
@@ -21,41 +22,19 @@ import retrofit2.Response;
 
 public class PerfilViewModel extends AndroidViewModel {
     private Context context;
-    private MutableLiveData<Usuario> usuarioMutable;
+    private MutableLiveData<List<Publicacion>> publicacionesMutable;
     private MutableLiveData<String> errorMutable;
-    private MutableLiveData<List<Compra>> ventasMutable;
-    private MutableLiveData<List<Compra>> comprasMutable;
-    private MutableLiveData<Boolean> listaComprasVaciaMutable;
-    private MutableLiveData<Boolean> listaVentasVaciaMutable;
+    private MutableLiveData<Boolean> listaPublicacionesVaciaMutable;
 
-    public LiveData<Boolean> getListaComprasVaciaMutable(){
-        if(listaComprasVaciaMutable == null)
-            listaComprasVaciaMutable = new MutableLiveData<>();
-        return listaComprasVaciaMutable;
+    public PerfilViewModel(@NonNull Application application) {
+        super(application);
+        context = application.getApplicationContext();
     }
 
-    public LiveData<Boolean> getListaVentasVaciaMutable(){
-        if(listaVentasVaciaMutable == null)
-            listaVentasVaciaMutable = new MutableLiveData<>();
-        return listaVentasVaciaMutable;
-    }
-
-    public LiveData<Usuario> getUsuarioMutable(){
-        if(usuarioMutable == null)
-            usuarioMutable = new MutableLiveData<>();
-        return usuarioMutable;
-    }
-
-    public LiveData<List<Compra>> getComprasMutable(){
-        if (comprasMutable == null)
-            comprasMutable = new MutableLiveData<>();
-        return comprasMutable;
-    }
-
-    public LiveData<List<Compra>> getVentasMutable(){
-        if (ventasMutable == null)
-            ventasMutable = new MutableLiveData<>();
-        return ventasMutable;
+    public LiveData<List<Publicacion>> getPublicacionesMutable() {
+        if (publicacionesMutable == null)
+            publicacionesMutable = new MutableLiveData<>();
+        return publicacionesMutable;
     }
 
     public LiveData<String> getErrorMutable(){
@@ -64,92 +43,35 @@ public class PerfilViewModel extends AndroidViewModel {
         return errorMutable;
     }
 
-    public PerfilViewModel(@NonNull Application app){
-        super(app);
-        context = app.getApplicationContext();
+    public LiveData<Boolean> getListaPublicacionesVaciaMutable(){
+        if (listaPublicacionesVaciaMutable == null)
+            listaPublicacionesVaciaMutable = new MutableLiveData<>();
+        return listaPublicacionesVaciaMutable;
     }
 
-    public void ObtenerUsuario(){
-        Call<Usuario> resAsync = ApiClient.getRetrofit().getUsuario(ApiClient.getApi().getToken(context));
-        resAsync.enqueue(new Callback<Usuario>() {
+    public void leerPublicacionesUsuario(Usuario usuario) {
+        Call<List<Publicacion>> resAsync = ApiClient.getRetrofit().getPublicacionesUsuario(ApiClient.getApi().getToken(context), usuario.getId());
+        resAsync.enqueue(new Callback<List<Publicacion>>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        Usuario u = response.body();
-                        if(u.getDireccion() == null){
-                            u.setDireccion(null);
-                            u.setLocalidad(null);
-                            u.setProvinicia(null);
-                            u.setPais(null);
-                        }
-                        usuarioMutable.setValue(u);
+            public void onResponse(Call<List<Publicacion>> call, Response<List<Publicacion>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (!response.body().isEmpty()) {
+                        publicacionesMutable.setValue(response.body());
+                        listaPublicacionesVaciaMutable.setValue(false);
+                    } else {
+                        listaPublicacionesVaciaMutable.setValue(true);
                     }
-                    else
-                        Log.d("salida", "Error al buscar el usuario");
+                    return;
                 }
-            }
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-                Log.d("salida", "Error de conexion");
-            }
-        });
-    }
-
-    public void ObtenerCompras(){
-        Call<List<Compra>> resAsync = ApiClient.getRetrofit().getCompras(ApiClient.getApi().getToken(context));
-        resAsync.enqueue(new Callback<List<Compra>>() {
-            @Override
-            public void onResponse(Call<List<Compra>> call, Response<List<Compra>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if(!response.body().isEmpty()){
-                            comprasMutable.setValue(response.body());
-                            listaComprasVaciaMutable.setValue(false);
-                        }
-                        else
-                            listaComprasVaciaMutable.setValue(true);
-                    }
-                } else {
-                    errorMutable.setValue("Ocurrió un error inesperado");
-                }
-                Log.d("salida", "Error (onResponse) al obtener las compras: " + response.message());
+                Log.d("salida", "Error al obtener lista de publicaciones del vendedor: " + response.message());
+                errorMutable.setValue("Ocurrió un error inesperado");
             }
 
             @Override
-            public void onFailure(Call<List<Compra>> call, Throwable t) {
+            public void onFailure(Call<List<Publicacion>> call, Throwable t) {
+                Log.d("salida", "Error al obtener lista de publicaciones del vendedor: " + t.getMessage());
                 errorMutable.setValue("No se pudo conectar con el servidor");
-                Log.d("salida", "Error (onFailure) al obtener las compras: " + t.getMessage());
             }
         });
     }
-
-    public void ObtenerVentas(){
-        Call<List<Compra>> resAsync = ApiClient.getRetrofit().getVentas(ApiClient.getApi().getToken(context));
-        resAsync.enqueue(new Callback<List<Compra>>() {
-            @Override
-            public void onResponse(Call<List<Compra>> call, Response<List<Compra>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if(!response.body().isEmpty()){
-                            ventasMutable.setValue(response.body());
-                            listaVentasVaciaMutable.setValue(false);
-                        }
-                        else
-                            listaVentasVaciaMutable.setValue(true);
-                    }
-                } else {
-                    errorMutable.setValue("Ocurrió un error inesperado");
-                }
-                Log.d("salida", "Error (onResponse) al obtener las ventas: " + response.message());
-            }
-
-            @Override
-            public void onFailure(Call<List<Compra>> call, Throwable t) {
-                errorMutable.setValue("No se pudo conectar con el servidor");
-                Log.d("salida", "Error (onFailure) al obtener las ventas: " + t.getMessage());
-            }
-        });
-    }
-
 }

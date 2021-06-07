@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,9 +18,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Publicacion;
-import com.spartano.tiendamovil.ui.perfil.TabComprasFragment;
-import com.spartano.tiendamovil.ui.perfil.TabPerfilFragment;
-import com.spartano.tiendamovil.ui.perfil.TabVentasFragment;
 import com.spartano.tiendamovil.ui.perfil.ViewPageAdapter;
 
 public class PublicacionFragment extends Fragment {
@@ -40,6 +38,13 @@ public class PublicacionFragment extends Fragment {
                 inicializarVista(root);
             }
         });
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         viewModel.leerPublicacion((Publicacion)getArguments().getSerializable("publicacion"));
         return root;
     }

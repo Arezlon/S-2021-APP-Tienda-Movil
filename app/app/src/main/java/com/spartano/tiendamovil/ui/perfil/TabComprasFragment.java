@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabComprasFragment extends Fragment {
-    public PerfilViewModel viewModel;
+    public MiPerfilViewModel viewModel;
     private ListView lvCompras;
     private TextView tvListaComprasVacia;
     private ImageView ivListaComprasVacia;
@@ -35,7 +35,7 @@ public class TabComprasFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MiPerfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_tab_perfil_compras, container, false);
 
         lvCompras = root.findViewById(R.id.lvCompras);

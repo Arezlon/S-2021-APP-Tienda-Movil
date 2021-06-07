@@ -24,9 +24,15 @@
         tools:layout="@layout/fragment_nueva_publicacion" />
 
     <fragment
+        android:id="@+id/nav_mi_perfil"
+        android:name="com.spartano.tiendamovil.ui.perfil.MiPerfilFragment"
+        android:label="Perfil del usuario"
+        tools:layout="@layout/fragment_perfil" />
+
+    <fragment
         android:id="@+id/nav_perfil"
         android:name="com.spartano.tiendamovil.ui.perfil.PerfilFragment"
-        android:label="Perfil del usuario"
+        android:label="Perfil del vendedor"
         tools:layout="@layout/fragment_perfil" />
 
     <fragment

@@ -25,7 +25,7 @@ import java.util.List;
 
 public class TabVentasFragment extends Fragment {
 
-    public PerfilViewModel viewModel;
+    public MiPerfilViewModel viewModel;
     private ListView lvVentas;
     private TextView tvListaVentasVacia;
     private ImageView ivListaVentasVacia;
@@ -37,7 +37,7 @@ public class TabVentasFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MiPerfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_tab_perfil_ventas, container, false);
 
         lvVentas = root.findViewById(R.id.lvVentas);

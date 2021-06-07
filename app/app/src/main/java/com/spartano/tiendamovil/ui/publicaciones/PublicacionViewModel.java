@@ -18,12 +18,19 @@ import retrofit2.Response;
 
 public class PublicacionViewModel extends AndroidViewModel {
     public MutableLiveData<Publicacion> publicacionMutable;
+    public MutableLiveData<String> errorMutable;
     private Context context;
 
     public LiveData<Publicacion> getPublicacionMutable(){
         if (publicacionMutable == null)
             publicacionMutable = new MutableLiveData<>();
         return publicacionMutable;
+    }
+
+    public LiveData<String> getErrorMutable(){
+        if (errorMutable == null)
+            errorMutable = new MutableLiveData<>();
+        return errorMutable;
     }
 
     public PublicacionViewModel(@NonNull Application application) {
@@ -45,11 +52,13 @@ public class PublicacionViewModel extends AndroidViewModel {
                             return;
                         }
                     }
+                    errorMutable.setValue("Ocurrió un error inesperado");
                     Log.d("salida", "Error al obtener la publicacion: " + response.message());
                 }
 
                 @Override
                 public void onFailure(Call<Publicacion> call, Throwable t) {
+                    errorMutable.setValue("No se pudo conectar con el servior");
                     Log.d("salida", "Failure al obtener la publicacion: " + t.getMessage());
                 }
             });
