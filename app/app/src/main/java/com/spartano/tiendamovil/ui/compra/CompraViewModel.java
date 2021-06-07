@@ -72,14 +72,14 @@ public class CompraViewModel extends AndroidViewModel {
             compraMutable.setValue((Compra)bundle.getSerializable("compra"));
     }
 
-    public void ComprobarReseña(int publicacionId){
-        Call<Boolean> resAsync = ApiClient.getRetrofit().getEstado(ApiClient.getApi().getToken(context), publicacionId);
+    public void ComprobarReseña(int publicacionId, int compraId){
+        Call<Boolean> resAsync = ApiClient.getRetrofit().comprobarReseña(ApiClient.getApi().getToken(context), publicacionId);
         resAsync.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        pemitirReseñaMutable.setValue(true);
+                    if (response.body()) {
+                        comprobarUsuarioReseña(compraId);
                     } else
                         Log.d("salida", "Error");
                 }
@@ -92,9 +92,35 @@ public class CompraViewModel extends AndroidViewModel {
         });
     }
 
+    public void comprobarUsuarioReseña(int compraId){
+        Call<Boolean> resAsync = ApiClient.getRetrofit().comprobarUsuario(ApiClient.getApi().getToken(context), compraId);
+        resAsync.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    if (response.body()) {
+                        pemitirReseñaMutable.setValue(true);
+                    } else
+                        Log.d("salida", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.d("salida", "Error de conexion");
+            }
+        });
+
+    }
+
     public void ValidarReseña(Reseña reseña){
-        if(false){
-            //validar
+        if(reseña.getPuntaje() > 5 || reseña.getPuntaje() < 0){
+            errorMutable.setValue("Error, puntaje inválido (0-5)");
+        }else if(reseña.getEncabezado().length() < 6 || reseña.getEncabezado().length() > 24){
+            errorMutable.setValue("Error, título inválido (6 a 24 caracteres)");
+        }
+        else if(reseña.getContenido().length() < 20 || reseña.getContenido().length() > 140){
+            errorMutable.setValue("Error, descripción inválida (20 a 140 caracteres)");
         }
         else{
             Call<Void> resAsync = ApiClient.getRetrofit().createReseña(ApiClient.getApi().getToken(context), reseña);
@@ -102,10 +128,14 @@ public class CompraViewModel extends AndroidViewModel {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        return;
+                        Bundle b = new Bundle();
+                        b.putSerializable("compra", compraMutable.getValue());
+                        ObtenerCompra(b);
                     }
-                    errorMutable.setValue("Ocurrió un error inesperado");
-                    Log.d("salida", response.message() + " " + response.code());
+                    else{
+                        errorMutable.setValue("Ocurrió un error inesperado ?");
+                        Log.d("salida", response.message() + " " + response.code());
+                    }
                 }
 
                 @Override

@@ -51,7 +51,7 @@ public class CompraFragment extends Fragment {
             public void onChanged(Compra compra) {
                 compraActual = compra;
                 inicializarVista(root);
-                viewModel.ComprobarReseña(compra.getPublicacionId());
+                viewModel.ComprobarReseña(compra.getPublicacionId(), compra.getId());
             }
         });
 

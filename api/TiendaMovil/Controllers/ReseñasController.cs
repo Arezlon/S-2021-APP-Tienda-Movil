@@ -77,8 +77,8 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        [HttpGet("getestado")]
-        public IActionResult GetEstado(int publicacionId)
+        [HttpGet("comprobarReseña")]
+        public IActionResult ComprobarReseña(int publicacionId)
         {
             try
             {

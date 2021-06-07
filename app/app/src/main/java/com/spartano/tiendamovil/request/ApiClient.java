@@ -71,7 +71,7 @@ public class ApiClient {
         // Publicaciones>Reseñas
         @GET("reseñas/get") Call<List<Reseña>> getReseñas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
         @POST("reseñas/create") Call<Void> createReseña(@Header("Authorization") String token, @Body Reseña reseña);
-        @GET("reseñas/getestado") Call<Boolean> getEstado(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
+        @GET("reseñas/comprobarReseña") Call<Boolean> comprobarReseña(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
 
         // Publicaciones>Etiquetas
         @GET("publicacionetiquetas/get") Call<List<PublicacionEtiqueta>> getEtiquetas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
@@ -87,6 +87,7 @@ public class ApiClient {
         @GET("compras/getultima") Call<Compra> getUltima(@Header("Authorization") String token);
         @GET("compras/get") Call <List<Compra>> getCompras(@Header("Authorization") String token);
         @GET("compras/getVentas") Call <List<Compra>> getVentas(@Header("Authorization") String token);
+        @GET("compras/comprobarusuario") Call <Boolean> comprobarUsuario(@Header("Authorization") String token, @Query("compraId") int compraId);
 
         //Notificaciones
         @GET("notificaciones/get") Call <List<Notificacion>> getNotificaciones(@Header("Authorization") String token);

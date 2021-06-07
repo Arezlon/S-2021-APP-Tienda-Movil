@@ -176,6 +176,23 @@ namespace TiendaMovil.Controllers
                 return BadRequest("ERROR: " + ex);
             }
         }
-        
+
+        [HttpGet("comprobarUsuario")]
+        public IActionResult ComprobarUsuario(int compraId)
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                Compra r = contexto.Compras
+                    .Where(c => c.UsuarioId == id && c.Id == compraId)
+                    .FirstOrDefault();
+                return Ok(r != null);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
     }
 }
