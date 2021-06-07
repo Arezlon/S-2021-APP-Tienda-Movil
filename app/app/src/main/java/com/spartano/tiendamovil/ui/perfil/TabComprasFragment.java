@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Compra;
@@ -23,6 +25,8 @@ import java.util.List;
 public class TabComprasFragment extends Fragment {
     public PerfilViewModel viewModel;
     private ListView lvCompras;
+    private TextView tvListaComprasVacia;
+    private ImageView ivListaComprasVacia;
 
     public static TabComprasFragment newInstance() {
         return new TabComprasFragment();
@@ -35,6 +39,19 @@ public class TabComprasFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_tab_perfil_compras, container, false);
 
         lvCompras = root.findViewById(R.id.lvCompras);
+
+        viewModel.getListaComprasVaciaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                tvListaComprasVacia = root.findViewById(R.id.tvListaComprasVacia);
+                ivListaComprasVacia = root.findViewById(R.id.ivListaComprasVacia);
+                tvListaComprasVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                ivListaComprasVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                tvListaComprasVacia.setText("No se encontraron compras");
+                ivListaComprasVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
+
         viewModel.getComprasMutable().observe(getViewLifecycleOwner(), new Observer<List<Compra>>() {
             @Override
             public void onChanged(List<Compra> compras) {

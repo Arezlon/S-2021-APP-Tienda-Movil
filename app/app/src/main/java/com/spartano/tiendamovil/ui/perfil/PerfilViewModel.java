@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spartano.tiendamovil.model.Compra;
-import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
 
@@ -26,6 +25,20 @@ public class PerfilViewModel extends AndroidViewModel {
     private MutableLiveData<String> errorMutable;
     private MutableLiveData<List<Compra>> ventasMutable;
     private MutableLiveData<List<Compra>> comprasMutable;
+    private MutableLiveData<Boolean> listaComprasVaciaMutable;
+    private MutableLiveData<Boolean> listaVentasVaciaMutable;
+
+    public LiveData<Boolean> getListaComprasVaciaMutable(){
+        if(listaComprasVaciaMutable == null)
+            listaComprasVaciaMutable = new MutableLiveData<>();
+        return listaComprasVaciaMutable;
+    }
+
+    public LiveData<Boolean> getListaVentasVaciaMutable(){
+        if(listaVentasVaciaMutable == null)
+            listaVentasVaciaMutable = new MutableLiveData<>();
+        return listaVentasVaciaMutable;
+    }
 
     public LiveData<Usuario> getUsuarioMutable(){
         if(usuarioMutable == null)
@@ -90,7 +103,12 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Compra>> call, Response<List<Compra>> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        comprasMutable.setValue(response.body());
+                        if(!response.body().isEmpty()){
+                            comprasMutable.setValue(response.body());
+                            listaComprasVaciaMutable.setValue(false);
+                        }
+                        else
+                            listaComprasVaciaMutable.setValue(true);
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
@@ -113,7 +131,12 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Compra>> call, Response<List<Compra>> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        ventasMutable.setValue(response.body());
+                        if(!response.body().isEmpty()){
+                            ventasMutable.setValue(response.body());
+                            listaVentasVaciaMutable.setValue(false);
+                        }
+                        else
+                            listaVentasVaciaMutable.setValue(true);
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
