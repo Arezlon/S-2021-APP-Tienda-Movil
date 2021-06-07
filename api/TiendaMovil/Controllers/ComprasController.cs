@@ -122,7 +122,7 @@ namespace TiendaMovil.Controllers
                     .OrderByDescending(c => c.Creacion)
                     .ToList();
                 foreach (Compra c in compras)
-                    c.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == c.Publicacion.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                    c.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == c.Publicacion.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
                 return Ok(compras);
             }
             catch (Exception ex)
@@ -145,7 +145,7 @@ namespace TiendaMovil.Controllers
                     .OrderByDescending(c => c.Creacion)
                     .ToList();
                 foreach (Compra c in ventas)
-                    c.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == c.Publicacion.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                    c.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == c.Publicacion.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
 
                 return Ok(ventas);
             }
@@ -168,7 +168,7 @@ namespace TiendaMovil.Controllers
                     .ThenInclude(p => p.Usuario)
                     .OrderByDescending(c => c.Creacion)
                     .FirstOrDefault();
-                compra.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == compra.Publicacion.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                compra.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == compra.Publicacion.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
                 return Ok(compra);
             }
             catch (Exception ex)

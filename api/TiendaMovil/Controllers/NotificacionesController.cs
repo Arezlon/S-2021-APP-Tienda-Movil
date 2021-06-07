@@ -38,7 +38,7 @@ namespace TiendaMovil.Controllers
                     .ThenInclude(c => c.Usuario)
                     .Include(c => c.Compra)
                     .ThenInclude(c => c.Usuario)
-                    .OrderBy(c => c.Creacion)
+                    .OrderByDescending(c => c.Creacion)
                     .ToList();
                 return Ok(notificaciones);
             }

@@ -72,7 +72,7 @@ namespace TiendaMovil.Controllers
                 transacciones = transacciones.OrderByDescending(t => t.Creacion).ToList();
                 foreach (Transaccion t in transacciones)
                     if (t.Compra != null && t.CompraId != 0)
-                        t.Compra.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == t.Compra.Publicacion.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                        t.Compra.Publicacion.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == t.Compra.Publicacion.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
                 return Ok(transacciones);
             }
             catch (Exception ex)

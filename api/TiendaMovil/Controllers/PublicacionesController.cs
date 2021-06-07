@@ -93,7 +93,7 @@ namespace TiendaMovil.Controllers
                             " p.Id ASC";
                 List<Publicacion> publicaciones = contexto.Publicaciones.FromSqlRaw(query).ToList();
                 foreach (Publicacion p in publicaciones)
-                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
 
                 return Ok(publicaciones);
             }
@@ -136,7 +136,7 @@ namespace TiendaMovil.Controllers
                 }
 
                 foreach (Publicacion p in resultado)
-                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
 
                 return Ok(resultado);
             }
@@ -300,7 +300,7 @@ namespace TiendaMovil.Controllers
                     .OrderByDescending(p => p.Creacion)
                     .ToList();
                 foreach (Publicacion p in publicaciones)
-                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault().Direccion;
+                    p.ImagenDir = contexto.PublicacionImagenes.Where(i => i.PublicacionId == p.Id && i.Estado == 2).FirstOrDefault()?.Direccion;
                 return Ok(publicaciones);
             }
             catch (Exception ex)
