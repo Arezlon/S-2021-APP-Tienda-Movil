@@ -54,7 +54,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="sans-serif"
-                        android:text="Bienvenido a [Nombre App]"
+                        android:text="Bienvenido a Tienda Móvil"
                         android:textAlignment="center"
                         android:textSize="18sp"
                         android:textStyle="bold"

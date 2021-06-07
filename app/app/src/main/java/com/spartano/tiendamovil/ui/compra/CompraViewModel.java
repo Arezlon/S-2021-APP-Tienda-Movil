@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spartano.tiendamovil.model.Compra;
+import com.spartano.tiendamovil.model.Reseña;
 import com.spartano.tiendamovil.request.ApiClient;
 
 import retrofit2.Call;
@@ -21,6 +22,7 @@ public class CompraViewModel extends AndroidViewModel {
     public Context context;
     private MutableLiveData<Compra> compraMutable;
     public MutableLiveData<String> errorMutable;
+    public MutableLiveData<Boolean> pemitirReseñaMutable;
 
     public CompraViewModel(@NonNull Application app){
         super(app);
@@ -37,6 +39,12 @@ public class CompraViewModel extends AndroidViewModel {
         if (errorMutable == null)
             errorMutable = new MutableLiveData<>();
         return errorMutable;
+    }
+
+    public LiveData<Boolean> getPermitirReseñaMutable(){
+        if (pemitirReseñaMutable == null)
+            pemitirReseñaMutable = new MutableLiveData<>();
+        return pemitirReseñaMutable;
     }
 
     public void ObtenerCompra(Bundle bundle){
@@ -62,6 +70,51 @@ public class CompraViewModel extends AndroidViewModel {
         }
         else
             compraMutable.setValue((Compra)bundle.getSerializable("compra"));
+    }
+
+    public void ComprobarReseña(int publicacionId){
+        Call<Boolean> resAsync = ApiClient.getRetrofit().getEstado(ApiClient.getApi().getToken(context), publicacionId);
+        resAsync.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        pemitirReseñaMutable.setValue(true);
+                    } else
+                        Log.d("salida", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.d("salida", "Error de conexion");
+            }
+        });
+    }
+
+    public void ValidarReseña(Reseña reseña){
+        if(false){
+            //validar
+        }
+        else{
+            Call<Void> resAsync = ApiClient.getRetrofit().createReseña(ApiClient.getApi().getToken(context), reseña);
+            resAsync.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        return;
+                    }
+                    errorMutable.setValue("Ocurrió un error inesperado");
+                    Log.d("salida", response.message() + " " + response.code());
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    errorMutable.setValue("No se pudo conectar con el servidor");
+                    Log.d("salida", t.getMessage());
+                }
+            });
+        }
     }
 
 }

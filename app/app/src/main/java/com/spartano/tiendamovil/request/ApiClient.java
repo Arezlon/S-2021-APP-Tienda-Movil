@@ -71,6 +71,7 @@ public class ApiClient {
         // Publicaciones>Reseñas
         @GET("reseñas/get") Call<List<Reseña>> getReseñas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
         @POST("reseñas/create") Call<Void> createReseña(@Header("Authorization") String token, @Body Reseña reseña);
+        @GET("reseñas/getestado") Call<Boolean> getEstado(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);
 
         // Publicaciones>Etiquetas
         @GET("publicacionetiquetas/get") Call<List<PublicacionEtiqueta>> getEtiquetas(@Header("Authorization") String token, @Query("publicacionId") int publicacionId);

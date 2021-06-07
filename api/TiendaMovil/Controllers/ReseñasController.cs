@@ -53,20 +53,40 @@ namespace TiendaMovil.Controllers
                 reseña.Estado = 1;
                 reseña.Creacion = DateTime.Now;
                 reseña.UsuarioId = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                reseña.PublicacionId = reseña.Publicacion.Id;
+                Publicacion p = reseña.Publicacion;
+                reseña.Publicacion = null;
                 contexto.Reseñas.Add(reseña);
-
+                
                 //Notificación tipo 3, nueva reseña
                 Notificacion notificacion = new Notificacion();
-                notificacion.PublicacionId = reseña.PublicacionId;
+                notificacion.PublicacionId = p.Id;
                 notificacion.Tipo = 3;
-                notificacion.UsuarioId = reseña.Publicacion.UsuarioId; //cambiar
+                notificacion.UsuarioId = p.UsuarioId;
                 notificacion.Estado = 1;
                 notificacion.Creacion = DateTime.Now;
-                notificacion.CompraId = null;
+                //notificacion.CompraId = 
                 contexto.Notificaciones.Add(notificacion);
 
                 contexto.SaveChanges();
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
+        [HttpGet("getestado")]
+        public IActionResult GetEstado(int publicacionId)
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                Reseña r = contexto.Reseñas
+                    .Where(c => c.UsuarioId == id && c.PublicacionId == publicacionId)
+                    .FirstOrDefault();
+                return Ok(r == null);
             }
             catch (Exception ex)
             {

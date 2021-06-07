@@ -7,7 +7,7 @@ public class Reseña implements Serializable {
     public int id;
     public int usuarioId;
     public int publicacionId;
-    public int puntaje;
+    public float puntaje;
     public String encabezado;
     public String contenido;
     public int estado;
@@ -17,7 +17,7 @@ public class Reseña implements Serializable {
 
     public Reseña(){}
 
-    public Reseña(int id, int usuarioId, int publicacionId, int puntaje, String encabezado, String contenido, int estado, String creacion, Usuario usuario, Publicacion publicacion) {
+    public Reseña(int id, int usuarioId, int publicacionId, float puntaje, String encabezado, String contenido, int estado, String creacion, Usuario usuario, Publicacion publicacion) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.publicacionId = publicacionId;
@@ -54,11 +54,11 @@ public class Reseña implements Serializable {
         this.publicacionId = publicacionId;
     }
 
-    public int getPuntaje() {
+    public float getPuntaje() {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
+    public void setPuntaje(float puntaje) {
         this.puntaje = puntaje;
     }
 
