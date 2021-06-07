@@ -168,6 +168,9 @@ namespace TiendaMovil.Controllers
                         .Include(pe => pe.Etiqueta)
                         .Where(pe => EF.Functions.Like(pe.Etiqueta.Nombre, $"%{busqueda}%"))
                         .Include(pe => pe.Publicacion)
+                        .Where(p => (precioMaximo != -1 ? p.Publicacion.Precio <= precioMaximo : true) &&
+                                (categoria != 0 ? p.Publicacion.Categoria == categoria : true) &&
+                                (estado != 0 ? p.Publicacion.Estado == estado : true))
                         .Select(pe => pe.Publicacion)
                         .ToList();
                     foreach (Publicacion p in porEtiqueta)
