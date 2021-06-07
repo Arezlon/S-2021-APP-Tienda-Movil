@@ -147,13 +147,13 @@ namespace TiendaMovil.Controllers
         }
 
 
-        [HttpGet("getById")]
-        public IActionResult GetById(int publicacionId)
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
         {
             try
             {
                 var publicacione = contexto.Publicaciones
-                    .Where(p => p.Id == publicacionId)
+                    .Where(p => p.Id == id)
                     .Include(p => p.Usuario)
                     .FirstOrDefault();
                 return Ok(publicacione);

@@ -18,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/textView30"
@@ -54,9 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
                 android:drawableStart="@drawable/outline_subdirectory_arrow_right_24"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvComentarioPregunta"
                 app:layout_constraintTop_toBottomOf="@+id/tvComentarioPregunta" />
 
@@ -79,7 +78,6 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="16dp"
                 android:text="[RESPUESTA]"
-                app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icRespuesta"
                 app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
@@ -114,7 +112,6 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/icRespuesta"
                 app:layout_constraintStart_toEndOf="@+id/icRespuesta"
                 app:layout_constraintTop_toTopOf="@+id/icRespuesta" />
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,8 +33,14 @@ public class PublicacionFragment extends Fragment {
                 new ViewModelProvider(this).get(PublicacionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_publicacion, container, false);
 
-        publicacion = (Publicacion)getArguments().getSerializable("publicacion");
-        inicializarVista(root);
+        viewModel.getPublicacionMutable().observe(getViewLifecycleOwner(), new Observer<Publicacion>() {
+            @Override
+            public void onChanged(Publicacion p) {
+                publicacion = p;
+                inicializarVista(root);
+            }
+        });
+        viewModel.leerPublicacion((Publicacion)getArguments().getSerializable("publicacion"));
         return root;
     }
 

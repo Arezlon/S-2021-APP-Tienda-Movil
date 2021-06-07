@@ -49,6 +49,7 @@ public class TabPublicacionFragment extends Fragment {
     private ImageView ivPreviewImagen;
     private EditText etPublicacionCantidad;
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
+    private TextView tvNombreVendedor, tvReputacionVendedor;
     private Button btNuevaEtiqueta;
     private RecyclerView rvEtiquetas;
 
@@ -103,7 +104,7 @@ public class TabPublicacionFragment extends Fragment {
 
         viewModel.getPublicacionEsMia().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean aBoolean) {
+            public void onChanged(Boolean bool) {
                 btAgregarImagen.setVisibility(View.VISIBLE);
                 btEliminarImagen.setVisibility(View.VISIBLE);
                 btDestacarImagen.setVisibility(View.VISIBLE);
@@ -150,6 +151,8 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionStock = root.findViewById(R.id.tvPublicacionStock);
         tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
         tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
+        tvNombreVendedor = root.findViewById(R.id.tvNombreVendedor);
+        tvReputacionVendedor = root.findViewById(R.id.tvReputacionVendedor);
         tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
         etPublicacionCantidad = root.findViewById(R.id.etPublicacionCantidad);
 
@@ -159,6 +162,15 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionCategoria.setText(publicacion.getCategoriaNombre());
         tvPublicacionDescripcion.setText(publicacion.getDescripcion());
         tvPublicacionTipo.setText(publicacion.getTipoNombre());
+        tvNombreVendedor.setText(publicacion.getUsuario().getNombre() + " " + publicacion.getUsuario().getApellido());
+        tvReputacionVendedor.setText("#"+publicacion.getUsuario().getId());
+
+        tvNombreVendedor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_perfil);
+            }
+        });
 
         // Boton agregar etiquetas > abre un dialog que permite hacer alta de muchas etiquetas
         btNuevaEtiqueta = root.findViewById(R.id.btNuevaEtiqueta);
