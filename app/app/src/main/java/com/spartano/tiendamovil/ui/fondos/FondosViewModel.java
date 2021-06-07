@@ -27,6 +27,13 @@ public class FondosViewModel extends AndroidViewModel {
     private MutableLiveData<Usuario> usuarioMutable;
     private MutableLiveData<List<Transaccion>> transaccionesMutable;
     public MutableLiveData<String> errorMutable;
+    private MutableLiveData<Boolean> listaTransaccionesVaciaMutable;
+
+    public LiveData<Boolean> getListaTransaccionesVaciaMutable(){
+        if(listaTransaccionesVaciaMutable == null)
+            listaTransaccionesVaciaMutable = new MutableLiveData<>();
+        return listaTransaccionesVaciaMutable;
+    }
 
     public FondosViewModel(@NonNull Application app){
         super(app);
@@ -117,8 +124,13 @@ public class FondosViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<List<Transaccion>> call, Response<List<Transaccion>> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null && !response.body().isEmpty()) {
-                        transaccionesMutable.setValue(response.body());
+                    if (response.body() != null) {
+                        if(!response.body().isEmpty()) {
+                            transaccionesMutable.setValue(response.body());
+                            listaTransaccionesVaciaMutable.setValue(false);
+                        }else{
+                            listaTransaccionesVaciaMutable.setValue(true);
+                        }
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error al cargar el historial de transacciones");

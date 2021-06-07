@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,9 +34,10 @@ public class FondosFragment extends Fragment {
     private FondosViewModel viewModel;
     private Button btIngresarFondos;
     private EditText etIngresarFondos;
-    private TextView tvFondos;
+    private TextView tvFondos, tvListaTransaccionesVacia;
     private Usuario usuarioActual;
     private ListView listHistorial;
+    private ImageView ivListaTransaccionesVacia;
 
     public static FondosFragment newInstance() {
         return new FondosFragment();
@@ -46,6 +48,18 @@ public class FondosFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(FondosViewModel.class);
         View root = inflater.inflate(R.layout.fragment_fondos, container, false);
+
+        viewModel.getListaTransaccionesVaciaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                tvListaTransaccionesVacia = root.findViewById(R.id.tvListaTransaccionesVacia);
+                ivListaTransaccionesVacia = root.findViewById(R.id.ivListaTransaccionesVacia);
+                tvListaTransaccionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                ivListaTransaccionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                tvListaTransaccionesVacia.setText("No se encontraron transacciones");
+                ivListaTransaccionesVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
 
         viewModel.getUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<Usuario>() {
             @Override

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import java.util.List;
 public class PublicacionesFragment extends Fragment {
     private ListView lvPublicaciones;
     private PublicacionesViewModel viewModel;
+    private TextView tvListaPublicacionesVacia;
+    private ImageView ivListaPublicacionesVacia;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -39,6 +42,19 @@ public class PublicacionesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_publicaciones, container, false);
 
         inicializarVista(root);
+
+        viewModel.getListaPublicacionesVaciaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                tvListaPublicacionesVacia = root.findViewById(R.id.tvListaPublicacionesVacia);
+                ivListaPublicacionesVacia = root.findViewById(R.id.ivListaPublicacionesVacia);
+                tvListaPublicacionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                ivListaPublicacionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                tvListaPublicacionesVacia.setText("No se encontraron publicaciones");
+                ivListaPublicacionesVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
+
         viewModel.getPublicacionesMutable().observe(getViewLifecycleOwner(), new Observer<List<Publicacion>>() {
             @Override
             public void onChanged(List<Publicacion> publicaciones) {

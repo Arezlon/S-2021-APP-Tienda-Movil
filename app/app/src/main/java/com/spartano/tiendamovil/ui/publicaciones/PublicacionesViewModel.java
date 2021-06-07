@@ -23,6 +23,13 @@ public class PublicacionesViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<String> errorMutable;
     private MutableLiveData<List<Publicacion>> publicacionesMutable;
+    private MutableLiveData<Boolean> listaPublicacionesVaciaMutable;
+
+    public LiveData<Boolean> getListaPublicacionesVaciaMutable(){
+        if(listaPublicacionesVaciaMutable == null)
+            listaPublicacionesVaciaMutable = new MutableLiveData<>();
+        return listaPublicacionesVaciaMutable;
+    }
 
     public LiveData<List<Publicacion>> getPublicacionesMutable(){
         if (publicacionesMutable == null)
@@ -48,7 +55,12 @@ public class PublicacionesViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Publicacion>> call, Response<List<Publicacion>> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        publicacionesMutable.setValue(response.body());
+                        if(!response.body().isEmpty()) {
+                            publicacionesMutable.setValue(response.body());
+                            listaPublicacionesVaciaMutable.setValue(false);
+                        }else{
+                            listaPublicacionesVaciaMutable.setValue(true);
+                        }
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");

@@ -22,6 +22,13 @@ public class NotificacionesViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<List<Notificacion>> notificacionesMutable;
     private MutableLiveData<String> errorMutable;
+    private MutableLiveData<Boolean> listaNotificacionesVaciaMutable;
+
+    public LiveData<Boolean> getListaNotificacionesVaciaMutable(){
+        if(listaNotificacionesVaciaMutable == null)
+            listaNotificacionesVaciaMutable = new MutableLiveData<>();
+        return listaNotificacionesVaciaMutable;
+    }
 
     public NotificacionesViewModel(@NonNull Application app){
         super(app);
@@ -47,7 +54,12 @@ public class NotificacionesViewModel extends AndroidViewModel {
             public void onResponse(Call<List<Notificacion>> call, Response<List<Notificacion>> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        notificacionesMutable.setValue(response.body());
+                        if(!response.body().isEmpty()) {
+                            notificacionesMutable.setValue(response.body());
+                            listaNotificacionesVaciaMutable.setValue(false);
+                        }else{
+                            listaNotificacionesVaciaMutable.setValue(true);
+                        }
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");

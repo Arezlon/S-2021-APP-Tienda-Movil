@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spartano.tiendamovil.R;
@@ -26,6 +28,8 @@ public class NotificacionesFragment extends Fragment {
 
     private NotificacionesViewModel viewModel;
     private ListView lvNotificaciones;
+    private TextView tvListaNotificacionesVacia;
+    private ImageView ivListaNotificacionesVacia;
 
     public static NotificacionesFragment newInstance() {
         return new NotificacionesFragment();
@@ -37,6 +41,18 @@ public class NotificacionesFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(NotificacionesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notificaciones, container, false);
         lvNotificaciones = root.findViewById(R.id.lvNotificaciones);
+
+        viewModel.getListaNotificacionesVaciaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                tvListaNotificacionesVacia = root.findViewById(R.id.tvListaNotificacionesVacia);
+                ivListaNotificacionesVacia = root.findViewById(R.id.ivListaNotificacionesVacia);
+                tvListaNotificacionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                ivListaNotificacionesVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                tvListaNotificacionesVacia.setText("No se encontraron notificaciones");
+                ivListaNotificacionesVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
 
         viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

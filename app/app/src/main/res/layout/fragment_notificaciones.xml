@@ -7,6 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.notificaciones.NotificacionesFragment">
 
+    <TextView
+        android:id="@+id/tvListaNotificacionesVacia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscando..."
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/lvNotificaciones"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivListaNotificacionesVacia"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/baseline_refresh_24"
+        app:layout_constraintBottom_toTopOf="@+id/tvListaNotificacionesVacia"
+        app:layout_constraintEnd_toEndOf="@+id/tvListaNotificacionesVacia"
+        app:layout_constraintStart_toStartOf="@+id/tvListaNotificacionesVacia" />
+
     <ListView
         android:id="@+id/lvNotificaciones"
         android:layout_width="match_parent"
