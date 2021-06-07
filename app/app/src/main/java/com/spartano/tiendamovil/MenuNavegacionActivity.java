@@ -1,12 +1,15 @@
 package com.spartano.tiendamovil;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.spartano.tiendamovil.model.Usuario;
 
+import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -20,7 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MenuNavegacionActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private TextView tvMenuUsuario;
+    private TextView tvMenuUsuario, notificaciones;
     private Usuario usuario;
     private MenuNavegacionViewModel viewModel;
 
@@ -33,6 +36,9 @@ public class MenuNavegacionActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        notificaciones = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notificaciones));
+
         viewModel = new ViewModelProvider(this).get(MenuNavegacionViewModel.class);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -52,6 +58,17 @@ public class MenuNavegacionActivity extends AppCompatActivity {
                 tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
             }
         });
+
+        viewModel.getTotalNotificacionesMutable().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                notificaciones.setGravity(Gravity.CENTER_VERTICAL);
+                notificaciones.setTypeface(null, Typeface.BOLD);
+                notificaciones.setTextColor(getResources().getColor(R.color.color_principal));
+                notificaciones.setText(s);
+            }
+        });
+
         actualizarDatosUsuario();
     }
 
@@ -71,5 +88,6 @@ public class MenuNavegacionActivity extends AppCompatActivity {
 
     public void actualizarDatosUsuario(){
         viewModel.ObtenerUsuario();
+        viewModel.ObtenerCantidadNotificaciones();
     }
 }

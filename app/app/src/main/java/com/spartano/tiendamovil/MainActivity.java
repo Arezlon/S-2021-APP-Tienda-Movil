@@ -1,26 +1,21 @@
 package com.spartano.tiendamovil;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel viewModel;
     private EditText etMail, etClave;
     private Button btIngresar, btRegistrarse;
-    private TextView loginTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

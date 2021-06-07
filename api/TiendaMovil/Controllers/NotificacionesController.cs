@@ -67,5 +67,23 @@ namespace TiendaMovil.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpGet("gettotal")]
+        public IActionResult GetTotal()
+        {
+            try
+            {
+                int id = Int32.Parse(User.Claims.First(c => c.Type == "Id").Value);
+                int total = contexto.Notificaciones
+                    .Where(c => c.UsuarioId == id && c.Estado == 1)
+                    .GroupBy(c => c.Id)
+                    .Count();
+                return Ok(total);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
     }
 }

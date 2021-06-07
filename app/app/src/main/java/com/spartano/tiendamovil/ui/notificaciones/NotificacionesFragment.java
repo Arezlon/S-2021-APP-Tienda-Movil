@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spartano.tiendamovil.MenuNavegacionActivity;
 import com.spartano.tiendamovil.R;
 import com.spartano.tiendamovil.model.Notificacion;
 
@@ -64,6 +65,7 @@ public class NotificacionesFragment extends Fragment {
         viewModel.getNotificacionesMutable().observe(getViewLifecycleOwner(), new Observer<List<Notificacion>>() {
             @Override
             public void onChanged(List<Notificacion> notificaciones) {
+                ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
                 ArrayList<Notificacion> arrayList = new ArrayList<Notificacion>(notificaciones);
                 ArrayAdapter<Notificacion> adapter = new NotificacionesListAdapter(viewModel,
                         getContext(),
