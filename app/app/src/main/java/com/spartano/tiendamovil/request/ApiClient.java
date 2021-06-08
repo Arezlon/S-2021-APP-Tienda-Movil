@@ -58,7 +58,7 @@ public class ApiClient {
                                                                                  @Query("busqueda") String busqueda,
                                                                                  @Query("precioMaximo") float precioMaximo,
                                                                                  @Query("categoria") int categoria,
-                                                                                 @Query("estado") int estado);
+                                                                                 @Query("tipo") int tipo);
         @PUT("publicaciones/edit") Call<Void> editPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
 
         // Publicaciones>Imágenes

@@ -147,7 +147,7 @@ namespace TiendaMovil.Controllers
         }
 
         [HttpGet("buscar")]
-        public IActionResult Buscar(string busqueda, float precioMaximo, int categoria, int estado)
+        public IActionResult Buscar(string busqueda, float precioMaximo, int categoria, int tipo)
         {
             // defaults: busqueda = null | precioMaximo = -1 | categoria = 0 | estado = 0
             try
@@ -156,7 +156,7 @@ namespace TiendaMovil.Controllers
                 List<Publicacion> publicaciones = contexto.Publicaciones
                     .Where(p => (precioMaximo != -1 ? p.Precio <= precioMaximo : true) && 
                                 (categoria != 0 ? p.Categoria == categoria : true) && 
-                                (estado != 0 ? p.Estado == estado : true) &&
+                                (tipo != 0 ? p.Tipo == tipo : true) &&
                                 (busqueda != null ? EF.Functions.Like(p.Titulo, $"%{busqueda}%") : true))
                     .OrderByDescending(p => p.Creacion)
                     .ToList();
@@ -170,7 +170,7 @@ namespace TiendaMovil.Controllers
                         .Include(pe => pe.Publicacion)
                         .Where(p => (precioMaximo != -1 ? p.Publicacion.Precio <= precioMaximo : true) &&
                                 (categoria != 0 ? p.Publicacion.Categoria == categoria : true) &&
-                                (estado != 0 ? p.Publicacion.Estado == estado : true))
+                                (tipo != 0 ? p.Publicacion.Tipo == tipo : true))
                         .Select(pe => pe.Publicacion)
                         .ToList();
                     foreach (Publicacion p in porEtiqueta)
