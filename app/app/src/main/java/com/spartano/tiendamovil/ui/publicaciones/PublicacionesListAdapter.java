@@ -46,6 +46,11 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
 
         TextView tvTitulo = convertView.findViewById(R.id.tvPublicacionTitulo);
         TextView tvPrecio = convertView.findViewById(R.id.tvPrecioPublicacion);
+        TextView tvTipo = convertView.findViewById(R.id.tvTipo);
+        if(publicacion.getTipo() == 1)
+            tvTipo.setText("USADO");
+        else
+            tvTipo.setText("NUEVO");
 
         ImageView ivFotoPrincipalPublicacion = convertView.findViewById(R.id.ivFotoPrincipalPublicacion);
 

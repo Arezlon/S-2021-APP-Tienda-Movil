@@ -29,6 +29,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="16dp"
+                android:textColor="@color/color_secundario"
+                app:backgroundTint="@color/color_secundario"
                 android:ems="10"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"

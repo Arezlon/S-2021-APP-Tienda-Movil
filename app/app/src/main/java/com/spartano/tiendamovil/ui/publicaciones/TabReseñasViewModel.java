@@ -24,6 +24,20 @@ public class TabReseñasViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<List<Reseña>> reseñasMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
+    private MutableLiveData<Boolean> listaVaciaMutable;
+    private MutableLiveData<String> errorMutable;
+
+    public LiveData<Boolean> getListaVaciaMutable(){
+        if(listaVaciaMutable == null)
+            listaVaciaMutable = new MutableLiveData<>();
+        return listaVaciaMutable;
+    }
+
+    public LiveData<String> getErrorMutable(){
+        if (errorMutable == null)
+            errorMutable = new MutableLiveData<>();
+        return errorMutable;
+    }
 
     public LiveData<List<Reseña>> getReseñasMutable() {
         if (reseñasMutable == null)
@@ -64,18 +78,27 @@ public class TabReseñasViewModel extends AndroidViewModel {
         resAsync.enqueue(new Callback<List<Reseña>>() {
             @Override
             public void onResponse(Call<List<Reseña>> call, Response<List<Reseña>> response) {
-                if (response.isSuccessful()){
-                    if (response.body() != null && !response.body().isEmpty()) {
-                        reseñasMutable.postValue(response.body());
-                        return;
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if(!response.body().isEmpty()) {
+                            reseñasMutable.postValue(response.body());
+                            listaVaciaMutable.setValue(false);
+                        }else{
+                            listaVaciaMutable.setValue(true);
+                        }
                     }
+                } else {
+                    errorMutable.setValue("Ocurrió un error inesperado");
+                    listaVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "Error al cargar reseñas: " + response.message());
             }
 
             @Override
             public void onFailure(Call<List<Reseña>> call, Throwable t) {
+                errorMutable.setValue("No se pudo conectar con el servidor");
                 Log.d("salida", "Failure al cargar reseñas: " + t.getMessage());
+                listaVaciaMutable.setValue(true);
             }
         });
     }

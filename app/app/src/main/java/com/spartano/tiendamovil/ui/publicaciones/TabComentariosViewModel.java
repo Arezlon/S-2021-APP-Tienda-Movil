@@ -23,6 +23,20 @@ public class TabComentariosViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<List<Comentario>> comentariosMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
+    private MutableLiveData<Boolean> listaVaciaMutable;
+    private MutableLiveData<String> errorMutable;
+
+    public LiveData<Boolean> getListaVaciaMutable(){
+        if(listaVaciaMutable == null)
+            listaVaciaMutable = new MutableLiveData<>();
+        return listaVaciaMutable;
+    }
+
+    public LiveData<String> getErrorMutable(){
+        if (errorMutable == null)
+            errorMutable = new MutableLiveData<>();
+        return errorMutable;
+    }
 
     public LiveData<List<Comentario>> getComentariosMutable() {
         if (comentariosMutable == null)
@@ -63,18 +77,27 @@ public class TabComentariosViewModel extends AndroidViewModel {
         resAsync.enqueue(new Callback<List<Comentario>>() {
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
-                if (response.isSuccessful()){
-                    if (response.body() != null && !response.body().isEmpty()) {
-                        comentariosMutable.postValue(response.body());
-                        return;
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if(!response.body().isEmpty()) {
+                            comentariosMutable.postValue(response.body());
+                            listaVaciaMutable.setValue(false);
+                        }else{
+                            listaVaciaMutable.setValue(true);
+                        }
                     }
+                } else {
+                    errorMutable.setValue("Ocurrió un error inesperado");
+                    listaVaciaMutable.setValue(true);
                 }
                 Log.d("salida", "Error al cargar comentarios: " + response.message());
             }
 
             @Override
             public void onFailure(Call<List<Comentario>> call, Throwable t) {
+                errorMutable.setValue("No se pudo conectar con el servidor");
                 Log.d("salida", "Failure al cargar comentarios: " + t.getMessage());
+                listaVaciaMutable.setValue(true);
             }
         });
     }

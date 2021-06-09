@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +31,8 @@ public class TabComentariosFragment extends Fragment {
     private Button btEnviarComentario;
     private EditText etComentario;
     private Publicacion publicacion;
-
+    private TextView tvListaComentariosVacia;
+    private ImageView ivListaComentariosVacia;
     private boolean publicacionEsMia;
 
     public TabComentariosFragment(Publicacion publicacion) { this.publicacion = publicacion; }
@@ -39,6 +43,25 @@ public class TabComentariosFragment extends Fragment {
         viewModel =
                 new ViewModelProvider(this).get(TabComentariosViewModel.class);
         View root = inflater.inflate(R.layout.fragment_tab_publicacion_comentarios, container, false);
+
+        viewModel.getListaVaciaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                tvListaComentariosVacia = root.findViewById(R.id.tvListaComentariosVacia);
+                ivListaComentariosVacia = root.findViewById(R.id.ivListaComentariosVacia);
+                tvListaComentariosVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                ivListaComentariosVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
+                tvListaComentariosVacia.setText("No se encontraron preguntas");
+                ivListaComentariosVacia.setImageResource(R.drawable.baseline_error_outline_24);
+            }
+        });
+
+        viewModel.getErrorMutable().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         viewModel.getComentariosMutable().observe(getViewLifecycleOwner(), new Observer<List<Comentario>>() {
             @Override

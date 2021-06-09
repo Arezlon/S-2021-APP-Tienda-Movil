@@ -52,6 +52,8 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         android:inputType="textPersonName"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +66,8 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:ems="10"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -115,6 +119,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:textColor="@color/color_secundario"
+                            app:backgroundTint="@color/color_secundario"
                             android:inputType="numberDecimal" />
 
                         <EditText
@@ -123,6 +129,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:textColor="@color/color_secundario"
+                            app:backgroundTint="@color/color_secundario"
                             android:inputType="number" />
 
                     </LinearLayout>
@@ -144,8 +152,10 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
                         android:text="Confirmar"
                         app:cornerRadius="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spnCP_Tipos" />
@@ -197,20 +207,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView100"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="*La publicación no sera visible a otros usuarios hasta que usted lo decida"
-                        android:textAlignment="center"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btCP_Confirmar" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
