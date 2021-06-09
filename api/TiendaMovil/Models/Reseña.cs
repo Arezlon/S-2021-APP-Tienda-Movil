@@ -15,7 +15,7 @@ namespace TiendaMovil.Models
         public int UsuarioId { get; set; }
         [ForeignKey("PublicacionId")]
         public int PublicacionId { get; set; }
-        public float Puntaje { get; set; }
+        public double Puntaje { get; set; }
         public string Encabezado { get; set; }
         public string Contenido { get; set; }
         public int Estado { get; set; }
