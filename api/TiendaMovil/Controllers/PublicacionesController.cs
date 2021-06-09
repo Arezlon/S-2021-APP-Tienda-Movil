@@ -78,7 +78,7 @@ namespace TiendaMovil.Controllers
         {
             try
             {
-                string query = "SELECT TOP 10 " +
+                string query = "SELECT TOP 8 " +
                         "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
                     "FROM Publicaciones p " +
                         "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +

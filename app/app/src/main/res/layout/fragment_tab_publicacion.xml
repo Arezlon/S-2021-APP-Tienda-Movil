@@ -238,18 +238,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView27" />
 
-                    <EditText
-                        android:id="@+id/etPublicacionCantidad"
-                        android:layout_width="61dp"
-                        android:layout_height="47dp"
-                        android:layout_marginTop="16dp"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="1"
-                        android:visibility="visible"
-                        app:layout_constraintEnd_toStartOf="@+id/btPublicacionComprar"
-                        app:layout_constraintTop_toBottomOf="@+id/btNuevaEtiqueta" />
-
                     <TextView
                         android:id="@+id/textView26"
                         android:layout_width="wrap_content"

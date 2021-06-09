@@ -185,7 +185,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-                errorMutable.setValue("Error");
+                errorMutable.setValue("No se pudo conectar con el servidor");
                 Log.d("salida", "Error: " + t.getMessage());
             }
         });
@@ -345,7 +345,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
         if(cantidad <= 0)
             errorMutable.setValue("Error, la cantidad no puede ser 0");
         else if(publicacion.stock < cantidad)
-            errorMutable.setValue("Error, stock insufciente");
+            errorMutable.setValue("Error, stock insuficiente");
         else if(publicacion.precio*cantidad > fondos)
             errorMutable.setValue("Error, fondos insuficientes");
         else {

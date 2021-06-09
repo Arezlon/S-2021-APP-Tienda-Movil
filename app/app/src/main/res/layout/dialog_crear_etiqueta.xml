@@ -6,6 +6,19 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Las etiquetas sirven para que tu publicación se muestre en los resultados de busqueda y para que sea recomendada a usuarios interesados. Deben ser palabras en singular que describan al producto (ej: celular, zapatilla, bicicleta, etc)"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/btAgregarEtiqueta"
         android:layout_width="wrap_content"
@@ -31,17 +44,6 @@
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Las etiquetas sirven para que tu publicación se muestre en los resultados de busqueda y para que sea recomendada a usuarios interesados. Deben ser palabras en plural que describan al producto (ej: celulares, zapatos, herramientas, etc)"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEtiquetas"

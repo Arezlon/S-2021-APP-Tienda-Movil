@@ -17,6 +17,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,7 +158,6 @@ public class TabPublicacionFragment extends Fragment {
         tvNombreVendedor = root.findViewById(R.id.tvNombreVendedor);
         tvReputacionVendedor = root.findViewById(R.id.tvReputacionVendedor);
         tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
-        etPublicacionCantidad = root.findViewById(R.id.etPublicacionCantidad);
 
         tvPublicacionTitulo.setText(publicacion.getTitulo());
         tvPublicacionPrecio.setText("$"+publicacion.getPrecio());
@@ -296,13 +300,51 @@ public class TabPublicacionFragment extends Fragment {
             }
         });
 
+        // Abrir dialog de compra con selector de cantidad
         btPublicacionComprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btPublicacionComprar.setEnabled(false);
-                btPublicacionComprar.setText("Cargando...");
-                int cantidad = Integer.parseInt(etPublicacionCantidad.getText().toString());
-                viewModel.comprobarFondos(publicacion, cantidad);
+                Dialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Realizar compra")
+                        .setView(R.layout.dialog_comprar_publicacion)
+                        .show();
+
+                // Elementos del layout del dialog (dialog_comprar_publicacion)
+                Button btComprar = dialog.findViewById(R.id.btComprar);
+                EditText etCantidad = dialog.findViewById(R.id.etCantidadCompra);
+                TextView tvTitulo = dialog.findViewById(R.id.tvTituloCompra);
+                TextView tvPrecio = dialog.findViewById(R.id.tvPrecioTotalCompra);
+
+                tvTitulo.setText(publicacion.getTitulo());
+                tvPrecio.setText("$"+publicacion.getPrecio());
+                // Cambiar el texto de tvPrecio cada vez que se cambia la cantidad (etCantidad)
+                etCantidad.addTextChangedListener(new TextWatcher() {
+                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override public void afterTextChanged(Editable s) {}
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        try {
+                            int cantidad = Integer.parseInt("0"+s.toString());
+                            tvPrecio.setText("$"+publicacion.getPrecio() * Math.min(cantidad, publicacion.getStock()));
+                            if (cantidad > publicacion.getStock())
+                                Toast.makeText(getContext(), "Stock insuficiente ("+publicacion.getStock()+")", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Error, cantidad demasiado alta", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                // Realizar compra de la cantidad ingresada (si hay error de stock o fondos lo maneja el ViewModel)
+                btComprar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int cantidad = Integer.parseInt(etCantidad.getText().toString());
+                        btPublicacionComprar.setEnabled(false);
+                        btPublicacionComprar.setText("Cargando...");
+                        viewModel.comprobarFondos(publicacion, cantidad);
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
