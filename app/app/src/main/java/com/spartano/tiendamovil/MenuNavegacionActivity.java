@@ -1,5 +1,6 @@
 package com.spartano.tiendamovil;
 
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -53,19 +54,31 @@ public class MenuNavegacionActivity extends AppCompatActivity {
         viewModel.getUsuarioMutable().observe(this, new Observer<Usuario>() {
             @Override
             public void onChanged(Usuario usuariom) {
-                usuario = usuariom;
-                tvMenuUsuario = findViewById(R.id.tvMenuUsuario);
-                tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
+                try{
+                    usuario = usuariom;
+                    tvMenuUsuario = findViewById(R.id.tvMenuUsuario);
+                    tvMenuUsuario.setText(usuario.getApellido()+" "+usuario.getNombre()+" | $"+(int)usuario.getFondos());
+                }
+                catch (Exception e){
+                    viewModel.ObtenerUsuario();
+                }
+
             }
         });
 
         viewModel.getTotalNotificacionesMutable().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                notificaciones.setGravity(Gravity.CENTER_VERTICAL);
-                notificaciones.setTypeface(null, Typeface.BOLD);
-                notificaciones.setTextColor(getResources().getColor(R.color.color_principal));
-                notificaciones.setText(s);
+                try{
+                    notificaciones.setGravity(Gravity.CENTER_VERTICAL);
+                    notificaciones.setTypeface(null, Typeface.BOLD);
+                    notificaciones.setTextColor(getResources().getColor(R.color.color_principal));
+                    notificaciones.setText(s);
+                }
+                catch(Exception e){
+                    viewModel.ObtenerCantidadNotificaciones();
+                }
+
             }
         });
 
