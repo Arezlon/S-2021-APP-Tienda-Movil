@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.inicio.InicioFragment">
 
+    <!--Ver si poner un ScrollView acá o no-->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
         android:layout_width="match_parent"
