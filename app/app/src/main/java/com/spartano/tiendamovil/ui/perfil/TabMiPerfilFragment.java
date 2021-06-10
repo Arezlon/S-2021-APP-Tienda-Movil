@@ -16,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.spartano.tiendamovil.R;
+import com.spartano.tiendamovil.model.PerfilDataResponse;
 import com.spartano.tiendamovil.model.Usuario;
 
 import java.text.ParseException;
@@ -25,12 +26,12 @@ import java.util.Date;
 public class TabMiPerfilFragment extends Fragment {
 
     private Button btEditar;
-    private Usuario usuarioActual;
+    private PerfilDataResponse datosUsuario;
     private TextView tvNombreCompleto, tvUbicacion, tvFechaRegistro, tvEmailContacto, tvValoracion, tvCantidadReseñas, tvCantidadVentas;
     private RatingBar rbValoracion;
 
-    public TabMiPerfilFragment(Usuario usuario){
-        this.usuarioActual = usuario;
+    public TabMiPerfilFragment(PerfilDataResponse datosUsuario){
+        this.datosUsuario = datosUsuario;
     }
 
     @Override
@@ -53,14 +54,14 @@ public class TabMiPerfilFragment extends Fragment {
         tvCantidadVentas = root.findViewById(R.id.tvCantidadVentas);
         rbValoracion = root.findViewById(R.id.rbValoracion);
 
-        tvNombreCompleto.setText(usuarioActual.getApellido()+" "+usuarioActual.getNombre());
+        tvNombreCompleto.setText(datosUsuario.getUsuario().getApellido()+" "+datosUsuario.getUsuario().getNombre());
         try {
-            tvUbicacion.setText(usuarioActual.getDireccion().toString() + " - " + usuarioActual.getLocalidad().toString()+", "+usuarioActual.getProvinicia().toString()+", "+usuarioActual.getPais().toString());
+            tvUbicacion.setText(datosUsuario.getUsuario().getDireccion().toString() + " - " + datosUsuario.getUsuario().getLocalidad().toString()+", "+datosUsuario.getUsuario().getProvinicia().toString()+", "+datosUsuario.getUsuario().getPais().toString());
         }catch(NullPointerException e){
             tvUbicacion.setText("Ubicación del usuario indefinida");
         }
 
-        String fecha = usuarioActual.getCreacion().substring(0,10);
+        String fecha = datosUsuario.getUsuario().getCreacion().substring(0,10);
         //String hora = usuarioActual.getCreacion().substring(11);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyy");
@@ -72,20 +73,21 @@ public class TabMiPerfilFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        tvEmailContacto.setText(usuarioActual.getEmail());
+        tvEmailContacto.setText(datosUsuario.getUsuario().getEmail());
         //Calcular valoracion de vendedor (basado en resñas)
         //tvValoracion.setText()
-        rbValoracion.setRating(3.3f);
+        rbValoracion.setRating(datosUsuario.getValoracion());
 
-        tvCantidadReseñas.setText("Error");
-        tvCantidadVentas.setText("Error");
+        tvValoracion.setText("Reputacion del vendedor: " + datosUsuario.getReputacion() + " (" + datosUsuario.getValoracion() + "%)");
+        tvCantidadReseñas.setText(""+datosUsuario.getCantidadReseñas());
+        tvCantidadVentas.setText(""+datosUsuario.getCantidadVentas());
 
 
         btEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("usuarioActual", usuarioActual);
+                bundle.putSerializable("usuarioActual", datosUsuario.getUsuario());
                 navController.navigate(R.id.nav_editar_perfil, bundle);
             }
         });

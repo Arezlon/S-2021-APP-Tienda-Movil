@@ -305,6 +305,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="[REPUTACION VENDEDOR]"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toEndOf="@+id/tvNombreVendedor"
                         app:layout_constraintTop_toTopOf="@+id/tvNombreVendedor" />
 

@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.spartano.tiendamovil.R;
+import com.spartano.tiendamovil.model.PerfilDataResponse;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.ui.publicaciones.PublicacionesFragment;
@@ -26,7 +27,8 @@ import java.util.List;
 public class PerfilFragment extends Fragment {
 
     private PerfilViewModel viewModel;
-    private Usuario usuarioActual;
+    //private Usuario usuarioActual;
+    private PerfilDataResponse datosUsuario;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,8 +44,16 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        usuarioActual = (Usuario)getArguments().getSerializable("usuario");
-        inicializarVista(root);
+        viewModel.getDatosUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<PerfilDataResponse>() {
+            @Override
+            public void onChanged(PerfilDataResponse perfilDataResponse) {
+                datosUsuario = perfilDataResponse;
+                inicializarVista(root);
+            }
+        });
+
+        Usuario usuario = (Usuario)getArguments().getSerializable("usuario");
+        viewModel.obtenerDatosUsuario(usuario.getId());
         return root;
     }
 
@@ -55,8 +65,8 @@ public class PerfilFragment extends Fragment {
         appBar.addView(tabLayout);
 
         ViewPageAdapter vpa = new ViewPageAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        vpa.addFragment(new TabPerfilFragment(usuarioActual), "Vendedor");
-        vpa.addFragment(new TabPublicacionesFragment(usuarioActual), "Publicaciones");
+        vpa.addFragment(new TabPerfilFragment(datosUsuario), "Vendedor");
+        vpa.addFragment(new TabPublicacionesFragment(datosUsuario.getUsuario()), "Publicaciones");
 
         viewPage.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPage);

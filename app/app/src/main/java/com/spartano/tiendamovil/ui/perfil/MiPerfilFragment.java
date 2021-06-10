@@ -18,12 +18,13 @@ import android.widget.Toast;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.spartano.tiendamovil.R;
+import com.spartano.tiendamovil.model.PerfilDataResponse;
 import com.spartano.tiendamovil.model.Usuario;
 
 public class MiPerfilFragment extends Fragment {
 
     private MiPerfilViewModel viewModel;
-    private Usuario usuarioActual;
+    private PerfilDataResponse datosUsuario;
 
     public static MiPerfilFragment newInstance() {
         return new MiPerfilFragment();
@@ -35,10 +36,18 @@ public class MiPerfilFragment extends Fragment {
                 new ViewModelProvider(this).get(MiPerfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
 
-        viewModel.getUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<Usuario>() {
+        /*viewModel.getUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<Usuario>() {
             @Override
             public void onChanged(Usuario usuario) {
                 usuarioActual = usuario;
+                inicializarVista(root);
+            }
+        });*/
+
+        viewModel.getDatosUsuarioMutable().observe(getViewLifecycleOwner(), new Observer<PerfilDataResponse>() {
+            @Override
+            public void onChanged(PerfilDataResponse perfilDataResponse) {
+                datosUsuario = perfilDataResponse;
                 inicializarVista(root);
             }
         });
@@ -50,7 +59,7 @@ public class MiPerfilFragment extends Fragment {
             }
         });
 
-        viewModel.ObtenerUsuario();
+        viewModel.obtenerDatosUsuario();
         return root;
     }
 
@@ -62,7 +71,7 @@ public class MiPerfilFragment extends Fragment {
         appBar.addView(tabLayout);
 
         ViewPageAdapter vpa = new ViewPageAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        vpa.addFragment(new TabMiPerfilFragment(usuarioActual), "Mi perfil");
+        vpa.addFragment(new TabMiPerfilFragment(datosUsuario), "Mi perfil");
         vpa.addFragment(new TabComprasFragment(), "Mis compras");
         vpa.addFragment(new TabVentasFragment(), "Mis ventas");
 

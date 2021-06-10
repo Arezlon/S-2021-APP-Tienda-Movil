@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.spartano.tiendamovil.model.PerfilDataResponse;
 import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.Usuario;
 import com.spartano.tiendamovil.request.ApiClient;
@@ -24,6 +25,7 @@ public class PerfilViewModel extends AndroidViewModel {
     private Context context;
     private MutableLiveData<List<Publicacion>> publicacionesMutable;
     private MutableLiveData<String> errorMutable;
+    private MutableLiveData<PerfilDataResponse> datosUsuarioMutable;
     private MutableLiveData<Boolean> listaPublicacionesVaciaMutable;
 
     public PerfilViewModel(@NonNull Application application) {
@@ -43,10 +45,47 @@ public class PerfilViewModel extends AndroidViewModel {
         return errorMutable;
     }
 
+    public LiveData<PerfilDataResponse> getDatosUsuarioMutable(){
+        if(datosUsuarioMutable == null)
+            datosUsuarioMutable = new MutableLiveData<>();
+        return datosUsuarioMutable;
+    }
+
     public LiveData<Boolean> getListaPublicacionesVaciaMutable(){
         if (listaPublicacionesVaciaMutable == null)
             listaPublicacionesVaciaMutable = new MutableLiveData<>();
         return listaPublicacionesVaciaMutable;
+    }
+
+    public void obtenerDatosUsuario(int id) {
+        Call<PerfilDataResponse> resAsync = ApiClient.getRetrofit().getDatosPerfilUsuario(ApiClient.getApi().getToken(context), id);
+        resAsync.enqueue(new Callback<PerfilDataResponse>() {
+            @Override
+            public void onResponse(Call<PerfilDataResponse> call, Response<PerfilDataResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Usuario u = response.body().getUsuario();
+                        if(u.getDireccion() == null){
+                            u.setDireccion(null);
+                            u.setLocalidad(null);
+                            u.setProvinicia(null);
+                            u.setPais(null);
+                        }
+                        datosUsuarioMutable.setValue(response.body());
+                    }
+                    else {
+                        Log.d("salida", "Error al buscar el usuario");
+                        errorMutable.setValue("Ocurrió un error inesperado");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PerfilDataResponse> call, Throwable t) {
+                Log.d("salida", "Error de conexion");
+                errorMutable.setValue("No se pudo conectar con el servidor");
+            }
+        });
     }
 
     public void leerPublicacionesUsuario(Usuario usuario) {

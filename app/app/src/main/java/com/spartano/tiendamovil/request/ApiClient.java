@@ -44,6 +44,7 @@ public class ApiClient {
         @POST("usuarios/create") Call<Boolean> createUsuario(@Body Usuario usuario);
         @PUT("usuarios/edit") Call<Void> editUsuario(@Body Usuario usuario, @Header("Authorization") String token);
         @GET("usuarios/get") Call<Usuario> getUsuario(@Header("Authorization") String token);
+        @GET("usuarios/getdatosperfil") Call<PerfilDataResponse> getDatosPerfilUsuario(@Header("Authorization") String token, @Query("usuarioId") int usuarioId);
 
         //Publicaciones
         @POST("publicaciones/create") Call<Void> createPublicacion(@Body Publicacion publicacion, @Header("Authorization") String token);
