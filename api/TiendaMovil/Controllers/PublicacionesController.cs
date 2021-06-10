@@ -84,6 +84,7 @@ namespace TiendaMovil.Controllers
                         "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
                         "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
                         "LEFT JOIN Comentarios q ON q.PublicacionId = p.Id " +
+                    "WHERE p.Estado = 1 " +
                     "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
                         " ORDER BY " +
                             " COUNT(c.Id) DESC, " +
@@ -120,7 +121,7 @@ namespace TiendaMovil.Controllers
                             "LEFT JOIN Reseñas r ON r.PublicacionId = p.Id " +
                             "LEFT JOIN PublicacionEtiquetas pe ON pe.PublicacionId = p.Id " +
                             "LEFT JOIN Etiquetas e ON pe.EtiquetaId = e.Id " +
-                        "WHERE e.Nombre IN((SELECT et.Nombre FROM Compras com " +
+                        "WHERE p.Estado = 1 AND e.Nombre IN((SELECT et.Nombre FROM Compras com " +
                                 "JOIN Publicaciones pub ON com.PublicacionId = pub.Id " +
                                 "JOIN PublicacionEtiquetas pet ON pet.PublicacionId = pub.Id " +
                                 "JOIN Etiquetas et ON et.Id = pet.EtiquetaId " +
@@ -157,6 +158,7 @@ namespace TiendaMovil.Controllers
                     .Where(p => (precioMaximo != -1 ? p.Precio <= precioMaximo : true) && 
                                 (categoria != 0 ? p.Categoria == categoria : true) && 
                                 (tipo != 0 ? p.Tipo == tipo : true) &&
+                                p.Estado == 1 &&
                                 (busqueda != null ? EF.Functions.Like(p.Titulo, $"%{busqueda}%") : true))
                     .OrderByDescending(p => p.Creacion)
                     .ToList();
@@ -170,11 +172,12 @@ namespace TiendaMovil.Controllers
                         .Include(pe => pe.Publicacion)
                         .Where(p => (precioMaximo != -1 ? p.Publicacion.Precio <= precioMaximo : true) &&
                                 (categoria != 0 ? p.Publicacion.Categoria == categoria : true) &&
+                                /*p.Estado == 1 && por que ignora esto ?? */
                                 (tipo != 0 ? p.Publicacion.Tipo == tipo : true))
                         .Select(pe => pe.Publicacion)
                         .ToList();
                     foreach (Publicacion p in porEtiqueta)
-                        if (!publicaciones.Contains(p))
+                        if (!publicaciones.Contains(p) && p.Estado == 1)
                             publicaciones.Add(p);
                     publicaciones.OrderByDescending(p => p.Creacion);
                 }

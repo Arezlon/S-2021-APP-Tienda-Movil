@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +50,7 @@ public class TabPublicacionFragment extends Fragment {
     private TabPublicacionViewModel viewModel;
     private Publicacion publicacion;
 
-    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen, btPublicacionComprar;
+    private Button btAgregarImagen, btImagenAnterior, btImagenSiguiente, btEliminarImagen, btDestacarImagen, btPublicacionComprar, btEditarPublicacion;
     private ImageView ivPreviewImagen;
     private EditText etPublicacionCantidad;
     private TextView tvPublicacionTitulo, tvPublicacionPrecio, tvPublicacionStock, tvPublicacionCategoria, tvPublicacionDescripcion, tvPublicacionTipo;
@@ -113,7 +114,8 @@ public class TabPublicacionFragment extends Fragment {
                 btEliminarImagen.setVisibility(View.VISIBLE);
                 btDestacarImagen.setVisibility(View.VISIBLE);
                 btNuevaEtiqueta.setEnabled(true);
-                btPublicacionComprar.setEnabled(false);
+                btPublicacionComprar.setVisibility(View.INVISIBLE);
+                btEditarPublicacion.setVisibility(View.VISIBLE);
             }
         });
 
@@ -134,6 +136,14 @@ public class TabPublicacionFragment extends Fragment {
             }
         });
 
+        viewModel.getEdicionMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                // Al editar la publicacion, redirigir a "mis publicaciones"
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_publicaciones);
+            }
+        });
+
         inicializarVista(root);
         viewModel.leerImagenesPublicacion(publicacion.getId());
         viewModel.leerEtiquetas(publicacion.getId());
@@ -149,6 +159,7 @@ public class TabPublicacionFragment extends Fragment {
         btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
         ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
         btPublicacionComprar = root.findViewById(R.id.btPublicacionComprar);
+        btEditarPublicacion = root.findViewById(R.id.btEditarPublicacion);
 
         tvPublicacionTitulo = root.findViewById(R.id.tvPublicacionTitulo);
         tvPublicacionPrecio = root.findViewById(R.id.tvPublicacionPrecio);
@@ -167,6 +178,40 @@ public class TabPublicacionFragment extends Fragment {
         tvPublicacionTipo.setText(publicacion.getTipoNombre());
         tvNombreVendedor.setText(publicacion.getUsuario().getNombre() + " " + publicacion.getUsuario().getApellido());
         tvReputacionVendedor.setText("#"+publicacion.getUsuario().getId());
+
+        btEditarPublicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Editar publicación")
+                        .setView(R.layout.dialog_editar_publicacion)
+                        .show();
+
+                EditText etStock = dialog.findViewById(R.id.etStock);
+                EditText etPrecio = dialog.findViewById(R.id.etPrecio);
+                Switch swEstado = dialog.findViewById(R.id.swEstado);
+                Button btConfirmarCambios = dialog.findViewById(R.id.btConfirmarCambios);
+
+                etStock.setText(publicacion.getStock()+"");
+                etPrecio.setText(publicacion.getPrecio()+"");
+                swEstado.setChecked(publicacion.getEstado() == 1 ? true : false);
+
+                btConfirmarCambios.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            int stock = 0 + Integer.valueOf(etStock.getText().toString());
+                            float precio = 0 + Float.valueOf(etPrecio.getText().toString());
+                            boolean estado = swEstado.isChecked();
+                            viewModel.modificarPublicacion(publicacion, stock, precio, estado);
+                            dialog.dismiss();
+                        }catch (Exception e) {
+                            Toast.makeText(getActivity(), "Error, los valores ingresados no son validos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
 
         tvNombreVendedor.setOnClickListener(new View.OnClickListener() {
             @Override

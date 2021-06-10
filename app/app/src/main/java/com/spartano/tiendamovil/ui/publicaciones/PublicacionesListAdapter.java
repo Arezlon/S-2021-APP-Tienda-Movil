@@ -47,6 +47,7 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
         TextView tvTitulo = convertView.findViewById(R.id.tvPublicacionTitulo);
         TextView tvPrecio = convertView.findViewById(R.id.tvPrecioPublicacion);
         TextView tvTipo = convertView.findViewById(R.id.tvTipo);
+        TextView tvEstado = convertView.findViewById(R.id.tvEstado);
         if(publicacion.getTipo() == 1)
             tvTipo.setText("USADO");
         else
@@ -56,6 +57,7 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
 
         tvTitulo.setText(publicacion.getTitulo());
         tvPrecio.setText("$"+publicacion.getPrecio());
+        tvEstado.setVisibility(publicacion.getEstado() == 1 ? View.INVISIBLE : View.VISIBLE);
 
         TextView tvStock = convertView.findViewById(R.id.tvStock);
         TextView tvVentas = convertView.findViewById(R.id.tvVentas);
@@ -66,6 +68,7 @@ public class PublicacionesListAdapter extends ArrayAdapter<Publicacion> {
             tvStock.setText("");
             tvVentas.setText("");
         }
+
 
         Glide.with(getContext())
                 .load(ApiClient.getPath()+publicacion.getImagenDir())

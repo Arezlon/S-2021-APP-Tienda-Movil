@@ -76,6 +76,7 @@ namespace TiendaMovil.Controllers
 
                     if(publicacion.Stock == 0)
                     {
+                        publicacion.Estado = 0;
                         //Notificación tipo 4, publicación sin stock
                         Notificacion notificacionStock = new Notificacion();
                         notificacionStock.PublicacionId = compra.PublicacionId;

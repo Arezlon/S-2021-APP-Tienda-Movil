@@ -46,6 +46,7 @@ public class TabPublicacionViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> sinImagenesMutable;
     private MutableLiveData<Boolean> publicacionEsMia;
     private MutableLiveData<Boolean> compraMutable;
+    private MutableLiveData<Boolean> edicionMutable;
     private float fondos;
 
     public LiveData<List<PublicacionEtiqueta>> getEtiquetasMutable() {
@@ -84,9 +85,43 @@ public class TabPublicacionViewModel extends AndroidViewModel {
         return compraMutable;
     }
 
+    public LiveData<Boolean> getEdicionMutable(){
+        if (edicionMutable == null)
+            edicionMutable = new MutableLiveData<>();
+        return edicionMutable;
+    }
+
     public TabPublicacionViewModel(@NonNull Application app) {
         super(app);
         context = app.getApplicationContext();
+    }
+
+    public  void modificarPublicacion(Publicacion publicacion, int stock, float precio, boolean estado) {
+        if (stock == 0)
+            errorMutable.setValue("Error, el stock mínimo es 1. Si no hay stock debe deshabilitar la publicación");
+        else if (precio <= 0)
+            errorMutable.setValue("Error, precio ingresado invalido");
+        else {
+            publicacion.setStock(stock);
+            publicacion.setPrecio(precio);
+            publicacion.setEstado(estado ? 1 : 0);
+            Call<Void> resAsync = ApiClient.getRetrofit().editPublicacion(ApiClient.getApi().getToken(context), publicacion);
+            resAsync.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        edicionMutable.setValue(true);
+                    } else {
+                        errorMutable.setValue("Ocurrió un error inesperado");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    errorMutable.setValue("No se pudo conectar con el servidor");
+                }
+            });
+        }
     }
 
     public void crearEtiquetas(List<PublicacionEtiqueta> etiquetas, Publicacion publicacion) {
