@@ -30,10 +30,10 @@ import java.util.Date;
 public class CompraFragment extends Fragment {
 
     private CompraViewModel viewModel;
-    private TextView tvCompraTituloPublicacion, tvCompraCantidad, tvCompraComprador, tvCompraId, tvCompraImporte, tvCompraVendedor, tvCompraFecha;
+    private TextView tvCompraTituloPublicacion, tvCompraCantidad, tvCompraComprador, tvCompraId, tvCompraImporte, tvCompraVendedor, tvCompraFecha, tvReseñaCompraTitulo, tvReseñaCompraContenido;
     private CardView cvCompraReseña, cvReseña;
     private EditText tvReseñaTitulo, tvReseñaContenido;
-    private RatingBar rbReseñaPuntaje;
+    private RatingBar rbReseñaPuntaje, rbReseñaCompraPuntaje;
     private Button btReseñaGuardar;
     private Compra compraActual;
 
@@ -52,6 +52,22 @@ public class CompraFragment extends Fragment {
                 compraActual = compra;
                 inicializarVista(root);
                 viewModel.ComprobarReseña(compra.getPublicacionId(), compra.getId());
+                viewModel.ObtenerReseña(compraActual.getId());
+            }
+        });
+
+        viewModel.getReseñaMutable().observe(getViewLifecycleOwner(), new Observer<Reseña>() {
+            @Override
+            public void onChanged(Reseña reseña) {
+                cvReseña.setVisibility(View.VISIBLE);
+                rbReseñaCompraPuntaje = root.findViewById(R.id.rbReseñaCompraPuntaje);
+                rbReseñaCompraPuntaje.setRating(reseña.getPuntaje());
+
+                tvReseñaCompraTitulo = root.findViewById(R.id.tvReseñaCompraTitulo);
+                tvReseñaCompraTitulo.setText(reseña.getEncabezado());
+
+                tvReseñaCompraContenido = root.findViewById(R.id.tvReseñaCompraContenido);
+                tvReseñaCompraContenido.setText(reseña.getContenido());
             }
         });
 

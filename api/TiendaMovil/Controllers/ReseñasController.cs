@@ -45,6 +45,25 @@ namespace TiendaMovil.Controllers
             }
         }
 
+        [HttpGet("getPorCompra")]
+        public IActionResult GetPorCompra(int compraId)
+        {
+            try
+            {
+                Compra c = contexto.Compras.Find(compraId);
+                var reseña = contexto.Reseñas
+                    .Where(r => r.PublicacionId == c.PublicacionId && r.UsuarioId == c.UsuarioId)
+                    .Include(r => r.Usuario)
+                    .Include(r => r.Publicacion)
+                    .FirstOrDefault();
+                return Ok(reseña);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ERROR: " + ex);
+            }
+        }
+
         [HttpPost("create")]
         public IActionResult Create(Reseña reseña)
         {

@@ -23,10 +23,17 @@ public class CompraViewModel extends AndroidViewModel {
     private MutableLiveData<Compra> compraMutable;
     public MutableLiveData<String> errorMutable;
     public MutableLiveData<Boolean> pemitirReseñaMutable;
+    public MutableLiveData<Reseña> reseñaMutable;
 
     public CompraViewModel(@NonNull Application app){
         super(app);
         context = app.getApplicationContext();
+    }
+
+    public LiveData<Reseña> getReseñaMutable(){
+        if(reseñaMutable == null)
+            reseñaMutable = new MutableLiveData<>();
+        return reseñaMutable;
     }
 
     public LiveData<Compra> getCompraMutable(){
@@ -145,6 +152,27 @@ public class CompraViewModel extends AndroidViewModel {
                 }
             });
         }
+    }
+
+    public void ObtenerReseña(int compraId){
+        Call<Reseña> resAsync = ApiClient.getRetrofit().getPorCompra(ApiClient.getApi().getToken(context), compraId);
+        resAsync.enqueue(new Callback<Reseña>() {
+            @Override
+            public void onResponse(Call<Reseña> call, Response<Reseña> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        reseñaMutable.setValue(response.body());
+                    } else
+                        Log.d("salida", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reseña> call, Throwable t) {
+                Log.d("salida", "Error de conexion"+t.getMessage());
+            }
+        });
+
     }
 
 }
