@@ -8,4 +8,5 @@
     <color name="hCompra">#A53030</color>
     <color name="hVenta">#44A32E</color>
     <color name="notificacionLeida">#A7A8A7</color>
+    <color name="notificacionNoLeida">#757575</color>
 </resources>

@@ -3,10 +3,13 @@ package com.spartano.tiendamovil.ui.perfil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +48,7 @@ public class EditarPerfilFragment extends Fragment {
                 btGuardarCambios.setText("Guardar cambios");
             }
         });
+
         viewModel.getEdicionCorrectaMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -52,6 +56,9 @@ public class EditarPerfilFragment extends Fragment {
                 btGuardarCambios.setEnabled(true);
                 btGuardarCambios.setText("Guardar cambios");
                 ((MenuNavegacionActivity)getActivity()).actualizarDatosUsuario();
+                NavController controller = Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment);
+                controller.popBackStack();
+                controller.navigate(R.id.nav_mi_perfil);
             }
         });
         inicializarVista(root);

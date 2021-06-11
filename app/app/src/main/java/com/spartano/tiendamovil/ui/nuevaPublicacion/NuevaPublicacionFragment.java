@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.internal.bind.MapTypeAdapterFactory;
@@ -74,7 +75,9 @@ public class NuevaPublicacionFragment extends Fragment {
             @Override
             public void onChanged(Boolean exito) {
                 Toast.makeText(getContext(), "Publicacion creada correctamente", Toast.LENGTH_LONG).show();
-                Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment).navigate(R.id.nav_publicaciones);
+                NavController controller = Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment);
+                controller.popBackStack();
+                controller.navigate(R.id.nav_publicaciones);
             }
         });
 

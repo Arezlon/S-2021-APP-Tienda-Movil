@@ -58,6 +58,10 @@ public class NotificacionesListAdapter extends ArrayAdapter<Notificacion> {
             ivNotificacionNueva.setVisibility(View.INVISIBLE);
             ivNotificacionIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.notificacionLeida));
             tvNotificacionMensaje.setTextColor(ContextCompat.getColor(context, R.color.notificacionLeida));
+        } else {
+            ivNotificacionNueva.setVisibility(View.VISIBLE);
+            ivNotificacionIcono.setColorFilter(ContextCompat.getColor(getContext(), R.color.notificacionNoLeida));
+            tvNotificacionMensaje.setTextColor(ContextCompat.getColor(context, R.color.notificacionNoLeida));
         }
 
 

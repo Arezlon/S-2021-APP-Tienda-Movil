@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -120,7 +121,9 @@ public class TabPublicacionFragment extends Fragment {
             public void onChanged(Boolean aBoolean) {
                 // Al realizar una compra, redirigir a los detalles
                 ((MenuNavegacionActivity) getActivity()).actualizarDatosUsuario();
-                Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra);
+                NavController controller = Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment);
+                controller.popBackStack();
+                controller.navigate(R.id.nav_compra);
             }
         });
 
