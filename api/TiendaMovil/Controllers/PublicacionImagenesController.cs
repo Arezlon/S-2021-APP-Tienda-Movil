@@ -97,8 +97,13 @@ namespace TiendaMovil.Controllers
                 var entidad = contexto.PublicacionImagenes.FirstOrDefault(i => i.Id == imagenId);
                 if (entidad != null)
                 {
+                    // Si la imagen que se quiere eliminar es la destacada, elegir una nueva imagen para destacar
+                    PublicacionImagen nuevaDestacada = null;
                     if (entidad.Estado == 2)
-                        contexto.PublicacionImagenes.Where(i => i.PublicacionId == entidad.PublicacionId && i.Id != entidad.Id).FirstOrDefault().Estado = 2;
+                        nuevaDestacada = contexto.PublicacionImagenes.Where(i => i.PublicacionId == entidad.PublicacionId && i.Id != entidad.Id).FirstOrDefault();
+                    if (nuevaDestacada != null)
+                        nuevaDestacada.Estado = 2;
+
                     contexto.PublicacionImagenes.Remove(entidad);
                         
                     contexto.SaveChanges();

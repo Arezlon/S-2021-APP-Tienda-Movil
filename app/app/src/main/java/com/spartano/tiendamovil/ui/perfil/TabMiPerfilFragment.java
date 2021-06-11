@@ -76,7 +76,7 @@ public class TabMiPerfilFragment extends Fragment {
         tvEmailContacto.setText(datosUsuario.getUsuario().getEmail());
         //Calcular valoracion de vendedor (basado en resñas)
         //tvValoracion.setText()
-        rbValoracion.setRating(datosUsuario.getValoracion());
+        rbValoracion.setRating(datosUsuario.getValoracion()/2/10);
 
         tvValoracion.setText("Reputacion del vendedor: " + datosUsuario.getReputacion() + " (" + datosUsuario.getValoracion() + "%)");
         tvCantidadReseñas.setText(""+datosUsuario.getCantidadReseñas());

@@ -64,15 +64,6 @@ namespace TiendaMovil.Controllers
             }
         }
 
-        /* Carousel publicaciones destacadas: (Populares de la semana en toda la app, ignorando las preferencias del usuario)
-	            * Creadas en la última semana
-	            * Ordenadas por:
-		            * Cantidad de ventas
-		            * Promedio de reseñas 
-		            * Cantidad de reseñas 
-		            * Cantidad de comentarios
-	            * Top 10
--           En el card del carousel un boton que diga "ver mas publicaciones destacadas" que redirija a una lista de publicaciones con los mismos parametros pero con paginación infinita. */
         [HttpGet("getdestacadas")]
         public IActionResult GetDestacadas()
         {

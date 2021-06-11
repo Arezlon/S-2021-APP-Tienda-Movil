@@ -1,29 +1,18 @@
 package com.spartano.tiendamovil.ui.publicaciones;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spartano.tiendamovil.R;
-import com.spartano.tiendamovil.model.Etiqueta;
-import com.spartano.tiendamovil.model.Publicacion;
 import com.spartano.tiendamovil.model.PublicacionEtiqueta;
-import com.spartano.tiendamovil.request.ApiClient;
-import com.spartano.tiendamovil.ui.inicio.PublicacionesRecyclerAdapter;
 
 import java.util.List;
 
@@ -32,18 +21,20 @@ public class EtiquetasRecyclerAdapter extends RecyclerView.Adapter<EtiquetasRecy
     private List<PublicacionEtiqueta> etiquetas;
     private TabPublicacionViewModel viewModel;
     private Context context;
+    private boolean publicacionEsMia;
 
-    public EtiquetasRecyclerAdapter(List<PublicacionEtiqueta> etiquetas, Context context, TabPublicacionViewModel viewModel) {
+    public EtiquetasRecyclerAdapter(List<PublicacionEtiqueta> etiquetas, Context context, TabPublicacionViewModel viewModel, boolean publicacionEsMia) {
         this.etiquetas = etiquetas;
         this.context = context;
         this.viewModel = viewModel;
+        this.publicacionEsMia = publicacionEsMia;
     }
 
     @NonNull
     @Override
     public EtiquetasRecyclerAdapter.ViewHolderEtiqueta onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_etiqueta, null, false);
-        return new EtiquetasRecyclerAdapter.ViewHolderEtiqueta(view, context, viewModel);
+        return new EtiquetasRecyclerAdapter.ViewHolderEtiqueta(view, context, viewModel, publicacionEsMia);
     }
 
     @Override
@@ -59,16 +50,19 @@ public class EtiquetasRecyclerAdapter extends RecyclerView.Adapter<EtiquetasRecy
     public static class ViewHolderEtiqueta extends RecyclerView.ViewHolder {
 
         // Referencias a los elementos de los items
-        TabPublicacionViewModel viewModel;
         View itemView;
         TextView tvEtiquetaNombre;
         Context context;
 
-        public ViewHolderEtiqueta(@NonNull View itemView, Context context, TabPublicacionViewModel viewModel) {
+        TabPublicacionViewModel viewModel;
+        boolean permitirEliminacion;
+
+        public ViewHolderEtiqueta(@NonNull View itemView, Context context, TabPublicacionViewModel viewModel, boolean permitirEliminacion) {
             super(itemView);
             this.itemView = itemView;
             this.context = context;
             this.viewModel = viewModel;
+            this.permitirEliminacion = permitirEliminacion;
             tvEtiquetaNombre = itemView.findViewById(R.id.tvEtiquetaNombre);
         }
 
@@ -76,27 +70,29 @@ public class EtiquetasRecyclerAdapter extends RecyclerView.Adapter<EtiquetasRecy
             // Settear los datos a cada elemento
             tvEtiquetaNombre.setText(etiqueta.getEtiqueta().getNombre());
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new AlertDialog.Builder(context)
-                            .setTitle("Etiqueta")
-                            .setMessage("¿Quiere eliminar la etiqueta \"" + etiqueta.getEtiqueta().getNombre() + "\" de la publicación?")
-                            .setPositiveButton("Si, eliminar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    viewModel.deleteEtiqueta(etiqueta);
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                }
-            });
+            if (permitirEliminacion) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Etiqueta")
+                                .setMessage("¿Quiere eliminar la etiqueta \"" + etiqueta.getEtiqueta().getNombre() + "\" de la publicación?")
+                                .setPositiveButton("Si, eliminar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        viewModel.deleteEtiqueta(etiqueta);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
+                });
+            }
         }
     }
 }

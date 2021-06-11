@@ -58,7 +58,7 @@ public class TabPublicacionFragment extends Fragment {
     private Button btNuevaEtiqueta;
     private RecyclerView rvEtiquetas;
 
-
+    private boolean publicacionEsMia = false;
     private List<PublicacionImagen> imagenes;
     private int pos = 0;
 
@@ -110,18 +110,15 @@ public class TabPublicacionFragment extends Fragment {
         viewModel.getPublicacionEsMia().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
-                btAgregarImagen.setVisibility(View.VISIBLE);
-                btEliminarImagen.setVisibility(View.VISIBLE);
-                btDestacarImagen.setVisibility(View.VISIBLE);
-                btNuevaEtiqueta.setEnabled(true);
-                btPublicacionComprar.setVisibility(View.INVISIBLE);
-                btEditarPublicacion.setVisibility(View.VISIBLE);
+                publicacionEsMia = bool;
+                inicializarVistaMia(root);
             }
         });
 
         viewModel.getCompraMutable().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                // Al realizar una compra, redirigir a los detalles
                 ((MenuNavegacionActivity) getActivity()).actualizarDatosUsuario();
                 Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment).navigate(R.id.nav_compra);
             }
@@ -131,7 +128,7 @@ public class TabPublicacionFragment extends Fragment {
             @Override
             public void onChanged(List<PublicacionEtiqueta> etiquetas) {
                 rvEtiquetas.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext(), viewModel);
+                EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetas, getContext(), viewModel, publicacionEsMia);
                 rvEtiquetas.setAdapter(adapter);
             }
         });
@@ -146,39 +143,22 @@ public class TabPublicacionFragment extends Fragment {
 
         inicializarVista(root);
         viewModel.leerImagenesPublicacion(publicacion.getId());
-        viewModel.leerEtiquetas(publicacion.getId());
         viewModel.comprobarUsuario(publicacion.getUsuarioId());
+        viewModel.leerEtiquetas(publicacion.getId());
         return root;
     }
 
-    private void inicializarVista(View root){
-        btAgregarImagen = root.findViewById(R.id.btAgregarImagen);
-        btImagenAnterior = root.findViewById(R.id.btImagenAnterior);
-        btImagenSiguiente = root.findViewById(R.id.btImagenSiguiente);
-        btEliminarImagen = root.findViewById(R.id.btEliminarImagen);
-        btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
-        ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
-        btPublicacionComprar = root.findViewById(R.id.btPublicacionComprar);
-        btEditarPublicacion = root.findViewById(R.id.btEditarPublicacion);
+    // Solo se llama si la publicación es del usuario logueado
+    private void inicializarVistaMia(View root) {
+        // Mostrar elementos de gestión
+        btAgregarImagen.setVisibility(View.VISIBLE);
+        btEliminarImagen.setVisibility(View.VISIBLE);
+        btDestacarImagen.setVisibility(View.VISIBLE);
+        btEditarPublicacion.setVisibility(View.VISIBLE);
+        btNuevaEtiqueta.setEnabled(true);
+        btPublicacionComprar.setVisibility(View.INVISIBLE);
 
-        tvPublicacionTitulo = root.findViewById(R.id.tvPublicacionTitulo);
-        tvPublicacionPrecio = root.findViewById(R.id.tvPublicacionPrecio);
-        tvPublicacionStock = root.findViewById(R.id.tvPublicacionStock);
-        tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
-        tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
-        tvNombreVendedor = root.findViewById(R.id.tvNombreVendedor);
-        tvReputacionVendedor = root.findViewById(R.id.tvReputacionVendedor);
-        tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
-
-        tvPublicacionTitulo.setText(publicacion.getTitulo());
-        tvPublicacionPrecio.setText("$"+publicacion.getPrecio());
-        tvPublicacionStock.setText("("+publicacion.getStock()+" disponible/s)");
-        tvPublicacionCategoria.setText(publicacion.getCategoriaNombre());
-        tvPublicacionDescripcion.setText(publicacion.getDescripcion());
-        tvPublicacionTipo.setText(publicacion.getTipoNombre());
-        tvNombreVendedor.setText(publicacion.getUsuario().getNombre() + " " + publicacion.getUsuario().getApellido());
-        tvReputacionVendedor.setText("#"+publicacion.getUsuario().getId());
-
+        // Abrir dialog de edición de publicación
         btEditarPublicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +167,7 @@ public class TabPublicacionFragment extends Fragment {
                         .setView(R.layout.dialog_editar_publicacion)
                         .show();
 
+                // Elementos de la vista interna del dialog (R.layout.dialog_editar_publicacion)
                 EditText etStock = dialog.findViewById(R.id.etStock);
                 EditText etPrecio = dialog.findViewById(R.id.etPrecio);
                 Switch swEstado = dialog.findViewById(R.id.swEstado);
@@ -213,18 +194,7 @@ public class TabPublicacionFragment extends Fragment {
             }
         });
 
-        tvNombreVendedor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putSerializable("usuario", publicacion.getUsuario());
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_perfil, b);
-            }
-        });
-
         // Boton agregar etiquetas > abre un dialog que permite hacer alta de muchas etiquetas
-        btNuevaEtiqueta = root.findViewById(R.id.btNuevaEtiqueta);
-        rvEtiquetas = root.findViewById(R.id.rvEtiquetas);
         btNuevaEtiqueta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,7 +230,7 @@ public class TabPublicacionFragment extends Fragment {
                         pe.setPublicacionId(publicacion.getId());
                         etiquetasPublicacion.add(pe);
 
-                        EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetasPublicacion, getContext(), viewModel);
+                        EtiquetasRecyclerAdapter adapter = new EtiquetasRecyclerAdapter(etiquetasPublicacion, getContext(), viewModel, false);
                         rvEtiquetas.setAdapter(adapter);
 
                         etEtiqueta.setText("");
@@ -280,24 +250,6 @@ public class TabPublicacionFragment extends Fragment {
 
                 // Cuando el usuario termine de elegir las imágenes se llama al onActivityResult con los resultados de la activity
                 startActivityForResult(Intent.createChooser(i, "Imagenes"), 200);
-            }
-        });
-
-        // Imágen anterior/izquierda
-        btImagenAnterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pos = (pos > 0) ? (pos - 1) : (imagenes.size() - 1);
-                setImagen(pos);
-            }
-        });
-
-        // Imágen siguiente/derecha
-        btImagenSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pos = (pos < imagenes.size() - 1) ? (pos + 1) : 0;
-                setImagen(pos);
             }
         });
 
@@ -342,6 +294,71 @@ public class TabPublicacionFragment extends Fragment {
                                 viewModel.destacarImagen(imagenes.get(pos));
                             }
                         }).show();
+            }
+        });
+    }
+
+    // Se llama siempre
+    private void inicializarVista(View root){
+        // Elementos visibles para todos los usuarios
+        btImagenAnterior = root.findViewById(R.id.btImagenAnterior);
+        btImagenSiguiente = root.findViewById(R.id.btImagenSiguiente);
+        ivPreviewImagen = root.findViewById(R.id.ivPreviewImagen);
+        tvPublicacionTitulo = root.findViewById(R.id.tvPublicacionTitulo);
+        tvPublicacionPrecio = root.findViewById(R.id.tvPublicacionPrecio);
+        tvPublicacionStock = root.findViewById(R.id.tvPublicacionStock);
+        tvPublicacionCategoria = root.findViewById(R.id.tvPublicacionCategoria);
+        tvPublicacionDescripcion = root.findViewById(R.id.tvPublicacionDescripcion);
+        tvNombreVendedor = root.findViewById(R.id.tvNombreVendedor);
+        tvReputacionVendedor = root.findViewById(R.id.tvReputacionVendedor);
+        tvPublicacionTipo = root.findViewById(R.id.tvPublicacionTipo);
+
+        // Elemento solo visible para los compradores
+        btPublicacionComprar = root.findViewById(R.id.btPublicacionComprar);
+
+        // Elementos solo visibles para el dueño de la publicación
+        btAgregarImagen = root.findViewById(R.id.btAgregarImagen);
+        btEliminarImagen = root.findViewById(R.id.btEliminarImagen);
+        btDestacarImagen = root.findViewById(R.id.btDestacarImagen);
+        btEditarPublicacion = root.findViewById(R.id.btEditarPublicacion);
+        btNuevaEtiqueta = root.findViewById(R.id.btNuevaEtiqueta);
+        rvEtiquetas = root.findViewById(R.id.rvEtiquetas);
+
+        tvPublicacionTitulo.setText(publicacion.getTitulo());
+        tvPublicacionPrecio.setText("$"+publicacion.getPrecio());
+        tvPublicacionStock.setText("("+publicacion.getStock()+" disponible/s)");
+        tvPublicacionCategoria.setText(publicacion.getCategoriaNombre());
+        tvPublicacionDescripcion.setText(publicacion.getDescripcion());
+        tvPublicacionTipo.setText(publicacion.getTipoNombre());
+        tvNombreVendedor.setText(publicacion.getUsuario().getNombre() + " " + publicacion.getUsuario().getApellido());
+        tvReputacionVendedor.setText("#"+publicacion.getUsuario().getId());
+
+
+        // Redirigir al perfil del vendedor cuando se hace clic sobre su nombre
+        tvNombreVendedor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putSerializable("usuario", publicacion.getUsuario());
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_perfil, b);
+            }
+        });
+
+        // Imágen anterior/izquierda
+        btImagenAnterior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos = (pos > 0) ? (pos - 1) : (imagenes.size() - 1);
+                setImagen(pos);
+            }
+        });
+
+        // Imágen siguiente/derecha
+        btImagenSiguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos = (pos < imagenes.size() - 1) ? (pos + 1) : 0;
+                setImagen(pos);
             }
         });
 
@@ -394,11 +411,13 @@ public class TabPublicacionFragment extends Fragment {
         });
     }
 
+    // Se llama cuando el usuario termina de elegir la/s imagen/es de su galería
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         viewModel.recibirImagenesGaleria(requestCode, resultCode, data, publicacion);
     }
 
+    // Cambiar la imagen mostrada en el ImageView (ivPreviewImagen)
     private void setImagen(int posicion) {
         Glide.with(getContext())
                 .load(ApiClient.getPath()+imagenes.get(posicion).getDireccion())

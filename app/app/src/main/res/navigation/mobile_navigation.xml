@@ -75,5 +75,9 @@
         android:id="@+id/nav_compra"
         android:name="com.spartano.tiendamovil.ui.compra.CompraFragment"
         android:label="Detalles de la compra"
-        tools:layout="@layout/fragment_compra" />
+        tools:layout="@layout/fragment_compra" >
+        <action
+            android:id="@+id/action_nav_compra_to_nav_mi_perfil"
+            app:destination="@id/nav_mi_perfil" />
+    </fragment>
 </navigation>
