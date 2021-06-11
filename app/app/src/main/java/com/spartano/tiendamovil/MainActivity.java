@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        this.moveTaskToBack(true);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
