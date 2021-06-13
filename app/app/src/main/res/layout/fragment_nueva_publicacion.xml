@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E4E4E4"
     tools:context=".ui.nuevaPublicacion.NuevaPublicacionFragment">
 
     <ScrollView
@@ -52,9 +53,9 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:ems="10"
+                        android:inputType="textPersonName"
                         android:textColor="@color/color_secundario"
                         app:backgroundTint="@color/color_secundario"
-                        android:inputType="textPersonName"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -66,10 +67,10 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:ems="10"
-                        android:textColor="@color/color_secundario"
-                        app:backgroundTint="@color/color_secundario"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
+                        android:textColor="@color/color_secundario"
+                        app:backgroundTint="@color/color_secundario"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView22" />
@@ -119,9 +120,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:inputType="numberDecimal"
                             android:textColor="@color/color_secundario"
-                            app:backgroundTint="@color/color_secundario"
-                            android:inputType="numberDecimal" />
+                            app:backgroundTint="@color/color_secundario" />
 
                         <EditText
                             android:id="@+id/etCP_Stock"
@@ -129,9 +130,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:inputType="number"
                             android:textColor="@color/color_secundario"
-                            app:backgroundTint="@color/color_secundario"
-                            android:inputType="number" />
+                            app:backgroundTint="@color/color_secundario" />
 
                     </LinearLayout>
 

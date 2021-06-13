@@ -121,10 +121,10 @@ namespace TiendaMovil.Controllers
                         "ORDER BY COUNT(e.Id) DESC, COUNT(c.Id) DESC, COUNT(r.Id) DESC, IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) DESC, p.Id ASC";
                     resultado = contexto.Publicaciones.FromSqlRaw(query).ToList();
                     if (resultado.Count < 10)
-                        resultado.AddRange(contexto.Publicaciones.OrderByDescending(p => p.Id).Take(10 - resultado.Count).ToList());
+                        resultado.AddRange(contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(10 - resultado.Count).ToList());
                 } else
                 {
-                    resultado = contexto.Publicaciones.OrderByDescending(p => p.Id).Take(10).ToList();
+                    resultado = contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(10).ToList();
                 }
 
                 foreach (Publicacion p in resultado)

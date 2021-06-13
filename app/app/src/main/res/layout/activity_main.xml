@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E4E4E4"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -114,11 +117,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="16dp"
-                        app:tint="@color/color_secundario"
                         app:layout_constraintBottom_toBottomOf="@+id/etMail"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvEmail"
-                        app:srcCompat="@drawable/baseline_alternate_email_24"></ImageView>
+                        app:srcCompat="@drawable/baseline_alternate_email_24"
+                        app:tint="@color/color_secundario"></ImageView>
 
                     <EditText
                         android:id="@+id/etMail"
@@ -150,11 +153,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="16dp"
-                        app:tint="@color/color_secundario"
                         app:layout_constraintBottom_toBottomOf="@+id/etClave"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvClave"
-                        app:srcCompat="@drawable/baseline_vpn_key_24"></ImageView>
+                        app:srcCompat="@drawable/baseline_vpn_key_24"
+                        app:tint="@color/color_secundario"></ImageView>
 
                     <EditText
                         android:id="@+id/etClave"
