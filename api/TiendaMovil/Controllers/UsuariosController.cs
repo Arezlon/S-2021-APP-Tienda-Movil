@@ -339,7 +339,7 @@ namespace TiendaMovil.Controllers
                 else
                     datos.Valoracion = 0;
 
-                if (datos.CantidadVentas > 5 && datos.CantidadReseñas > 3)
+                if (datos.CantidadVentas >= 5 && datos.CantidadReseñas >= 3)
                 {
                     // Si el vendedor ya tiene una cierta cantidad de ventas y reseñas, settear su reputacion segun el porcentaje de valoraciones
                     if (datos.Valoracion > 90)

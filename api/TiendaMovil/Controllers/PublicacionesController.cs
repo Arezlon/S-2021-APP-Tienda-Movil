@@ -105,7 +105,7 @@ namespace TiendaMovil.Controllers
                 List<Publicacion> resultado = new List<Publicacion>();
                 if (ultimaCompra != null)
                 {
-                    string query = "SELECT TOP 10 " +
+                    string query = "SELECT TOP 6 " +
                             "p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
                         "FROM Publicaciones p " +
                             "LEFT JOIN Compras c ON c.PublicacionId = p.Id " +
@@ -120,11 +120,11 @@ namespace TiendaMovil.Controllers
                         "GROUP BY p.Id, p.UsuarioId, p.Titulo, p.Descripcion, p.Precio, p.Categoria, p.Tipo, p.Stock, p.Estado, p.Creacion " +
                         "ORDER BY COUNT(e.Id) DESC, COUNT(c.Id) DESC, COUNT(r.Id) DESC, IIF(AVG(r.Puntaje) IS NOT NULL, AVG(r.Puntaje), 0) DESC, p.Id ASC";
                     resultado = contexto.Publicaciones.FromSqlRaw(query).ToList();
-                    if (resultado.Count < 10)
-                        resultado.AddRange(contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(10 - resultado.Count).ToList());
+                    if (resultado.Count < 6)
+                        resultado.AddRange(contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(6 - resultado.Count).ToList());
                 } else
                 {
-                    resultado = contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(10).ToList();
+                    resultado = contexto.Publicaciones.Where(p => p.Estado == 1).OrderByDescending(p => p.Id).Take(6).ToList();
                 }
 
                 foreach (Publicacion p in resultado)

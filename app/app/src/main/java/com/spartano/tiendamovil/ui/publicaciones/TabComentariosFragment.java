@@ -53,6 +53,10 @@ public class TabComentariosFragment extends Fragment {
                 ivListaComentariosVacia.setVisibility(bool ? View.VISIBLE : View.INVISIBLE);
                 tvListaComentariosVacia.setText("No se encontraron preguntas");
                 ivListaComentariosVacia.setImageResource(R.drawable.baseline_error_outline_24);
+                btEnviarComentario.setEnabled(!publicacionEsMia);
+                etComentario.setEnabled(!publicacionEsMia);
+                btEnviarComentario.setText("ENVIAR");
+                etComentario.setText("");
             }
         });
 
@@ -107,7 +111,7 @@ public class TabComentariosFragment extends Fragment {
 
                 viewModel.crearComentario(comentario);
                 btEnviarComentario.setEnabled(false);
-                btEnviarComentario.setText("Enviando...");
+                btEnviarComentario.setText("Enviando");
             }
         });
     }

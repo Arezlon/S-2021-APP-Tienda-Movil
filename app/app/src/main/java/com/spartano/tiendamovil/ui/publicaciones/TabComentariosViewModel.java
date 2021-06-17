@@ -77,20 +77,18 @@ public class TabComentariosViewModel extends AndroidViewModel {
         resAsync.enqueue(new Callback<List<Comentario>>() {
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if(!response.body().isEmpty()) {
-                            comentariosMutable.postValue(response.body());
-                            listaVaciaMutable.setValue(false);
-                        }else{
-                            listaVaciaMutable.setValue(true);
-                        }
+                if (response.isSuccessful() && response.body() != null) {
+                    if(!response.body().isEmpty()) {
+                        comentariosMutable.postValue(response.body());
+                        listaVaciaMutable.setValue(false);
+                    }else{
+                        listaVaciaMutable.setValue(true);
                     }
                 } else {
                     errorMutable.setValue("Ocurrió un error inesperado");
                     listaVaciaMutable.setValue(true);
+                    Log.d("salida", "Error al cargar comentarios: " + response.message());
                 }
-                Log.d("salida", "Error al cargar comentarios: " + response.message());
             }
 
             @Override
@@ -103,22 +101,27 @@ public class TabComentariosViewModel extends AndroidViewModel {
     }
 
     public void crearComentario(Comentario comentario) {
-        Call<Void> resAsync = ApiClient.getRetrofit().createComentario(ApiClient.getApi().getToken(context), comentario);
-        resAsync.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    leerComentarios(comentario.getPublicacionId());
-                    return;
+        if (comentario.getPregunta() != null && !comentario.getPregunta().equals("")) {
+            Call<Void> resAsync = ApiClient.getRetrofit().createComentario(ApiClient.getApi().getToken(context), comentario);
+            resAsync.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        leerComentarios(comentario.getPublicacionId());
+                        return;
+                    }
+                    Log.d("salida", "Error al crear comentario: " + response.message());
                 }
-                Log.d("salida", "Error al crear comentario: " + response.message());
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("salida", "Failure al crear comentario: " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("salida", "Failure al crear comentario: " + t.getMessage());
+                }
+            });
+        } else {
+            errorMutable.setValue("Error");
+            leerComentarios(comentario.getPublicacionId());
+        }
     }
 
     public void responderComentario(Comentario comentario, String respuesta) {
@@ -140,6 +143,9 @@ public class TabComentariosViewModel extends AndroidViewModel {
                     Log.d("salida", "Failure al responder comentario: " + t.getMessage());
                 }
             });
+        } else {
+            errorMutable.setValue("Error");
+            leerComentarios(comentario.getPublicacionId());
         }
     }
 }
